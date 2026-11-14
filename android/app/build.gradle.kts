@@ -15,6 +15,7 @@ android {
         targetSdk = 36
         versionCode = 3
         versionName = "0.1.1"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         ndk {
             debugSymbolLevel = "SYMBOL_TABLE"
         }
@@ -95,4 +96,10 @@ dependencies {
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    androidTestImplementation(libs.junit)
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
 }

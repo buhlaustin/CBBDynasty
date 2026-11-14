@@ -22,6 +22,7 @@ object InjuryOccurrenceEngine {
         tuning: BalanceInjuryOccurrence,
         medicalStaffGrade: Int,
         gameSeed: Long,
+        existingInjuryCount: Int = 0,
     ): GameSimInjuryResult {
         if (phase == CalendarPhase.Offseason || phase == CalendarPhase.Preseason) {
             return GameSimInjuryResult()
@@ -36,7 +37,7 @@ object InjuryOccurrenceEngine {
             (minutesByPlayerId[player.playerId] ?: 0.0) > 0.0 && !player.injuryActive && !player.medicalRedshirtSeason
         }
         val events = mutableListOf<GameSimInjuryEvent>()
-        var injuryCount = 0
+        var injuryCount = existingInjuryCount
         candidates.forEachIndexed { index, player ->
             if (injuryCount >= tuning.maxInjuriesPerTeamPerGame) return@forEachIndexed
             val minutes = minutesByPlayerId[player.playerId] ?: 0.0

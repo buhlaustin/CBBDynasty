@@ -28,6 +28,7 @@ data class CoachingCarouselState(
     val status: CarouselStatus,
     val pendingApprovals: List<CarouselApprovalCard> = emptyList(),
     val backgroundSimGeneration: Int = 0,
+    val backgroundSimSummary: CarouselLeagueBackgroundSimEngine.CarouselBackgroundSimSummary? = null,
 ) {
     fun canEnterOffseasonWeekOne(): Boolean =
         status == CarouselStatus.Complete || status == CarouselStatus.NotRequired

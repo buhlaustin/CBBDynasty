@@ -36,6 +36,8 @@ class MarchMayhemHubSnapshotFactoryTest {
         assertEquals(32, snapshot.nci.field.size)
         assertEquals(16, snapshot.heritage.field.size)
         assertTrue(snapshot.nci.field.first().seedLabel.startsWith("NCI #"))
+        assertEquals(3, snapshot.overview.rails.size)
+        assertTrue(snapshot.overview.selectionFieldCount > 0)
     }
 
     private fun syntheticPack(teamIds: List<String>): IdentityPack {

@@ -13,7 +13,7 @@ data class SeasonYearAdvancePlan(
 
 object SeasonYearAdvanceEngine {
     fun planEnterOffseason(checkpoint: WeekCheckpointState): SeasonYearAdvancePlan {
-        val transition = SeasonReviewGate.enterOffseason(checkpoint)
+        val transition = SeasonReviewGate.enterOffseason(checkpoint, seasonReviewAcknowledged = true)
         val nextSeason = transition.advanceResult.nextState.activePosition.seasonIndex
         return SeasonYearAdvancePlan(
             transition = transition,

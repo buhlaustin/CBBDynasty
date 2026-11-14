@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "cells": [
+    {
+      "offense": "balanced",
+      "defense": "man"
+    },
+    {
+      "offense": "balanced",
+      "defense": "zone_2_3"
+    },
+    {
+      "offense": "balanced",
+      "defense": "zone_3_2"
+    },
+    {
+      "offense": "balanced",
+      "defense": "zone_1_3_1"
+    },
+    {
+      "offense": "balanced",
+      "defense": "box_and_one"
+    },
+    {
+      "offense": "balanced",
+      "defense": "press"
+    },
+    {
+      "offense": "balanced",
+      "defense": "switching"
+    },
+    {
+      "offense": "motion",
+      "defense": "man"
+    },
+    {
+      "offense": "motion",
+      "defense": "zone_2_3"
+    },
+    {
+      "offense": "motion",
+      "defense": "zone_3_2"
+    },
+    {
+      "offense": "motion",
+      "defense": "zone_1_3_1"
+    },
+    {
+      "offense": "motion",
+      "defense": "box_and_one"
+    },
+    {
+      "offense": "motion",
+      "defense": "press"
+    },
+    {
+      "offense": "motion",
+      "defense": "switching"
+    },
+    {
+      "offense": "drive",
+      "defense": "man"
+    },
+    {
+      "offense": "drive",
+      "defense": "zone_2_3"
+    },
+    {
+      "offense": "drive",
+      "defense": "zone_3_2"
+    },
+    {
+      "offense": "drive",
+      "defense": "zone_1_3_1"
+    },
+    {
+      "offense": "drive",
+      "defense": "box_and_one"
+    },
+    {
+      "offense": "drive",
+      "defense": "press"
+    },
+    {
+      "offense": "drive",
+      "defense": "switching"
+    },
+    {
+      "offense": "set",
+      "defense": "man"
+    },
+    {
+      "offense": "set",
+      "defense": "zone_2_3"
+    },
+    {
+      "offense": "set",
+      "defense": "zone_3_2"
+    },
+    {
+      "offense": "set",
+      "defense": "zone_1_3_1"
+    },
+    {
+      "offense": "set",
+      "defense": "box_and_one"
+    },
+    {
+      "offense": "set",
+      "defense": "press"
+    },
+    {
+      "offense": "set",
+      "defense": "switching"
+    },
+    {
+      "offense": "early",
+      "defense": "man"
+    },
+    {
+      "offense": "early",
+      "defense": "zone_2_3"
+    },
+    {
+      "offense": "early",
+      "defense": "zone_3_2"
+    },
+    {
+      "offense": "early",
+      "defense": "zone_1_3_1"
+    },
+    {
+      "offense": "early",
+      "defense": "box_and_one"
+    },
+    {
+      "offense": "early",
+      "defense": "press",
+      "turnoverAdjust": 0.03,
+      "tripPaceScale": 0.95
+    },
+    {
+      "offense": "early",
+      "defense": "switching"
+    },
+    {
+      "offense": "perimeter",
+      "defense": "man"
+    },
+    {
+      "offense": "perimeter",
+      "defense": "zone_2_3"
+    },
+    {
+      "offense": "perimeter",
+      "defense": "zone_3_2"
+    },
+    {
+      "offense": "perimeter",
+      "defense": "zone_1_3_1"
+    },
+    {
+      "offense": "perimeter",
+      "defense": "box_and_one"
+    },
+    {
+      "offense": "perimeter",
+      "defense": "press"
+    },
+    {
+      "offense": "perimeter",
+      "defense": "switching"
+    },
+    {
+      "offense": "post",
+      "defense": "man"
+    },
+    {
+      "offense": "post",
+      "defense": "zone_2_3"
+    },
+    {
+      "offense": "post",
+      "defense": "zone_3_2"
+    },
+    {
+      "offense": "post",
+      "defense": "zone_1_3_1"
+    },
+    {
+      "offense": "post",
+      "defense": "box_and_one"
+    },
+    {
+      "offense": "post",
+      "defense": "press"
+    },
+    {
+      "offense": "post",
+      "defense": "switching"
+    }
+  ]
+}

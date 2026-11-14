@@ -16,6 +16,7 @@ class PromiseEvaluatorTest {
   private fun player(starter: Boolean): DynastyPlayer = DynastyPlayer(
         playerId = "p1",
         dynastyId = "d1",
+        appearance = dev.novux.dynasty.cbb.core.player.appearance.PlayerAppearance.fromPlayerId("p1"),
         identity = PlayerIdentity(
             displayName = "Test",
             hometownCity = "Columbus",
@@ -54,5 +55,11 @@ class PromiseEvaluatorTest {
     fun starterPromiseBrokenWhenBenched() {
         val status = PromiseEvaluator.evaluateSeasonWindow(player(starter = false), seasonMinutesPerGame = null)
         assertEquals(PromiseStatus.Broken, status)
+    }
+
+    @Test
+    fun starterMinutes_grayMpg_isAtRisk() {
+        val eval = PromiseEvaluator.evaluateSeasonWindow(player(starter = true), seasonMinutesPerGame = 22.0)
+        assertEquals(PromiseStatus.AtRisk, eval)
     }
 }

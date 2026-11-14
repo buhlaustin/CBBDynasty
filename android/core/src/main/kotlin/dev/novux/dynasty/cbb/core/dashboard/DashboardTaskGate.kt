@@ -29,11 +29,13 @@ object DashboardTaskGate {
         rosterPlayers: List<RosterPlayer>,
         medicalRules: BalanceMedicalRedshirtRules,
         coachSkillPointBank: Int = 0,
+        recruiting: InSeasonRecruitingDashboardContext? = null,
     ): DashboardTaskSnapshot {
         val weekGames = InSeasonWeekGames.forPosition(position, plan, exhibitionCount)
         val required = DisciplineRequiredDashboardTasks.build(disciplinePending)
         val optional = buildList {
             addAll(InSeasonOptionalDashboardTasks.build(weekGames, weekSimStaged))
+            addAll(InSeasonRecruitingOptionalDashboardTasks.build(recruiting))
             addAll(
                 InjuryOptionalDashboardTasks.build(
                     rosterPlayers,
@@ -42,6 +44,7 @@ object DashboardTaskGate {
                 ),
             )
             addAll(CoachSundayOptionalDashboardTasks.build(coachSkillPointBank))
+            addAll(PromiseAtRiskOptionalDashboardTasks.build(rosterPlayers))
         }
         return DashboardTaskSnapshot(required = required, optional = optional)
     }

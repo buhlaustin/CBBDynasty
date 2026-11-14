@@ -9,6 +9,8 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dev.novux.dynasty.cbb.core.balance.BalanceNilRules
 import dev.novux.dynasty.cbb.core.nil.NilAssignOfferResult
+import dev.novux.dynasty.cbb.core.nil.NilBudgetDrillDown
+import dev.novux.dynasty.cbb.core.nil.NilBudgetDrillDownEngine
 import dev.novux.dynasty.cbb.core.nil.NilBudgetLedger
 import dev.novux.dynasty.cbb.core.nil.NilBudgetLedgerCalculator
 import dev.novux.dynasty.cbb.core.nil.NilOfferEngine
@@ -51,6 +53,26 @@ class NilBudgetRepository(
     suspend fun loadOffers(dynastyId: String, cycleSeasonIndex: Int): Map<String, Long> {
         val raw = context.nilBudgetStore.data.first()[offersKey(dynastyId, cycleSeasonIndex)] ?: return emptyMap()
         return decodeOffers(raw)
+    }
+
+    suspend fun loadDrillDown(
+        dynastyId: String,
+        cycleSeasonIndex: Int,
+        poolAnnualUsd: Long,
+        rosterCommittedUsd: Long = 0L,
+        prospectDisplayName: (String) -> String,
+    ): NilBudgetDrillDown {
+        val offers = loadOffers(dynastyId, cycleSeasonIndex)
+        val ledger = loadLedger(dynastyId, cycleSeasonIndex, poolAnnualUsd, rosterCommittedUsd)
+        val scholarshipIds = scholarshipOfferProspectIds(dynastyId)
+        val committedByProspect = loadCommittedByProspect(dynastyId, cycleSeasonIndex)
+        return NilBudgetDrillDownEngine.build(
+            ledger = ledger,
+            committedByProspect = committedByProspect,
+            pendingOffersUsd = offers,
+            scholarshipOfferProspectIds = scholarshipIds,
+            prospectDisplayName = prospectDisplayName,
+        )
     }
 
     suspend fun loadLedger(
@@ -119,9 +141,15 @@ class NilBudgetRepository(
         val add = snapshots.sumOf { it.nilSignedUsd.toLong() }
         val offers = loadOffers(dynastyId, cycleSeasonIndex).toMutableMap()
         snapshots.forEach { offers.remove(it.prospectId) }
+        val committedLines = loadCommittedByProspect(dynastyId, cycleSeasonIndex).toMutableMap()
+        snapshots.forEach { snap ->
+            committedLines[snap.prospectId] =
+                (committedLines[snap.prospectId] ?: 0L) + snap.nilSignedUsd.toLong()
+        }
         context.nilBudgetStore.edit { prefs ->
             prefs[committedKey(dynastyId, cycleSeasonIndex)] = committed + add
             prefs[offersKey(dynastyId, cycleSeasonIndex)] = encodeOffers(offers)
+            prefs[committedLinesKey(dynastyId, cycleSeasonIndex)] = encodeOffers(committedLines)
         }
     }
 
@@ -140,8 +168,17 @@ class NilBudgetRepository(
     private fun offersKey(dynastyId: String, cycleSeasonIndex: Int) =
         stringPreferencesKey("nil_offers_${dynastyId}_$cycleSeasonIndex")
 
+    private suspend fun loadCommittedByProspect(dynastyId: String, cycleSeasonIndex: Int): Map<String, Long> {
+        val raw = context.nilBudgetStore.data.first()[committedLinesKey(dynastyId, cycleSeasonIndex)]
+            ?: return emptyMap()
+        return decodeOffers(raw)
+    }
+
     private fun committedKey(dynastyId: String, cycleSeasonIndex: Int) =
         longPreferencesKey("nil_committed_${dynastyId}_$cycleSeasonIndex")
+
+    private fun committedLinesKey(dynastyId: String, cycleSeasonIndex: Int) =
+        stringPreferencesKey("nil_committed_lines_${dynastyId}_$cycleSeasonIndex")
 
     private fun poolKey(dynastyId: String, cycleSeasonIndex: Int) =
         longPreferencesKey("nil_pool_${dynastyId}_$cycleSeasonIndex")

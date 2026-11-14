@@ -13,6 +13,8 @@ import dev.novux.dynasty.cbb.core.history.HistoryHubSnapshot
 import dev.novux.dynasty.cbb.core.history.HistorySeasonFinalizeEngine
 import dev.novux.dynasty.cbb.core.news.NewsHeadlinePublisher
 import dev.novux.dynasty.cbb.data.balance.BalanceRulesetRepository
+import dev.novux.dynasty.cbb.data.coach.CoachAchievementsRepository
+import dev.novux.dynasty.cbb.data.coach.CoachCareerSeasonRepository
 import dev.novux.dynasty.cbb.data.league.LeagueWeekBatchRepository
 import dev.novux.dynasty.cbb.data.news.NewsFeedRepository
 import dev.novux.dynasty.cbb.data.pack.PackRepository
@@ -32,6 +34,8 @@ class HistoryRepository(
     private val dynastyRosterRepository: DynastyRosterRepository,
     private val balanceRulesetRepository: BalanceRulesetRepository,
     private val newsFeedRepository: NewsFeedRepository,
+    private val coachAchievementsRepository: CoachAchievementsRepository,
+    private val coachCareerSeasonRepository: CoachCareerSeasonRepository,
 ) {
     suspend fun loadArchive(dynastyId: String): DynastyHistoryArchive {
         val raw = context.dynastyHistoryStore.data.first()[archiveKey(dynastyId)] ?: return DynastyHistoryArchive(dynastyId)
@@ -68,6 +72,15 @@ class HistoryRepository(
             tuning = tuning,
         )
         persist(next)
+        coachAchievementsRepository.finalizeSeason(dynastyId, standings)
+        val yearCard = next.yearCards.lastOrNull { it.seasonIndex == seasonIndex }
+        coachCareerSeasonRepository.archiveCompletedSeason(
+            dynastyId = dynastyId,
+            seasonIndex = seasonIndex,
+            userTeamId = coach.userTeamId,
+            standings = standings,
+            yearCard = yearCard,
+        )
         val newGoat = next.goatSnapshot.firstOrNull()?.displayName
         if (newGoat != null && newGoat != previousGoat) {
             val headline = NewsHeadlinePublisher.yearlyAward(

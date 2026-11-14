@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.dp
 import dev.novux.dynasty.cbb.R
 import dev.novux.dynasty.cbb.core.calendar.SeasonMembershipYear
 import dev.novux.dynasty.cbb.core.history.HistoryHubSnapshot
+import dev.novux.dynasty.cbb.core.history.HistoryHubDepthPolicy
+import dev.novux.dynasty.cbb.core.history.HistoryHubSurfacePolicy
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,9 +43,22 @@ fun HistoryHubScreen(
         OutlinedButton(onClick = onBack, modifier = Modifier.padding(horizontal = 16.dp)) {
             Text(stringResource(R.string.dynasty_shell_back))
         }
+        Text(
+            text = stringResource(R.string.history_hub_cadence_hint),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+        )
+        Text(
+            text = stringResource(R.string.history_hub_online_hint),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 0.dp),
+        )
         ScrollableTabRow(selectedTabIndex = tab) {
             Tab(selected = tab == 0, onClick = { tab = 0 }, text = { Text(stringResource(R.string.history_tab_goat)) })
             Tab(selected = tab == 1, onClick = { tab = 1 }, text = { Text(stringResource(R.string.history_tab_archive)) })
+            Tab(selected = tab == 2, onClick = { tab = 2 }, text = { Text(stringResource(R.string.history_tab_records)) })
         }
         Column(
             modifier = Modifier
@@ -116,6 +131,25 @@ fun HistoryHubScreen(
                                         )
                                     }
                                 }
+                            }
+                        }
+                    }
+                }
+                2 -> {
+                    val lines = HistoryHubDepthPolicy.majorRecordFeedLines(snapshot)
+                    if (lines.isEmpty()) {
+                        Text(
+                            stringResource(R.string.history_records_empty),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    } else {
+                        lines.forEach { line ->
+                            Card(Modifier.fillMaxWidth()) {
+                                Text(
+                                    line,
+                                    modifier = Modifier.padding(12.dp),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                )
                             }
                         }
                     }

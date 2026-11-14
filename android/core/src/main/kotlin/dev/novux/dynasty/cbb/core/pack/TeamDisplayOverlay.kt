@@ -20,4 +20,5 @@ data class ConferenceDisplayOverlay(
     val displayName: String,
     val leagueGameCount: Int,
     val tournamentTemplateId: String?,
+    val standingsTiebreakers: List<String> = emptyList(),
 )

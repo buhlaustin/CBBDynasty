@@ -2,6 +2,8 @@ package dev.novux.dynasty.cbb.core.coach.card
 
 import dev.novux.dynasty.cbb.core.coach.CoachArchetype
 import dev.novux.dynasty.cbb.core.coach.CoachNameSuffix
+import dev.novux.dynasty.cbb.core.coach.contract.HeadCoachContractBuyout
+import dev.novux.dynasty.cbb.core.coach.contract.HeadCoachContractSalary
 import dev.novux.dynasty.cbb.core.strategy.DefensiveSchemePreset
 import dev.novux.dynasty.cbb.core.strategy.OffensiveSchemePreset
 
@@ -26,7 +28,13 @@ object HeadCoachCardFactory {
         contractLengthYears: Int = 4,
         contractYearsLeft: Int = 4,
         seasonRecordLabel: String = "0-0",
-    ): HeadCoachCard = HeadCoachCard(
+        avatarPresetId: String = "",
+        programPrestige: Int = 50,
+        annualSalaryUsd: Long? = null,
+    ): HeadCoachCard {
+        val resolvedSalary = annualSalaryUsd
+            ?: HeadCoachContractSalary.annualUsd(archetype, programPrestige)
+        return HeadCoachCard(
         dynastyId = dynastyId,
         displayName = displayName,
         age = age,
@@ -37,9 +45,13 @@ object HeadCoachCardFactory {
         defensiveSchemeLabel = defensiveScheme.label,
         contractYearsLeft = contractYearsLeft,
         contractLengthYears = contractLengthYears,
+        annualSalaryUsd = resolvedSalary,
+        buyoutUsd = HeadCoachContractBuyout.usd(resolvedSalary, contractYearsLeft),
         ratings = ratingsFor(archetype),
         almaMaterLabel = almaMaterLabel,
-    )
+        avatarPresetId = avatarPresetId,
+        )
+    }
 
     fun displayName(
         firstName: String,

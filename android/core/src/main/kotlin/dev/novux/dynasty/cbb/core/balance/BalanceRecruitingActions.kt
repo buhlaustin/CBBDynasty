@@ -21,6 +21,7 @@ data class BalanceRecruitingActionEntry(
     val cost: Int,
     val refunded: Boolean = false,
     val refundPolicy: String? = null,
+    val interestDelta: Int = 0,
 )
 
 @Serializable
@@ -46,6 +47,9 @@ data class BalanceVisitDistanceCosts(
     val local: Int = 50,
     val regional: Int = 100,
     val remote: Int = 150,
+    val interestDeltaLocal: Int = 12,
+    val interestDeltaRegional: Int = 15,
+    val interestDeltaRemote: Int = 18,
 )
 
 @Serializable
@@ -59,6 +63,8 @@ data class BalanceVisitAllowedThrough(
 data class BalanceRecruitingBonusEntry(
     val refunded: Boolean = false,
     val spendUnspentWeeklyBalance: Boolean = true,
+    /** Points spent per +1 interest when using bonus balance (e.g. 25 → 1). */
+    val interestDeltaPerPoint: Int = 25,
 )
 
 object BalanceRecruitingActionsParser {

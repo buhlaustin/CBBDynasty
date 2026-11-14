@@ -11,6 +11,8 @@ serialization = "1.7.3"
 datastore = "1.1.1"
 room = "2.6.1"
 ksp = "2.0.21-1.0.28"
+robolectric = "4.14.1"
+androidxTestCore = "1.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,6 +34,9 @@ androidx-datastore-preferences = { group = "androidx.datastore", name = "datasto
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
+androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTestCore" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

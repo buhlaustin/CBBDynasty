@@ -9,6 +9,7 @@ data class OffseasonDashboardContext(
     val portalTop40Locked: Boolean,
     val openScholarshipSlots: Int,
     val signingCrunchActive: Boolean,
+    val pipelineSpotlight: PipelineEntrantSpotlight? = null,
 )
 
 /**
@@ -71,6 +72,19 @@ object OffseasonOptionalDashboardTasks {
                     kind = DashboardTaskKind.Optional,
                     deepLink = DashboardDeepLink.RecruitingPortal,
                     formatArgs = listOf(context.openScholarshipSlots),
+                ),
+            )
+        }
+        context.pipelineSpotlight?.let { spotlight ->
+            tasks.add(
+                DashboardTask(
+                    id = DashboardTaskId.PortalPipelineEntrant,
+                    kind = DashboardTaskKind.Optional,
+                    deepLink = DashboardDeepLink.RecruitingPortal,
+                    stringFormatArgs = listOf(
+                        spotlight.entrantDisplayName,
+                        spotlight.priorSchoolDisplayName,
+                    ),
                 ),
             )
         }

@@ -29,34 +29,49 @@ object GameSimInjuryRoll {
         rollInput: GameSimInjuryRollInput,
     ): GameSimResult {
         if (!result.isComplete) return result
-        val homeMinutes = estimateMinutes(input.homeRoster, result.homeBox.possessions)
-        val awayMinutes = estimateMinutes(input.awayRoster, result.awayBox.possessions)
-        val homeInjuries = rollInput.homeRosterPlayers?.let { roster ->
+        val midHomeIds = result.homeInjuries.map { it.playerId }.toSet()
+        val midAwayIds = result.awayInjuries.map { it.playerId }.toSet()
+        val homeMinutes = floorMinutesFromResult(result.homeFloorSecondsByPlayer, input.homeRoster, result.homeBox.possessions)
+        val awayMinutes = floorMinutesFromResult(result.awayFloorSecondsByPlayer, input.awayRoster, result.awayBox.possessions)
+        val postHome = rollInput.homeRosterPlayers?.let { roster ->
             InjuryOccurrenceEngine.rollAfterGame(
                 phase = rollInput.phase,
                 minutesByPlayerId = homeMinutes,
-                roster = roster,
+                roster = roster.filter { it.playerId !in midHomeIds },
                 bank = rollInput.bank,
                 tuning = rollInput.occurrence,
                 medicalStaffGrade = rollInput.medicalStaffGrade,
                 gameSeed = input.seed xor input.home.teamId.hashCode().toLong(),
+                existingInjuryCount = result.homeInjuries.size,
             ).injuries
         }.orEmpty()
-        val awayInjuries = rollInput.awayRosterPlayers?.let { roster ->
+        val postAway = rollInput.awayRosterPlayers?.let { roster ->
             InjuryOccurrenceEngine.rollAfterGame(
                 phase = rollInput.phase,
                 minutesByPlayerId = awayMinutes,
-                roster = roster,
+                roster = roster.filter { it.playerId !in midAwayIds },
                 bank = rollInput.bank,
                 tuning = rollInput.occurrence,
                 medicalStaffGrade = rollInput.medicalStaffGrade,
                 gameSeed = input.seed xor input.away.teamId.hashCode().toLong(),
+                existingInjuryCount = result.awayInjuries.size,
             ).injuries
         }.orEmpty()
         return result.copy(
-            homeInjuries = homeInjuries,
-            awayInjuries = awayInjuries,
+            homeInjuries = result.homeInjuries + postHome,
+            awayInjuries = result.awayInjuries + postAway,
         )
+    }
+
+    private fun floorMinutesFromResult(
+        floorSeconds: Map<String, Int>,
+        roster: GameSimRosterInput?,
+        possessions: Int,
+    ): Map<String, Double> {
+        if (floorSeconds.isNotEmpty()) {
+            return floorSeconds.mapValues { (_, sec) -> sec / 60.0 }
+        }
+        return estimateMinutes(roster, possessions)
     }
 
     fun applyToRoster(

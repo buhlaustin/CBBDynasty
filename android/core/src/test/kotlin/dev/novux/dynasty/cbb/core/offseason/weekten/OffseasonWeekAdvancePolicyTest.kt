@@ -21,4 +21,28 @@ class OffseasonWeekAdvancePolicyTest {
         assertEquals(CalendarPhase.Offseason, next.phase)
         assertEquals(10, next.weekIndex)
     }
+
+    @Test
+    fun preseasonCta_seasonOneWeekNine() {
+        val pos = CalendarPosition(1, CalendarPhase.Offseason, 9)
+        assertEquals(true, OffseasonWeekAdvancePolicy.showsAdvanceToPreseasonCta(pos))
+    }
+
+    @Test
+    fun preseasonCta_seasonOneWeekEight_isAdvanceWeek() {
+        val pos = CalendarPosition(1, CalendarPhase.Offseason, 8)
+        assertEquals(false, OffseasonWeekAdvancePolicy.showsAdvanceToPreseasonCta(pos))
+    }
+
+    @Test
+    fun preseasonCta_seasonTwoWeekTen() {
+        val pos = CalendarPosition(2, CalendarPhase.Offseason, 10)
+        assertEquals(true, OffseasonWeekAdvancePolicy.showsAdvanceToPreseasonCta(pos))
+    }
+
+    @Test
+    fun preseasonCta_seasonTwoWeekNineFalseUntilWeekTen() {
+        val pos = CalendarPosition(2, CalendarPhase.Offseason, 9)
+        assertEquals(false, OffseasonWeekAdvancePolicy.showsAdvanceToPreseasonCta(pos))
+    }
 }

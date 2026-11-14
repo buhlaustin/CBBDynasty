@@ -2,6 +2,7 @@ package dev.novux.dynasty.cbb.core.save
 
 import dev.novux.dynasty.cbb.core.calendar.CalendarPhase
 import dev.novux.dynasty.cbb.core.calendar.PhaseWeekPolicy
+import dev.novux.dynasty.cbb.core.roster.RosterConstants
 
 /**
  * Validates slot summary vs dynasty header before load. Does not hit the database.
@@ -49,6 +50,29 @@ object DynastySaveValidator {
             return DynastyLoadFailure.PackIdMismatch(
                 slotPackId = slot.packId,
                 metadataPackId = metadata.packId,
+            )
+        }
+        return null
+    }
+
+    /**
+     * Wizard sign must commit coach + full scholarship roster together, or expose no occupied slot
+     * ([MEGA-QA-029]). Placeholder dynasties with neither coach nor roster are allowed.
+     */
+    fun validateSignedDynastyCore(
+        hasCoach: Boolean,
+        rosterPlayerCount: Int,
+    ): DynastyLoadFailure? {
+        if (!hasCoach && rosterPlayerCount == 0) return null
+        if (!hasCoach && rosterPlayerCount > 0) {
+            return DynastyLoadFailure.IncompleteNewGameSign("roster without head coach")
+        }
+        if (hasCoach && rosterPlayerCount == 0) {
+            return DynastyLoadFailure.IncompleteNewGameSign("coach without roster")
+        }
+        if (hasCoach && rosterPlayerCount < RosterConstants.SCHOLARSHIP_CAP) {
+            return DynastyLoadFailure.IncompleteNewGameSign(
+                "partial roster ($rosterPlayerCount/${RosterConstants.SCHOLARSHIP_CAP})",
             )
         }
         return null

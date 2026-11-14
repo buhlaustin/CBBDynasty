@@ -41,18 +41,14 @@ class ChemistryRepository(
         seasonIndex: Int,
         phase: CalendarPhase,
         players: List<RosterPlayer>,
-        teamPlayedGame: Boolean,
-        userWonGame: Boolean?,
+        tickInput: ChemistryWeeklyTickInput,
     ): ChemistrySeasonState {
         if (phase == CalendarPhase.Offseason || phase == CalendarPhase.Preseason) {
             return loadState(dynastyId, seasonIndex)
         }
         val tuning = balanceRulesetRepository.activeRuleset().chemistry
         val current = loadState(dynastyId, seasonIndex)
-        val input = ChemistryWeeklyTickInput(
-            userWonGame = if (teamPlayedGame) userWonGame else null,
-        )
-        val next = ChemistryWeekEngine.tickAfterWeekAdvance(current, players, input, tuning)
+        val next = ChemistryWeekEngine.tickAfterWeekAdvance(current, players, tickInput, tuning)
         persist(dynastyId, seasonIndex, next)
         return next
     }

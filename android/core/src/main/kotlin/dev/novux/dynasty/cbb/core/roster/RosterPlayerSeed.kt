@@ -43,6 +43,10 @@ data class RosterPlayerSeed(
     val promiseLockedSeasonIndex: Int? = null,
     val promiseStayTopN: Int? = null,
     val stamina: Int = FatigueEngine.FRESH,
+    val skinToneId: String = "",
+    val hairColorId: String = "",
+    val hairStyleId: String = "",
+    val avatarPresetId: String = "",
 ) {
     fun toRatings(): PlayerRatings = PlayerRatings(
         ovr = ovr,

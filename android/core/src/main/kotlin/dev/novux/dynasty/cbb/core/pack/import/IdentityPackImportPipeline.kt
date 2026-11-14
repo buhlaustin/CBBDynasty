@@ -81,7 +81,7 @@ object IdentityPackImportPipeline {
         pack: IdentityPack,
         attestation: PackImportAttestation,
     ): PackImportResult {
-        if (pack.disclaimerAcceptedRequired && !attestation.userAcceptedDisclaimer) {
+        if (PackDisclaimerAttestationPolicy.importBlockedWithoutAttestation(pack.disclaimerAcceptedRequired, attestation)) {
             return PackImportResult.Rejected(PackImportError.AttestationRequired())
         }
         return PackImportResult.Success(pack)

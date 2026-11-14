@@ -11,13 +11,16 @@ import dev.novux.dynasty.cbb.core.player.loyalty.CoachPromise
 import dev.novux.dynasty.cbb.core.player.loyalty.CoachPromiseType
 import dev.novux.dynasty.cbb.core.player.loyalty.LoyaltyPersonalityTag
 import dev.novux.dynasty.cbb.core.player.loyalty.LoyaltyRating
+import dev.novux.dynasty.cbb.core.player.loyalty.PlayerPromiseHistoryCodec
 import dev.novux.dynasty.cbb.core.player.loyalty.PromiseStatus
+import dev.novux.dynasty.cbb.core.player.appearance.PlayerAppearance
 import dev.novux.dynasty.cbb.core.roster.RosterPlayer
 
 /** Full player record for cards and simulation — [planning/player-cards.md]. */
 data class DynastyPlayer(
     val playerId: String,
     val dynastyId: String,
+    val appearance: PlayerAppearance,
     val identity: PlayerIdentity,
     val position: PlayerPosition,
     val classYear: PlayerClassYear,
@@ -27,6 +30,8 @@ data class DynastyPlayer(
     val injury: PlayerInjuryState,
     val role: PlayerRosterRole,
     val loyalty: PlayerLoyaltyProfile = PlayerLoyaltyProfile.Empty,
+    /** National Top 60 slot (1–60) when eligible; set at card open ([MEGA-COACH-163]). */
+    val nationalTop60DraftRank: Int? = null,
 ) {
     fun scoutReport(depth: ScoutDepth = ScoutDepth.Light): PlayerScoutReport =
         PlayerScoutReport.fromPlayer(this, depth)
@@ -48,6 +53,7 @@ data class DynastyPlayer(
         heightInches = identity.heightInches,
         weightLbs = identity.weightLbs,
         nilUsdPerYear = identity.nilUsdPerYear,
+        nilDealRaisedThisSeason = identity.nilDealRaisedThisSeason,
         ovr = ratings.ovr,
         off = ratings.off,
         def = ratings.def,
@@ -73,12 +79,18 @@ data class DynastyPlayer(
         promiseStatusWire = loyalty.promise?.status?.wire ?: "",
         promiseLockedSeasonIndex = loyalty.promise?.lockedAtSeasonIndex,
         promiseStayTopN = loyalty.promise?.stayTopN,
+        promiseHistoryWire = PlayerPromiseHistoryCodec.encode(loyalty.promiseHistory),
+        skinToneId = appearance.skinToneId,
+        hairColorId = appearance.hairColorId,
+        hairStyleId = appearance.hairStyleId,
+        avatarPresetId = appearance.avatarPresetId,
     )
 
     companion object {
         fun fromRosterPlayer(player: RosterPlayer): DynastyPlayer = DynastyPlayer(
             playerId = player.playerId,
             dynastyId = player.dynastyId,
+            appearance = player.resolvedAppearance(),
             identity = PlayerIdentity(
                 displayName = player.displayName,
                 hometownCity = player.hometownCity,
@@ -86,6 +98,7 @@ data class DynastyPlayer(
                 heightInches = player.heightInches,
                 weightLbs = player.weightLbs,
                 nilUsdPerYear = player.nilUsdPerYear,
+                nilDealRaisedThisSeason = player.nilDealRaisedThisSeason,
             ),
             position = player.position,
             classYear = player.classYear,
@@ -137,5 +150,6 @@ private fun RosterPlayer.toLoyaltyProfile(): PlayerLoyaltyProfile {
             )
         }
     }
-    return PlayerLoyaltyProfile(LoyaltyRating(loyaltyRating), personality, promise)
+    val history = PlayerPromiseHistoryCodec.decode(promiseHistoryWire)
+    return PlayerLoyaltyProfile(LoyaltyRating(loyaltyRating), personality, promise, history)
 }

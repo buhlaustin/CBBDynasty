@@ -10,9 +10,9 @@ object RosterLockPolicy {
         players.count { it.classYear == dev.novux.dynasty.cbb.core.roster.PlayerClassYear.WalkOn }
 
     fun canAdvanceOffseasonWeek8(players: List<RosterPlayer>): Boolean =
-        players.size <= OffseasonRosterLockConstants.SCHOLARSHIP_ROSTER_CAP
+        scholarshipCount(players) <= OffseasonRosterLockConstants.SCHOLARSHIP_ROSTER_CAP
 
     fun canOfferWalkOn(players: List<RosterPlayer>, walkOnsSignedThisSeason: Int): Boolean =
         walkOnsSignedThisSeason < OffseasonRosterLockConstants.MAX_WALK_ONS_PER_SEASON &&
-            players.size < OffseasonRosterLockConstants.SCHOLARSHIP_ROSTER_CAP
+            scholarshipCount(players) < OffseasonRosterLockConstants.SCHOLARSHIP_ROSTER_CAP
 }

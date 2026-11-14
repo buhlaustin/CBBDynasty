@@ -88,6 +88,8 @@ object IdentityPackTxtCodec {
         tournamentTemplates = templates,
         rulesetYear = rulesetYear,
         packId = packId,
+        manifestSignerId = meta["manifestSignerId"],
+        manifestSignature = meta["manifestSignature"],
     )
     return pack to mode
   }

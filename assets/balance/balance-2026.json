@@ -530,10 +530,10 @@
     "weeklyPointsInterpolation": "linear_within_tier",
     "signingDayOffseasonWeek": 6,
     "actions": {
-      "scholarshipOffer": { "cost": 150, "refunded": true, "refundPolicy": "week_boundary_while_active" },
-      "dm": { "cost": 50, "refunded": false },
-      "phoneCall": { "cost": 100, "refunded": false },
-      "sendTheHouse": { "cost": 500, "refunded": false },
+      "scholarshipOffer": { "cost": 150, "refunded": true, "refundPolicy": "week_boundary_while_active", "interestDelta": 6 },
+      "dm": { "cost": 50, "refunded": false, "interestDelta": 5 },
+      "phoneCall": { "cost": 100, "refunded": false, "interestDelta": 8 },
+      "sendTheHouse": { "cost": 500, "refunded": false, "interestDelta": 20 },
       "scoutTheirGame": {
         "cost": 50,
         "refunded": true,
@@ -542,13 +542,20 @@
         "allowedPhases": ["regular_season"]
       },
       "officialVisit": {
-        "costByDistanceBand": { "local": 50, "regional": 100, "remote": 150 },
+        "costByDistanceBand": {
+          "local": 50,
+          "regional": 100,
+          "remote": 150,
+          "interestDeltaLocal": 12,
+          "interestDeltaRegional": 15,
+          "interestDeltaRemote": 18
+        },
         "refunded": true,
         "refundPolicy": "week_boundary_while_active",
         "oncePerRecruitPerSeason": true,
         "allowedThrough": { "phase": "offseason", "weekIndexMax": 5, "includesRegularSeason": true }
       },
-      "bonusPoints": { "refunded": false, "spendUnspentWeeklyBalance": true }
+      "bonusPoints": { "refunded": false, "spendUnspentWeeklyBalance": true, "interestDeltaPerPoint": 25 }
     },
     "recommended": {
       "listCap": 50,

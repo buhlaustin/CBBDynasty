@@ -69,6 +69,7 @@ Use phases **in order** for greenfield sequencing. Mark `[x]` here only when the
 | 0.3 | `[x]` CI workflow (`:core:test` on every PR) | GitHub Action passes | — | `.github/workflows/core-test.yml` |
 | 0.4 | `[x]` Android assemble on tag/manual | `:app:assembleDebug` artifact | — | `.github/workflows/android-assemble-debug.yml` |
 | 0.5 | `[x]` Save migration on Room bump (ruleset columns v3→4) | `MIGRATION_3_4` + mapper round-trip | [ADR-001](ADR-001-dynasty-save-backend.md#app-updates--save-compatibility), [ADR-002](ADR-002-balance-ruleset-bundle.md) | `dynasty_metadata`, `:database` test |
+| 0.6 | `[x]` Play **signed release AAB** CI | `android-bundle-release.yml` green; upload keystore secrets; `targetSdk` policy; R8 `mapping.txt` artifact | [ANDROID_RELEASE_CI.md](ANDROID_RELEASE_CI.md), [branding](../planning/branding.md) | `.github/workflows/android-bundle-release.yml` |
 
 ---
 
@@ -80,7 +81,7 @@ Use phases **in order** for greenfield sequencing. Mark `[x]` here only when the
 | 1.2 | `[x]` Novux studio lockup from `Novux_Logos/` | Studio screen ≠ game splash | [app-shell](../planning/app-shell.md) | `StudioScreen`, `novux_studio_lockup.png` |
 | 1.3 | `[x]` Settings: skip studio intro, audio stubs | Flags persist | [game-start](../planning/game-start.md) | `data/settings/AppSettingsRepository` |
 | 1.4 | `[x]` Credits + unofficial disclaimer screen | Legal copy from branding | [branding](../planning/branding.md) | `CreditsScreen` |
-| 1.5 | `[x]` Adaptive icon matches `Public-Assets/adaptive-icon/` | Launcher icon on device | [branding](../planning/branding.md) | `ic_launcher*.xml`, `drawable-nodpi/ic_launcher_foreground.png` |
+| 1.5 | `[x]` Adaptive icon from `Public-Assets/app-logo.svg` (safe zone) | `python3 planning/tools/generate_adaptive_icon.py`; `generate_adaptive_icon.py --check` green in CI; launcher mask QA on device vs `adaptive-icon-canvas.png` | [branding](../planning/branding.md) | `planning/tools/generate_adaptive_icon.py`, `ic_launcher*.xml`, `ic_launcher_foreground.png` |
 
 ---
 
@@ -295,7 +296,8 @@ Use phases **in order** for greenfield sequencing. Mark `[x]` here only when the
 | 16.2 | `[x]` Automation toggles (sim week, staff) | Settings + dynasty | [game-design](../planning/game-design.md) | `DynastyAutomationRepository`, `DynastyAutomationScreen` |
 | 16.3 | `[x]` Identity import hardening (URL allowlist, size cap) | [game-design](../planning/game-design.md) | `PackUrlPolicy`, `PackPayloadPolicy`, `HttpPackRemoteFetcher` |
 | 16.4 | `[x]` Performance: 365-team week batch under target | Profiling doc | [game-design](../planning/game-design.md) | [LEAGUE_WEEK_BATCH_PROFILING.md](LEAGUE_WEEK_BATCH_PROFILING.md), `LeagueWeekBatchPerformanceTest` |
-| 16.5 | `[x]` Play Store assets, privacy, offline copy | Store listing | [branding](../planning/branding.md) | [PLAY_STORE_LISTING.md](PLAY_STORE_LISTING.md), [PRIVACY_POLICY.md](PRIVACY_POLICY.md), `PlayStoreListingCopy`, Credits/Settings legal copy |
+| 16.5 | `[x]` Play Store **copy & legal** (listing doc, privacy, credits) | In-app + `docs/` match branding; feature graphic export still manual | [branding](../planning/branding.md) | [PLAY_STORE_LISTING.md](PLAY_STORE_LISTING.md), [PRIVACY_POLICY.md](PRIVACY_POLICY.md), `PlayStoreListingCopy`, Credits/Settings legal copy |
+| 16.6 | `[ ]` Play **open test** live (human) | Package `com.dynasty.cbb`, mapping/symbols uploaded, icon QA on OEM launchers | [branding](../planning/branding.md), [ANDROID_RELEASE_CI.md](ANDROID_RELEASE_CI.md) | Play Console (not repo-automated) |
 
 ---
 
@@ -352,7 +354,8 @@ Expand **year-long recruiting** (6.5, 6.11–6.13, **6.17–6.21**), **dashboard
 |------|--------|
 | **Spec locked** | Entry in [`planning-notes.md`](../planning/planning-notes.md) → **Done** |
 | **This file** | **Required:** new/updated step(s), **Done when**, spec links, and [index](#locked-specs--build-steps-index) row — same change set as planning |
-| **Shipped code** | Mark step `[x]` in the phase table |
+| **Shipped code** | Mark step `[x]` only when **Done when** is true (device QA, CI, or human store step as listed) |
+| **Brand assets** | After `app-logo.svg` edits: run `generate_adaptive_icon.py`; CI enforces `--check` |
 | **History** | Row in [Document history](#document-history) below |
 | **Wording** | No **product** “v1 / not in v1 / MVP” labels — use **design lock** or **excluded**; schema/file versions (`packVersion`, Room) are fine |
 
@@ -366,6 +369,7 @@ Expand **year-long recruiting** (6.5, 6.11–6.13, **6.17–6.21**), **dashboard
 | 2026-11-09 | Fix Phase 6 steps 6.17–6.20; move Signing Day out of Phase 15; correct OS week labels 7–10 |
 | 2026-11-09 | Injuries sim output, persistence, lineup block, news — per injuries.md |
 | 2026-11-09 | Injury bank (40 rows), auto lineup + return restore; **weeksRemaining** + bye-week tick (8.7, 9.7, 10.8, 2.6) |
+| 2026-11-11 | Phase **0.6** Play AAB CI; **1.5** adaptive icon generator + safe zone; **16.6** open-test gate; checklist honesty rule |
 | 2026-11-09 | **Full** locked-spec index (all Done planning docs); **8.8** injury UX; injury wired through 9.4/9.6/9.8/10.2 |
 | 2026-11-09 | In-app `notifications.md` (no push); **16.1** |
 | 2026-11-09 | Notifications **Done** — commits + fired/eliminated modal |

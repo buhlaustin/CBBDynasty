@@ -13,15 +13,64 @@ data class NotificationSnapshotInput(
     val careerFired: Boolean = false,
     val postseasonEliminated: Boolean = false,
     val userCommitsThisWeek: List<String> = emptyList(),
+    val userPortalCommitsThisWeek: List<String> = emptyList(),
     val userDecommitsThisWeek: List<String> = emptyList(),
+    val userPortalDecommitsThisWeek: List<String> = emptyList(),
     val majorRecordLines: List<String> = emptyList(),
     val rankingsMoveLine: String? = null,
+    val disciplineHeadline: String? = null,
+    val carouselApprovalBodies: List<String> = emptyList(),
+    val selectionSundayBody: String? = null,
+    val medicalRedshirtBodies: List<String> = emptyList(),
+    val fundraisingCompleteBodies: List<String> = emptyList(),
 )
 
 object NotificationFeedComposer {
     fun compose(input: NotificationSnapshotInput): List<NotificationFeedItem> {
         val id = { UUID.randomUUID().toString() }
         return buildList {
+            input.disciplineHeadline?.let { headline ->
+                add(
+                    NotificationFeedItem(
+                        id = id(),
+                        eventKey = "discipline:${headline.hashCode()}",
+                        kind = NotificationFeedDisciplineComposerPolicy.eventKind,
+                        priority = NotificationPriority.High,
+                        deepLink = NotificationFeedDisciplineRowPolicy.deepLink,
+                        title = NotificationFeedDisciplineRowPolicy.TITLE,
+                        body = headline,
+                        createdAtMs = input.asOfMs,
+                    ),
+                )
+            }
+            input.carouselApprovalBodies.forEach { body ->
+                add(
+                    NotificationFeedItem(
+                        id = id(),
+                        eventKey = "carousel:${body.hashCode()}",
+                        kind = NotificationFeedCarouselComposerPolicy.eventKind,
+                        priority = NotificationPriority.High,
+                        deepLink = NotificationFeedCarouselComposerPolicy.deepLink,
+                        title = NotificationFeedCarouselRowPolicy.TITLE,
+                        body = body,
+                        createdAtMs = input.asOfMs,
+                    ),
+                )
+            }
+            input.selectionSundayBody?.let { body ->
+                add(
+                    NotificationFeedItem(
+                        id = id(),
+                        eventKey = "selection_sunday",
+                        kind = NotificationEventKind.SelectionSunday,
+                        priority = NotificationPriority.High,
+                        deepLink = NotificationFeedSelectionSundayRowPolicy.deepLink,
+                        title = NotificationFeedSelectionSundayRowPolicy.TITLE,
+                        body = body,
+                        createdAtMs = input.asOfMs,
+                    ),
+                )
+            }
             input.newInjurySummaries.forEach { summary ->
                 add(
                     NotificationFeedItem(
@@ -43,9 +92,23 @@ object NotificationFeedComposer {
                         eventKey = "commit:$name",
                         kind = NotificationEventKind.UserCommit,
                         priority = NotificationPriority.High,
-                        deepLink = DashboardDeepLink.RecruitingRecommended,
+                        deepLink = NotificationFeedCommitRowPolicy.hsCommitDeepLink,
                         title = "New commit",
                         body = "$name signed with your program.",
+                        createdAtMs = input.asOfMs,
+                    ),
+                )
+            }
+            input.userPortalCommitsThisWeek.forEach { name ->
+                add(
+                    NotificationFeedItem(
+                        id = id(),
+                        eventKey = "portal_commit:$name",
+                        kind = NotificationEventKind.UserCommit,
+                        priority = NotificationPriority.High,
+                        deepLink = NotificationFeedCommitRowPolicy.portalCommitDeepLink,
+                        title = "Portal addition",
+                        body = "$name joined your roster via the transfer portal.",
                         createdAtMs = input.asOfMs,
                     ),
                 )
@@ -57,9 +120,23 @@ object NotificationFeedComposer {
                         eventKey = "decommit:$name",
                         kind = NotificationEventKind.UserDecommit,
                         priority = NotificationPriority.High,
-                        deepLink = DashboardDeepLink.RecruitingRecommended,
+                        deepLink = NotificationFeedCommitRowPolicy.hsDecommitDeepLink,
                         title = "Decommit",
                         body = "$name reopened recruitment.",
+                        createdAtMs = input.asOfMs,
+                    ),
+                )
+            }
+            input.userPortalDecommitsThisWeek.forEach { name ->
+                add(
+                    NotificationFeedItem(
+                        id = id(),
+                        eventKey = "portal_decommit:$name",
+                        kind = NotificationEventKind.UserDecommit,
+                        priority = NotificationPriority.High,
+                        deepLink = NotificationFeedCommitRowPolicy.portalDecommitDeepLink,
+                        title = "Portal departure",
+                        body = "$name entered the transfer portal.",
                         createdAtMs = input.asOfMs,
                     ),
                 )
@@ -94,6 +171,20 @@ object NotificationFeedComposer {
                     ),
                 )
             }
+            input.medicalRedshirtBodies.forEach { body ->
+                add(
+                    NotificationFeedItem(
+                        id = id(),
+                        eventKey = "medical_rs:${body.hashCode()}",
+                        kind = NotificationFeedMedicalRedshirtComposerPolicy.eventKind,
+                        priority = NotificationPriority.Medium,
+                        deepLink = NotificationFeedMedicalRedshirtRowPolicy.deepLink,
+                        title = NotificationFeedMedicalRedshirtRowPolicy.TITLE,
+                        body = body,
+                        createdAtMs = input.asOfMs,
+                    ),
+                )
+            }
             input.gameThisWeekLabel?.let { label ->
                 add(
                     NotificationFeedItem(
@@ -101,7 +192,7 @@ object NotificationFeedComposer {
                         eventKey = "game:${label.hashCode()}",
                         kind = NotificationEventKind.GameThisWeek,
                         priority = NotificationPriority.Medium,
-                        deepLink = DashboardDeepLink.PlayWeekGame,
+                        deepLink = NotificationFeedGameWeekRowPolicy.deepLink,
                         title = "Game this week",
                         body = label,
                         createdAtMs = input.asOfMs,
@@ -129,7 +220,7 @@ object NotificationFeedComposer {
                         eventKey = "signing:unsigned",
                         kind = NotificationEventKind.SigningDayPending,
                         priority = NotificationPriority.Medium,
-                        deepLink = DashboardDeepLink.SigningDayPositions,
+                        deepLink = NotificationFeedSigningDayFeedPolicy.positionsDeepLink,
                         title = "Signing Day",
                         body = "${input.signingDayUnsignedCount} prospects still need to sign.",
                         createdAtMs = input.asOfMs,
@@ -157,7 +248,7 @@ object NotificationFeedComposer {
                         eventKey = "record:${line.hashCode()}",
                         kind = NotificationEventKind.MajorNationalRecord,
                         priority = NotificationPriority.Low,
-                        deepLink = DashboardDeepLink.Strategy,
+                        deepLink = NotificationFeedMajorRecordRowPolicy.deepLink,
                         title = "National record",
                         body = line,
                         createdAtMs = input.asOfMs,
@@ -171,9 +262,23 @@ object NotificationFeedComposer {
                         eventKey = "rankings:${line.hashCode()}",
                         kind = NotificationEventKind.RankingsMove,
                         priority = NotificationPriority.Low,
-                        deepLink = DashboardDeepLink.Strategy,
+                        deepLink = NotificationFeedRankingsMoveRowPolicy.deepLink,
                         title = "Rankings update",
                         body = line,
+                        createdAtMs = input.asOfMs,
+                    ),
+                )
+            }
+            input.fundraisingCompleteBodies.forEach { body ->
+                add(
+                    NotificationFeedItem(
+                        id = id(),
+                        eventKey = "fundraising:${body.hashCode()}",
+                        kind = NotificationEventKind.FundraisingComplete,
+                        priority = NotificationPriority.Low,
+                        deepLink = NotificationFeedFundraisingRowPolicy.deepLink,
+                        title = NotificationFeedFundraisingRowPolicy.TITLE,
+                        body = body,
                         createdAtMs = input.asOfMs,
                     ),
                 )

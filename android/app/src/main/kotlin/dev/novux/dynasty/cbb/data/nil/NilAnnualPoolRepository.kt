@@ -3,6 +3,8 @@ package dev.novux.dynasty.cbb.data.nil
 import dev.novux.dynasty.cbb.core.balance.BalanceNilAnnualPoolParser
 import dev.novux.dynasty.cbb.core.nil.NilAnnualPoolEngine
 import dev.novux.dynasty.cbb.core.recruiting.SchoolRecruitingContext
+import dev.novux.dynasty.cbb.core.recruiting.RecruitingPipelineStates
+import dev.novux.dynasty.cbb.core.save.DynastySchema
 import dev.novux.dynasty.cbb.core.save.LoadedDynasty
 import dev.novux.dynasty.cbb.data.pack.PackRepository
 import dev.novux.dynasty.cbb.database.DynastyDatabase
@@ -22,11 +24,12 @@ class NilAnnualPoolRepository(
             dev.novux.dynasty.cbb.core.offseason.weeknine.FacilityGrades(),
     ): SchoolRecruitingContext? {
         val coach = database.dynastyCoachDao().getByDynastyId(loaded.dynastyId) ?: return null
-        val team = packRepository.activeSession().index.team(coach.userTeamId) ?: return null
+        val packId = loaded.summary.packId ?: DynastySchema.DEFAULT_PACK_ID
+        val team = packRepository.restorePack(packId).index.team(coach.userTeamId) ?: return null
         return SchoolRecruitingContext(
             programPrestige = team.programPrestige,
             schoolHomeState = team.homeState,
-            pipelineStates = pipelineFor(team.homeState),
+            pipelineStates = RecruitingPipelineStates.forHomeState(team.homeState),
             nilPoolAnnualUsd = effectivePoolUsd(loaded, fundraisingBoostUsd).toInt(),
             facilityGrades = facilityGrades,
         )
@@ -34,7 +37,8 @@ class NilAnnualPoolRepository(
 
     suspend fun cycleBasePoolUsd(loaded: LoadedDynasty): Long {
         val coach = database.dynastyCoachDao().getByDynastyId(loaded.dynastyId) ?: return fallbackPool(loaded)
-        val team = packRepository.activeSession().index.team(coach.userTeamId)
+        val packId = loaded.summary.packId ?: DynastySchema.DEFAULT_PACK_ID
+        val team = packRepository.restorePack(packId).index.team(coach.userTeamId)
             ?: return fallbackPool(loaded)
         val tables = BalanceNilAnnualPoolParser.parse(loaded.balanceRuleset.nil)
         val computed = NilAnnualPoolEngine.resolve(
@@ -68,11 +72,6 @@ class NilAnnualPoolRepository(
             loaded.metadata.seasonIndex,
             DEFAULT_FALLBACK_USD,
         )
-
-    private fun pipelineFor(homeState: String): Set<String> = when (homeState) {
-        "OH" -> setOf("KY", "IN", "MI", "PA", "WV")
-        else -> setOf(homeState)
-    }
 
     companion object {
         const val DEFAULT_FALLBACK_USD = 900_000L

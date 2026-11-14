@@ -6,10 +6,21 @@ object ShallowNewsFeed {
         archive: List<NewsHeadline>,
         extra: List<NewsHeadline> = emptyList(),
         maxItems: Int = NewsHeadlinePublisher.SHALLOW_FEED_CAP,
-    ): List<NewsHeadline> {
+    ): List<NewsHeadline> = snapshot(archive, extra, maxItems).headlines
+
+    fun snapshot(
+        archive: List<NewsHeadline>,
+        extra: List<NewsHeadline> = emptyList(),
+        maxItems: Int = NewsHeadlinePublisher.SHALLOW_FEED_CAP,
+    ): ShallowNewsFeedSnapshot {
+        val cap = maxItems.coerceAtLeast(1)
         val merged = (archive + extra)
             .distinctBy { it.id }
             .sortedWith(compareByDescending<NewsHeadline> { it.priority }.thenByDescending { it.createdAtMs })
-        return merged.take(maxItems.coerceAtLeast(1))
+        return ShallowNewsFeedSnapshot(
+            headlines = merged.take(cap),
+            cap = cap,
+            mergedCount = merged.size,
+        )
     }
 }

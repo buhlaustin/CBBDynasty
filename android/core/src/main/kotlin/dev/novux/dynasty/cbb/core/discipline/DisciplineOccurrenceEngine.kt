@@ -85,18 +85,13 @@ object DisciplineOccurrenceEngine {
         val template = pickTemplate(templates, seed) ?: return null
         val candidates = players.filter { it.rsGamesPlayedSeason >= 5 }
         val player = pickWeightedMinutes(candidates, seed + 7) ?: return null
-        val headline = "Team discipline — ${template.label}"
-        val body = when (template.id) {
-            "arrest" -> "${player.displayLabel()} was arrested last night."
-            "campus_conduct" -> "${player.displayLabel()} involved in an on-campus incident."
-            else -> "${player.displayLabel()} violated team rules."
-        }
+        val label = player.displayLabel()
         return PendingDisciplineIncident(
             playerId = player.playerId,
-            playerDisplayName = player.displayLabel(),
+            playerDisplayName = label,
             kind = DisciplineIncidentKind.Conduct,
-            headline = headline,
-            flavorBody = body,
+            headline = DisciplineConductFlavorPolicy.headline(template),
+            flavorBody = DisciplineConductFlavorPolicy.flavorBody(template.id, label),
             conductTemplateId = template.id,
             recordedAtRsWeek = rsWeekIndex,
         )

@@ -61,4 +61,6 @@ data class GamePreviewResult(
     val predictedUserScore: Int,
     val predictedOpponentScore: Int,
     val headToHead: HeadToHeadRecord,
+    val userScouting: GamePreviewTeamScouting? = null,
+    val opponentScouting: GamePreviewTeamScouting? = null,
 )

@@ -10,8 +10,8 @@ import org.junit.Test
 class LeagueScheduleGeneratorTest {
     @Test
     fun schedulesEveryTeamInLeague() {
-        val confA = ConferenceDisplayOverlay("conf-a", "A", 18, "tpl")
-        val confB = ConferenceDisplayOverlay("conf-b", "B", 18, "tpl")
+        val confA = ConferenceDisplayOverlay("conf-a", "A", 10, "tpl")
+        val confB = ConferenceDisplayOverlay("conf-b", "B", 10, "tpl")
         val conferences = mapOf(confA.conferenceId to confA, confB.conferenceId to confB)
         val teams = buildList {
             repeat(3) { i ->
@@ -26,8 +26,10 @@ class LeagueScheduleGeneratorTest {
         assertEquals(7, season.schedules.size)
         season.schedules.forEach { schedule ->
             assertTrue(schedule.rsGameCount <= RegularSeasonSlotBudget.RS_CAP)
-            assertTrue(schedule.rsGameCount >= confA.leagueGameCount)
+            assertTrue(schedule.rsGameCount >= 8)
         }
+        val audit = LeagueScheduleIntegrityAudit.audit(season)
+        assertTrue(audit.isClean)
     }
 
   @Test

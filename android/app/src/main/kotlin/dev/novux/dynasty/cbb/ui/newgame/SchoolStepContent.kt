@@ -32,7 +32,13 @@ import androidx.compose.ui.unit.dp
 import dev.novux.dynasty.cbb.R
 import dev.novux.dynasty.cbb.core.pack.ConferenceDisplayOverlay
 import dev.novux.dynasty.cbb.core.pack.TeamDisplayOverlay
-import dev.novux.dynasty.cbb.core.pack.WizardProgramPrestige
+import dev.novux.dynasty.cbb.core.pack.NewGameStarterPrestigeFilterPolicy
+import dev.novux.dynasty.cbb.core.save.NewGameSchoolSummaryPreview
+import dev.novux.dynasty.cbb.core.save.NewGameSchoolSummaryPreviewEngine
+import dev.novux.dynasty.cbb.core.balance.BalanceNilAnnualPoolTables
+import dev.novux.dynasty.cbb.core.balance.BalanceRecruitingEconomy
+import java.text.NumberFormat
+import java.util.Locale
 
 enum class SchoolSortMode {
     Name,
@@ -50,6 +56,8 @@ fun SchoolStepContent(
     onSelectTeam: (String) -> Unit,
     summaryAcknowledged: Boolean,
     onSummaryAcknowledged: () -> Unit,
+    recruitingEconomy: BalanceRecruitingEconomy,
+    nilPoolTables: BalanceNilAnnualPoolTables,
     modifier: Modifier = Modifier,
 ) {
     var query by remember { mutableStateOf("") }
@@ -62,7 +70,7 @@ fun SchoolStepContent(
         val q = query.trim().lowercase()
         schools
             .asSequence()
-            .filter { WizardProgramPrestige.isSelectable(it.programPrestige, unlockAll) }
+            .filter { NewGameStarterPrestigeFilterPolicy.isVisible(it.programPrestige, unlockAll) }
             .filter {
                 q.isEmpty() ||
                     it.displayName.lowercase().contains(q) ||
@@ -164,6 +172,7 @@ fun SchoolStepContent(
             SchoolSummarySheet(
                 school = team,
                 conferenceName = confNames[team.conferenceId].orEmpty(),
+                preview = NewGameSchoolSummaryPreviewEngine.build(team, recruitingEconomy, nilPoolTables),
                 onConfirm = {
                     onSummaryAcknowledged()
                     previewTeam = null
@@ -201,8 +210,11 @@ private fun SchoolRow(
 private fun SchoolSummarySheet(
     school: TeamDisplayOverlay,
     conferenceName: String,
+    preview: NewGameSchoolSummaryPreview,
     onConfirm: () -> Unit,
 ) {
+    val currency = remember { NumberFormat.getCurrencyInstance(Locale.US) }
+    val pipelineLabel = preview.pipelineStates.sorted().joinToString(", ")
     Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp)) {
         Text(school.displayName, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
         HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
@@ -211,6 +223,21 @@ private fun SchoolSummarySheet(
         SummaryLine(
             stringResource(R.string.new_school_summary_location),
             "${school.homeCity}, ${school.homeState}",
+        )
+        SummaryLine(stringResource(R.string.new_school_summary_pipeline), pipelineLabel)
+        SummaryLine(
+            stringResource(R.string.new_school_summary_weekly_points),
+            preview.weeklyRecruitingPoints.toString(),
+        )
+        SummaryLine(
+            stringResource(R.string.new_school_summary_annual_nil),
+            currency.format(preview.annualNilUsd),
+        )
+        Text(
+            text = stringResource(R.string.new_school_summary_recruiting_nil_hint),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = 8.dp),
         )
         Text(
             text = stringResource(R.string.new_school_summary_contract_hint),

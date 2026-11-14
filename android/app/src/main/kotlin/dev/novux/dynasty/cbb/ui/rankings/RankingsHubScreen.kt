@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,6 +28,7 @@ import dev.novux.dynasty.cbb.R
 import dev.novux.dynasty.cbb.core.rankings.ConferenceStandingsGroup
 import dev.novux.dynasty.cbb.core.rankings.RankingsHubSnapshot
 import dev.novux.dynasty.cbb.core.rankings.RankingsHubTeamRow
+import dev.novux.dynasty.cbb.core.rankings.RankingsHubUiPolicy
 
 private enum class RankingsHubTab { Net, Media, Coaches, Conference }
 
@@ -35,18 +37,29 @@ private enum class RankingsHubTab { Net, Media, Coaches, Conference }
 fun RankingsHubScreen(
     snapshot: RankingsHubSnapshot,
     onBack: () -> Unit,
+    onPublishPreseason: (() -> Unit)? = null,
 ) {
-    var tabIndex by remember { mutableIntStateOf(0) }
+    var tabIndex by remember { mutableIntStateOf(RankingsHubUiPolicy.DEFAULT_TAB_INDEX) }
     Column(modifier = Modifier.fillMaxSize()) {
-        TopAppBar(title = { Text(stringResource(R.string.rankings_hub_title)) })
+        TopAppBar(
+            title = {
+                Column {
+                    Text(stringResource(R.string.rankings_hub_title))
+                    Text(
+                        text = stringResource(R.string.rankings_hub_scope),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            },
+        )
         OutlinedButton(onClick = onBack, modifier = Modifier.padding(horizontal = 16.dp)) {
             Text(stringResource(R.string.dynasty_shell_back))
         }
         if (!snapshot.published) {
-            Text(
-                stringResource(R.string.school_hub_rankings_unpublished),
-                modifier = Modifier.padding(16.dp),
-                style = MaterialTheme.typography.bodyMedium,
+            RankingsHubUnpublishedPlaceholder(
+                snapshot = snapshot,
+                onPublishPreseason = onPublishPreseason,
             )
             return
         }
@@ -64,6 +77,38 @@ fun RankingsHubScreen(
             RankingsHubTab.Media -> NationalRankList(snapshot.media)
             RankingsHubTab.Coaches -> NationalRankList(snapshot.coaches)
             RankingsHubTab.Conference -> ConferenceStandingsList(snapshot.conferences)
+        }
+    }
+}
+
+@Composable
+private fun RankingsHubUnpublishedPlaceholder(
+    snapshot: RankingsHubSnapshot,
+    onPublishPreseason: (() -> Unit)?,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Text(
+            text = stringResource(R.string.rankings_hub_placeholder),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        if (onPublishPreseason != null) {
+            Text(
+                text = stringResource(R.string.rankings_hub_preseason_review),
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            NationalRankList(snapshot.net.take(RankingsHubUiPolicy.UNPUBLISHED_PREVIEW_CAP))
+            Button(
+                onClick = onPublishPreseason,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(stringResource(R.string.rankings_hub_preseason_continue))
+            }
         }
     }
 }

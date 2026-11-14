@@ -41,6 +41,10 @@ object SimTuningValidator {
         if (tuning.eventWeights !is JsonObject) {
             return SimTuningValidationError.MissingSection("eventWeights")
         }
+        val resolvedWeights = SimEventWeightsResolver.resolve(tuning.eventWeights)
+        SimEventWeightsResolver.validate(resolvedWeights)?.let { msg ->
+            return SimTuningValidationError.InvalidRange("eventWeights", msg)
+        }
 
         if (tuning.homeNeutralModifiers.home <= 0.0 ||
             tuning.homeNeutralModifiers.neutral <= 0.0 ||
@@ -49,6 +53,28 @@ object SimTuningValidator {
             return SimTuningValidationError.InvalidRange(
                 "homeNeutralModifiers",
                 "home, neutral, and road must be positive",
+            )
+        }
+
+        val foulRules = tuning.teamFoulRules
+        if (foulRules.bonusThreshold <= 0 || foulRules.doubleBonusThreshold <= 0) {
+            return SimTuningValidationError.InvalidRange(
+                "teamFoulRules",
+                "bonus and doubleBonus thresholds must be positive",
+            )
+        }
+        if (foulRules.bonusThreshold > foulRules.doubleBonusThreshold) {
+            return SimTuningValidationError.InvalidRange(
+                "teamFoulRules",
+                "bonusThreshold must be <= doubleBonusThreshold",
+            )
+        }
+
+        val comfort = tuning.positionComfort
+        if (comfort.eligibleInterchangePenalty !in 0..15 || comfort.ineligibleSlotPenalty !in 0..15) {
+            return SimTuningValidationError.InvalidRange(
+                "positionComfort",
+                "penalties must be within 0..15",
             )
         }
 

@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import dev.novux.dynasty.cbb.R
 import dev.novux.dynasty.cbb.core.strategy.DefensiveSchemePreset
 import dev.novux.dynasty.cbb.core.strategy.OffensiveSchemePreset
+import dev.novux.dynasty.cbb.core.strategy.SchemePresetIdentityCopy
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -44,6 +45,11 @@ fun SchemesStepContent(
             }
         }
         Text(
+            text = SchemePresetIdentityCopy.offensive(offensive),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Text(
             text = stringResource(R.string.new_schemes_defense),
             style = MaterialTheme.typography.titleSmall,
             modifier = Modifier.padding(top = 8.dp),
@@ -60,5 +66,10 @@ fun SchemesStepContent(
                 )
             }
         }
+        Text(
+            text = SchemePresetIdentityCopy.defensive(defensive),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }

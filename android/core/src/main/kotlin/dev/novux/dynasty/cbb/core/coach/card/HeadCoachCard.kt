@@ -13,6 +13,11 @@ data class HeadCoachCard(
     val defensiveSchemeLabel: String,
     val contractYearsLeft: Int,
     val contractLengthYears: Int,
+    /** Annual base salary in USD for contract UI and staff surfaces. */
+    val annualSalaryUsd: Long,
+    /** Remaining buyout obligation in USD ([MEGA-COACH-119]). */
+    val buyoutUsd: Long,
     val ratings: HeadCoachRatings,
     val almaMaterLabel: String?,
+    val avatarPresetId: String = "",
 )

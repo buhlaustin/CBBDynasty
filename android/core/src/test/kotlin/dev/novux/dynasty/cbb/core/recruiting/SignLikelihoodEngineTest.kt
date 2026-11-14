@@ -34,6 +34,28 @@ class SignLikelihoodEngineTest {
     }
 
     @Test
+    fun eliteNationalHidden_forLowPrestigeOutOfPipeline() {
+        val elite = RecruitProspect(
+            prospectId = "elite",
+            displayName = "Elite HS",
+            stars = 5,
+            position = PlayerPosition.PointGuard,
+            homeState = "TX",
+            nationalHsRank = 3,
+            nilAskUsd = 200_000,
+            scoutLetterOverall = "A",
+        )
+        val school = SchoolRecruitingContext(
+            programPrestige = 22,
+            schoolHomeState = "CA",
+            pipelineStates = setOf("NV"),
+            nilPoolAnnualUsd = 250_000,
+        )
+        val rows = RecommendedRecruitList.build(listOf(elite), school, recommended)
+        assertTrue(rows.isEmpty())
+    }
+
+    @Test
     fun lowPrestige_hidesEliteNationalReach() {
         val pool = RecruitingClassSeed.demoPool(1)
         val school = SchoolRecruitingContext(

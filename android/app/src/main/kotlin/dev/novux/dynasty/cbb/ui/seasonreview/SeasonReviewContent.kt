@@ -4,28 +4,37 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.novux.dynasty.cbb.R
 import dev.novux.dynasty.cbb.core.seasonreview.SeasonReviewSnapshot
+import java.text.NumberFormat
+import java.util.Locale
 
 @Composable
 fun SeasonReviewScrollContent(
     snapshot: SeasonReviewSnapshot,
     modifier: Modifier = Modifier,
+    scrollState: ScrollState = rememberScrollState(),
+    showAcknowledgeAction: Boolean = false,
+    onAcknowledge: () -> Unit = {},
 ) {
+    val currency = remember { NumberFormat.getCurrencyInstance(Locale.US) }
     Column(
         modifier = modifier
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(scrollState)
             .padding(bottom = 8.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
@@ -78,6 +87,18 @@ fun SeasonReviewScrollContent(
                 stringResource(R.string.season_review_recruiting_next_cycle, snapshot.nextCycleWeeklyPool),
                 fontWeight = FontWeight.Medium,
             )
+            Text(
+                stringResource(
+                    R.string.season_review_nil_next_cycle,
+                    currency.format(snapshot.nextCycleNilPoolUsd),
+                ),
+                fontWeight = FontWeight.Medium,
+            )
+            Text(
+                stringResource(R.string.season_review_next_cycle_hint),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
         if (snapshot.awardHighlights.isNotEmpty()) {
             ReviewSection(stringResource(R.string.season_review_section_awards)) {
@@ -100,6 +121,11 @@ fun SeasonReviewScrollContent(
             Text(stringResource(R.string.season_review_job_security, snapshot.jobSecurityScore, snapshot.jobSecurityLabel))
             Text(stringResource(R.string.season_review_ad_trust, snapshot.adTrustScore))
             Text(stringResource(R.string.season_review_contract_years, snapshot.contractYearsLeft))
+        }
+        if (showAcknowledgeAction) {
+            Button(onClick = onAcknowledge, modifier = Modifier.fillMaxWidth()) {
+                Text(stringResource(R.string.season_review_acknowledge_recap))
+            }
         }
     }
 }

@@ -26,6 +26,7 @@ data class SeasonReviewSnapshot(
     val facilityGradeAverage: Int,
     val currentCycleWeeklyPool: Int,
     val nextCycleWeeklyPool: Int,
+    val nextCycleNilPoolUsd: Long,
     val recruitingTierLabel: String,
     val jobSecurityScore: Int,
     val jobSecurityLabel: String,

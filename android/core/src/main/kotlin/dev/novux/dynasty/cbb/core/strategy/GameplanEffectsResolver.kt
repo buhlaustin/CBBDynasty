@@ -35,6 +35,9 @@ object GameplanEffectsResolver {
         if (gameplan.denyPrimaryScorer) {
             turnover += 0.025
             makePenalty += 0.02
+            if (gameplan.defensiveAssignments.containsKey(gameplan.primaryScorerSlot)) {
+                turnover += 0.01
+            }
         }
         val lateWindow = gameClockSeconds <= 2 * 60
         if (lateWindow) {

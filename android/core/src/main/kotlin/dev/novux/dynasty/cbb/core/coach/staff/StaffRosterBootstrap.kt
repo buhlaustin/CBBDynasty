@@ -1,5 +1,6 @@
 package dev.novux.dynasty.cbb.core.coach.staff
 
+import dev.novux.dynasty.cbb.core.coach.CoachTrackPortraitIds
 import dev.novux.dynasty.cbb.core.coach.card.AssistantCoachCard
 import dev.novux.dynasty.cbb.core.coach.card.AssistantCoachRatings
 import kotlin.random.Random
@@ -18,8 +19,15 @@ object StaffRosterBootstrap {
             "Jordan Price",
         )
         return roles.mapIndexed { index, role ->
+            val staffId = "asst-$dynastyId-${index + 1}"
+            val ratings = AssistantCoachRatings(
+                recruiting = 68 + random.nextInt(12),
+                development = 70 + random.nextInt(10),
+                scouting = 66 + random.nextInt(14),
+            )
+            val salary = 175_000L + ratings.recruiting * 2_800L + ratings.development * 1_200L
             AssistantCoachCard(
-                staffId = "asst-$dynastyId-${index + 1}",
+                staffId = staffId,
                 displayName = names[index],
                 age = 32 + index * 3,
                 schoolDisplayName = schoolDisplayName,
@@ -29,11 +37,10 @@ object StaffRosterBootstrap {
                 yearsAtSchool = 2 + index,
                 contractYearsLeft = 2,
                 contractLengthYears = 3,
-                ratings = AssistantCoachRatings(
-                    recruiting = 68 + random.nextInt(12),
-                    development = 70 + random.nextInt(10),
-                    scouting = 66 + random.nextInt(14),
-                ),
+                ratings = ratings,
+                avatarPresetId = CoachTrackPortraitIds.forStaffId(staffId),
+                annualSalaryUsd = salary,
+                buyoutUsd = salary / 2,
             )
         }
     }

@@ -14,4 +14,8 @@ data class AssistantCoachCard(
     val contractYearsLeft: Int,
     val contractLengthYears: Int,
     val ratings: AssistantCoachRatings,
+    val avatarPresetId: String = "",
+    val annualSalaryUsd: Long = 0L,
+    val buyoutUsd: Long = 0L,
+    val hasHeadCoachCareer: Boolean = false,
 )

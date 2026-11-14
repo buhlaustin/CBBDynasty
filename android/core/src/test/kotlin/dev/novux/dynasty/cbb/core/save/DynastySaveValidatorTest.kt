@@ -42,6 +42,23 @@ class DynastySaveValidatorTest {
     }
 
     @Test
+    fun signedDynasty_allowsPlaceholderWithoutCoachOrRoster() {
+        assertNull(DynastySaveValidator.validateSignedDynastyCore(hasCoach = false, rosterPlayerCount = 0))
+    }
+
+    @Test
+    fun signedDynasty_rejectsCoachWithoutRoster() {
+        val failure = DynastySaveValidator.validateSignedDynastyCore(hasCoach = true, rosterPlayerCount = 0)
+        assertEquals(true, failure is DynastyLoadFailure.IncompleteNewGameSign)
+    }
+
+    @Test
+    fun signedDynasty_rejectsPartialRoster() {
+        val failure = DynastySaveValidator.validateSignedDynastyCore(hasCoach = true, rosterPlayerCount = 7)
+        assertEquals(true, failure is DynastyLoadFailure.IncompleteNewGameSign)
+    }
+
+    @Test
     fun calendar_rejectsOutOfRangeWeek() {
         val failure = DynastySaveValidator.validateCalendar(
             DynastySaveValidator.CalendarSnapshot(

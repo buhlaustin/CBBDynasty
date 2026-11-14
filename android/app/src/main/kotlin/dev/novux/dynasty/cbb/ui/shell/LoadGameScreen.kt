@@ -4,12 +4,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.AssistChip
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -25,44 +27,53 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.novux.dynasty.cbb.R
 import dev.novux.dynasty.cbb.core.save.DynastyLoadResult
+import dev.novux.dynasty.cbb.core.save.DynastySaveExportPolicy
 import dev.novux.dynasty.cbb.core.save.LoadedDynasty
 import dev.novux.dynasty.cbb.core.save.SaveSlotSummary
 import dev.novux.dynasty.cbb.data.save.ActiveDynastySession
 import dev.novux.dynasty.cbb.data.save.SaveSlotRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-/** Save slot picker — [planning/game-start.md#continue--load]. */
+/** Save slot picker with export backup — [planning/game-start.md#continue--load], [MEGA-COACH-183]. */
 @Composable
 fun LoadGameScreen(
     saveSlotRepository: SaveSlotRepository,
     onBack: () -> Unit,
     onDynastyLoaded: (LoadedDynasty) -> Unit,
 ) {
+    val context = LocalContext.current
     val slots by saveSlotRepository.observeSlots().collectAsState(initial = emptyList())
     val scope = rememberCoroutineScope()
     var pendingDelete by remember { mutableStateOf<SaveSlotSummary?>(null) }
     var unavailableSlot by remember { mutableStateOf<SaveSlotSummary?>(null) }
     var loadableSlots by remember { mutableStateOf<Map<Int, Boolean>>(emptyMap()) }
+    var loadingSlotIndex by remember { mutableStateOf<Int?>(null) }
 
     LaunchedEffect(Unit) {
         saveSlotRepository.ensureInitialized()
     }
 
     LaunchedEffect(slots) {
-        loadableSlots = slots.associate { slot ->
-            slot.slotIndex to if (slot.isEmpty) {
-                true
-            } else {
-                saveSlotRepository.isSlotLikelyLoadable(slot.slotIndex)
+        loadableSlots = withContext(Dispatchers.IO) {
+            slots.associate { slot ->
+                slot.slotIndex to if (slot.isEmpty) {
+                    true
+                } else {
+                    saveSlotRepository.isSlotLikelyLoadable(slot.slotIndex)
+                }
             }
         }
     }
 
+    Box(modifier = Modifier.fillMaxSize()) {
     Column(modifier = Modifier.fillMaxSize().padding(24.dp)) {
         Text(
             text = stringResource(R.string.menu_load),
@@ -84,26 +95,55 @@ fun LoadGameScreen(
                 SaveSlotRow(
                     slot = slot,
                     likelyLoadable = loadableSlots[slot.slotIndex] != false,
+                    openEnabled = loadingSlotIndex == null,
+                    exportEnabled = loadingSlotIndex == null,
                     onOpen = {
                         scope.launch {
-                            when (val result = saveSlotRepository.loadSlot(slot.slotIndex)) {
-                                is DynastyLoadResult.Success -> onDynastyLoaded(result.loaded)
-                                is DynastyLoadResult.Unreadable -> unavailableSlot = slot
-                                DynastyLoadResult.SlotEmpty -> Unit
+                            loadingSlotIndex = slot.slotIndex
+                            try {
+                                when (val result = saveSlotRepository.loadSlot(slot.slotIndex)) {
+                                    is DynastyLoadResult.Success -> onDynastyLoaded(result.loaded)
+                                    is DynastyLoadResult.Unreadable -> unavailableSlot = slot
+                                    is DynastyLoadResult.WeekAdvanceBlocked -> Unit
+                                    DynastyLoadResult.SlotEmpty -> Unit
+                                }
+                            } finally {
+                                loadingSlotIndex = null
                             }
                         }
                     },
                     onDelete = { pendingDelete = slot },
+                    onExport = {
+                        scope.launch {
+                            loadingSlotIndex = slot.slotIndex
+                            try {
+                                val archive = withContext(Dispatchers.IO) {
+                                    saveSlotRepository.exportDynastyArchive(slot.slotIndex)
+                                }
+                                if (archive != null) {
+                                    DynastyExportShare.shareJson(context, archive, slot.slotIndex + 1)
+                                }
+                            } finally {
+                                loadingSlotIndex = null
+                            }
+                        }
+                    },
                 )
             }
         }
 
         OutlinedButton(
             onClick = onBack,
+            enabled = loadingSlotIndex == null,
             modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
         ) {
             Text(stringResource(R.string.settings_back))
         }
+    }
+
+    if (loadingSlotIndex != null) {
+        DynastyLoadProgressOverlay()
+    }
     }
 
     unavailableSlot?.let { slot ->
@@ -155,9 +195,14 @@ fun LoadGameScreen(
 private fun SaveSlotRow(
     slot: SaveSlotSummary,
     likelyLoadable: Boolean,
+    openEnabled: Boolean,
+    exportEnabled: Boolean,
     onOpen: () -> Unit,
     onDelete: () -> Unit,
+    onExport: () -> Unit,
 ) {
+    @Suppress("unused")
+    val qaId = DynastySaveExportPolicy.MEGA_ID
     val slotNumber = slot.slotIndex + 1
     val header = stringResource(R.string.load_slot_header, slotNumber)
     val detail = when {
@@ -176,7 +221,7 @@ private fun SaveSlotRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(enabled = !slot.isEmpty, onClick = onOpen)
+            .clickable(enabled = !slot.isEmpty && openEnabled, onClick = onOpen)
             .padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -185,15 +230,37 @@ private fun SaveSlotRow(
             if (!slot.isEmpty) {
                 val coachName = slot.coachDisplayName
                 if (coachName != null) {
-                Text(
-                    text = coachName,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
+                    Text(
+                        text = coachName,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                if (likelyLoadable) {
+                    val metadataChip = stringResource(
+                        R.string.load_slot_export_metadata_chip,
+                        slot.schoolDisplayName.orEmpty(),
+                        slot.seasonLabel.orEmpty(),
+                        slot.wins,
+                        slot.losses,
+                    )
+                    AssistChip(
+                        onClick = {},
+                        enabled = false,
+                        label = { Text(metadataChip) },
+                    )
                 }
             }
         }
         if (!slot.isEmpty) {
+            if (likelyLoadable) {
+                AssistChip(
+                    onClick = onExport,
+                    enabled = exportEnabled,
+                    label = { Text(stringResource(R.string.load_slot_export_chip)) },
+                    modifier = Modifier.padding(end = 4.dp),
+                )
+            }
             IconButton(onClick = onDelete) {
                 Text(stringResource(R.string.load_delete_short))
             }

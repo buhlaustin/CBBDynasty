@@ -15,7 +15,11 @@ object NationalRecruitingRankings {
             .sortedBy { it.nationalHsRank!! }
             .map { NationalRankRow(it.nationalHsRank!!, it) }
 
-    /** Demo-sized pool for signing-day previews until a dynasty seed is loaded. */
+    /**
+     * Legacy 120-prospect demo list — do not use in dynasty UI; prefer [top60FromPool] after
+     * [dev.novux.dynasty.cbb.data.preseason.IncomingClassSeedRepository.ensurePool].
+     */
+    @Deprecated("Use top60FromPool with IncomingClassSeedRepository.ensurePool")
     fun top60(membershipSeasonIndex: Int): List<NationalRankRow> =
         top60FromPool(RecruitingClassSeed.demoPool(membershipSeasonIndex))
 }

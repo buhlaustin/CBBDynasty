@@ -3,6 +3,8 @@ package dev.novux.dynasty.cbb.core.sim
 import dev.novux.dynasty.cbb.core.lineup.DefaultStarterAlgorithm
 import dev.novux.dynasty.cbb.core.lineup.LineupSlotPolicy
 import dev.novux.dynasty.cbb.core.lineup.RotationMinutesAllocator
+import dev.novux.dynasty.cbb.core.lineup.RotationMinutesBalancer
+import dev.novux.dynasty.cbb.core.fatigue.FatigueEngine
 import dev.novux.dynasty.cbb.core.roster.PlayerPosition
 import dev.novux.dynasty.cbb.core.roster.RosterPlayer
 
@@ -13,6 +15,12 @@ data class GameSimParticipant(
     val offensiveRating: Int,
     val defensiveRating: Int,
     val targetMinutes: Int,
+    val logDisplayName: String = "",
+    val jerseyNumber: Int = 0,
+    val startingStamina: Int = FatigueEngine.FRESH,
+    val heightInches: Int = 76,
+    val weightLbs: Int = 200,
+    val shooting: GameSimShootingProfile = GameSimShootingProfile(),
 )
 
 data class GameSimRosterInput(
@@ -38,10 +46,15 @@ object GameLineupPrep {
         teamId: String,
         players: List<RosterPlayer>,
         userStarters: Map<PlayerPosition, String>? = null,
+        userRotationMinutes: Map<String, Int>? = null,
     ): GameSimRosterInput {
+        val validation = GameLineupPrepValidator.validate(players, userStarters)
+        require(validation.canStartSim) {
+            "Cannot build sim roster: missing=${validation.missingSlots}, illegal=${validation.illegalAssignments}"
+        }
         val eligible = players.filter { RotationMinutesAllocator.isLineupEligible(it) }
         val starters = resolveStarters(eligible, userStarters)
-        val minutes = RotationMinutesAllocator.allocate(eligible, starters)
+        val minutes = RotationMinutesBalancer.resolveForSim(players, starters, userRotationMinutes)
         val byId = eligible.associateBy { it.playerId }
         val starterSlotsPerPlayer = starters.entries.groupBy({ it.value }, { it.key })
         val participants = buildList {
@@ -66,6 +79,14 @@ object GameLineupPrep {
                         offensiveRating = player.off,
                         defensiveRating = player.def,
                         targetMinutes = slotMinutes,
+                        logDisplayName = player.displayLabel(),
+                        jerseyNumber = SimJerseyNumber.fromPlayerId(id),
+                        startingStamina = player.stamina,
+                        heightInches = player.heightInches,
+                        weightLbs = player.weightLbs,
+                        shooting = GameSimShootingProfile(
+                            threePointTendency = player.off.coerceIn(1, 99),
+                        ),
                     ),
                 )
             }
@@ -80,6 +101,14 @@ object GameLineupPrep {
                         offensiveRating = player.off,
                         defensiveRating = player.def,
                         targetMinutes = min,
+                        logDisplayName = player.displayLabel(),
+                        jerseyNumber = SimJerseyNumber.fromPlayerId(id),
+                        startingStamina = player.stamina,
+                        heightInches = player.heightInches,
+                        weightLbs = player.weightLbs,
+                        shooting = GameSimShootingProfile(
+                            threePointTendency = player.off.coerceIn(1, 99),
+                        ),
                     ),
                 )
             }

@@ -12,6 +12,7 @@ import dev.novux.dynasty.cbb.core.preseason.tournament.EarlySeasonEventCatalog
 import dev.novux.dynasty.cbb.core.preseason.tournament.EarlySeasonFieldPlanner
 import dev.novux.dynasty.cbb.core.preseason.tournament.TournamentInviteResolution
 import dev.novux.dynasty.cbb.data.pack.PackRepository
+import dev.novux.dynasty.cbb.data.recruiting.RecruitingEconomyRepository
 import dev.novux.dynasty.cbb.database.DynastyDatabase
 import kotlinx.coroutines.flow.first
 import kotlinx.serialization.encodeToString
@@ -26,6 +27,7 @@ class EarlySeasonBracketRepository(
     private val packRepository: PackRepository,
     private val tournamentInvitesRepository: TournamentInvitesRepository,
     private val database: DynastyDatabase,
+    private val recruitingEconomyRepository: RecruitingEconomyRepository,
 ) {
     suspend fun load(dynastyId: String, seasonIndex: Int): EarlySeasonBracketSeason? {
         val raw = context.earlySeasonBracketStore.data.first()[key(dynastyId, seasonIndex)] ?: return null
@@ -35,7 +37,9 @@ class EarlySeasonBracketRepository(
     suspend fun bootstrapForSeason(dynastyId: String, seasonIndex: Int) {
         if (load(dynastyId, seasonIndex) != null) return
         val coach = database.dynastyCoachDao().getByDynastyId(dynastyId) ?: return
-        val invites = tournamentInvitesRepository.loadState(dynastyId, seasonIndex)
+        val packId = database.dynastyMetadataDao().getById(dynastyId)?.packId
+        val prestige = recruitingEconomyRepository.resolveProgramPrestigeForDynasty(dynastyId, packId)
+        val invites = tournamentInvitesRepository.loadState(dynastyId, seasonIndex, prestige)
         val userEventId = (invites.resolution as? TournamentInviteResolution.Accepted)?.event?.templateId
         val teams = packRepository.activeSession().index.allTeamDisplays()
         val seed = dynastyId.hashCode().toLong() xor seasonIndex.toLong()

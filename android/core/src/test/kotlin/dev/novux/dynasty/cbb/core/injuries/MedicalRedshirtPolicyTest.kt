@@ -19,10 +19,31 @@ class MedicalRedshirtPolicyTest {
     }
 
     @Test
+    fun confirmationDetailIncludesGamesPlayedAndScheduleIndex() {
+        val player = injuredPlayer(severity = "major", rsGames = 8, gameIndex = 9)
+        val detail = MedicalRedshirtPolicy.confirmationDetail(player, rules)
+        assertTrue(detail.contains("8"))
+        assertTrue(detail.contains("9"))
+    }
+
+    @Test
     fun minorInjuryNotEligible() {
         val player = injuredPlayer(severity = "minor", rsGames = 5, gameIndex = 5)
         val result = MedicalRedshirtPolicy.evaluate(player, rsWeekIndex = 10, rules)
         assertFalse(result.eligible)
+    }
+
+    @Test
+    fun exhibitionGameNeverEligible() {
+        val player = injuredPlayer(severity = "major", rsGames = 4, gameIndex = 6)
+        val result = MedicalRedshirtPolicy.evaluate(
+            player,
+            rsWeekIndex = 10,
+            rules,
+            countsTowardMedicalRedshirt = false,
+        )
+        assertFalse(result.eligible)
+        assertTrue(result.reason == "exhibition_game")
     }
 
     private fun injuredPlayer(severity: String, rsGames: Int, gameIndex: Int): RosterPlayer =

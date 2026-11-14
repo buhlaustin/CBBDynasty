@@ -54,6 +54,18 @@ The workflow strips spaces and line breaks from the secret before decoding, but 
 
 Release builds use **target/compile SDK 36**, **R8** (`mapping.txt`), and **NDK symbol table** metadata where AGP produces it.
 
+**R8 minify (MEGA-QA-151):** `release` has `isMinifyEnabled` and `isShrinkResources` in `android/app/build.gradle.kts`. Verify locally or in CI:
+
+```bash
+bash scripts/verify_release_r8_minify.sh
+```
+
+See `ReleaseR8MinifyPath` in `:core` and `android/app/proguard-rules.pro`.
+
+**Serialization + R8 (MEGA-QA-152):** critical `@Serializable` types round-trip in `ReleaseSerializationR8SmokeTest`; CI runs `bash scripts/verify_release_serialization_smoke.sh` (tests + mapping spot-check). Manual: release build → new game + load dynasty without `SerializerNotFound`.
+
+**Room + R8 (MEGA-QA-153):** `ReleaseRoomR8SmokeTest` advances three RS weeks against in-memory Room; `bash scripts/verify_release_room_smoke.sh`. ProGuard keeps `@Entity` and `RoomDatabase` in `proguard-rules.pro`.
+
 ## Local release build (optional)
 
 Requires Android SDK (`sdk.dir` in `android/local.properties`). CI signs via env vars; locally, without those vars, Gradle falls back to the **debug** keystore so `:app:bundleRelease` still runs for smoke checks:
@@ -63,6 +75,21 @@ cd android && ./gradlew :app:bundleRelease
 ```
 
 For a Play-equivalent local bundle, export the same env vars and point `ANDROID_KEYSTORE_PATH` at your `.jks` file (see `android/app/build.gradle.kts`).
+
+## Sideload smoke (MEGA-QA-134)
+
+Before promoting a track, install the **universal APK** from the release bundle and repeat the debug pre-launch path:
+
+```bash
+bash scripts/build_release_universal_apk.sh
+adb install -r android/app/build/outputs/sideload/release/universal.apk
+```
+
+Details: [`RELEASE_SIDELOAD_SMOKE.md`](RELEASE_SIDELOAD_SMOKE.md). CI: **Android release universal APK smoke** workflow.
+
+**Play update gate (MEGA-QA-136):** every release must use `versionCode` strictly greater than `android/play_open_test_baseline_version_code.txt`; run `bash scripts/verify_play_update_version_bump.sh` before upload. Tester flow: [`PLAY_OPEN_TESTING_SMOKE.md`](PLAY_OPEN_TESTING_SMOKE.md#mega-qa-136--update-over-prior-open-test-build).
+
+**Signed AAB integrity (MEGA-QA-137):** after `bundleRelease`, run `bash scripts/verify_play_aab_signing.sh` (`bundletool validate`, `jarsigner -verify`, `apksigner verify` on universal APK). CI runs this in **Android release universal APK smoke** and the release bundle workflow.
 
 ## Related
 

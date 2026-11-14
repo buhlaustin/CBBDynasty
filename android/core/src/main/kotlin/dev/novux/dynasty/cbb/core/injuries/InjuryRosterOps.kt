@@ -1,6 +1,7 @@
 package dev.novux.dynasty.cbb.core.injuries
 
 import dev.novux.dynasty.cbb.core.calendar.CalendarPhase
+import dev.novux.dynasty.cbb.core.roster.PlayerPosition
 import dev.novux.dynasty.cbb.core.roster.RosterPlayer
 
 data class InjuryWeekTickResult(
@@ -70,7 +71,12 @@ object InjuryRosterOps {
                 player.copy(injuryWeeksRemaining = weeks)
             }
         }
-        returned.forEach { id ->
+        val returnOrder = returned.sortedBy { id ->
+            val wire = next.firstOrNull { it.playerId == id }?.injuryWasStarterSlotWire
+            val slot = wire?.let(PlayerPosition::fromWire)
+            if (slot != null) PlayerPosition.STARTER_ORDER.indexOf(slot) else PlayerPosition.STARTER_ORDER.size
+        }
+        returnOrder.forEach { id ->
             next = InjuryLineupAdjust.applyInjuryReturnLineupAdjust(next, id)
         }
         return InjuryWeekTickResult(next, returned)

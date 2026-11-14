@@ -57,6 +57,15 @@ class PackRepository(
         }
     }
 
+    suspend fun importPackFromBytes(
+        bytes: ByteArray,
+        format: PackImportFormat,
+        attestation: PackImportAttestation,
+    ): Result<PackSwapResult> {
+        val raw = bytes.toString(Charsets.UTF_8)
+        return importPack(raw, format, attestation)
+    }
+
     suspend fun importPack(
         raw: String,
         format: PackImportFormat,

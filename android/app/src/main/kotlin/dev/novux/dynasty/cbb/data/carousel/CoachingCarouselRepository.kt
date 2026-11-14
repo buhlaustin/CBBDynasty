@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dev.novux.dynasty.cbb.core.carousel.CarouselApprovalCatalog
 import dev.novux.dynasty.cbb.core.carousel.CarouselApprovalKind
+import dev.novux.dynasty.cbb.core.carousel.CarouselSimContext
 import dev.novux.dynasty.cbb.core.carousel.CarouselStatus
 import dev.novux.dynasty.cbb.core.carousel.CoachingCarouselEngine
 import dev.novux.dynasty.cbb.core.carousel.CoachingCarouselState
@@ -19,6 +20,7 @@ private val Context.carouselDataStore: DataStore<Preferences> by preferencesData
 
 class CoachingCarouselRepository(
     private val context: Context,
+    private val simContextProvider: suspend (dynastyId: String, seasonIndex: Int) -> CarouselSimContext,
 ) {
     suspend fun loadOrCreate(dynastyId: String, seasonIndex: Int): CoachingCarouselState {
         val prefs = context.carouselDataStore.data.first()
@@ -41,6 +43,15 @@ class CoachingCarouselRepository(
         persist(dynastyId, seasonIndex, state)
     }
 
+    suspend fun runBackgroundSim(
+        dynastyId: String,
+        seasonIndex: Int,
+        state: CoachingCarouselState,
+    ): CoachingCarouselState {
+        val context = simContextProvider(dynastyId, seasonIndex)
+        return CoachingCarouselEngine.runBackgroundSim(state, context)
+    }
+
     private suspend fun persist(dynastyId: String, seasonIndex: Int, state: CoachingCarouselState) {
         val encoded = encode(seasonIndex, state)
         context.carouselDataStore.edit { prefs ->
@@ -52,12 +63,16 @@ class CoachingCarouselRepository(
 
     private fun encode(seasonIndex: Int, state: CoachingCarouselState): String {
         val pending = state.pendingApprovals.joinToString(",") { "${it.id}:${it.kind.name}" }
-        return "$seasonIndex|${state.status.name}|${state.backgroundSimGeneration}|$pending"
+        val summary = state.backgroundSimSummary?.let {
+            listOf(it.aiFired, it.aiExtended, it.aiHired, if (it.userFired) 1 else 0, if (it.userPoachImmunity) 1 else 0)
+                .joinToString(",")
+        }.orEmpty()
+        return "$seasonIndex|${state.status.name}|${state.backgroundSimGeneration}|$pending|$summary"
     }
 
     private fun decode(raw: String): DecodedCarousel {
-        val parts = raw.split("|", limit = 4)
-        require(parts.size == 4) { "invalid carousel snapshot" }
+        val parts = raw.split("|", limit = 5)
+        require(parts.size >= 4) { "invalid carousel snapshot" }
         val seasonIndex = parts[0].toInt()
         val status = CarouselStatus.valueOf(parts[1])
         val generation = parts[2].toInt()
@@ -66,7 +81,21 @@ class CoachingCarouselRepository(
             require(bits.size == 2)
             CarouselApprovalCatalog.card(bits[0], CarouselApprovalKind.valueOf(bits[1]))
         }
-        val state = CoachingCarouselState(status, pending, generation)
+        val summary = parts.getOrNull(4)
+            ?.takeIf { it.isNotBlank() }
+            ?.split(",")
+            ?.map { it.toInt() }
+            ?.takeIf { it.size == 5 }
+            ?.let {
+                dev.novux.dynasty.cbb.core.carousel.CarouselLeagueBackgroundSimEngine.CarouselBackgroundSimSummary(
+                    aiFired = it[0],
+                    aiExtended = it[1],
+                    aiHired = it[2],
+                    userFired = it[3] == 1,
+                    userPoachImmunity = it[4] == 1,
+                )
+            }
+        val state = CoachingCarouselState(status, pending, generation, summary)
         return DecodedCarousel(seasonIndex, state)
     }
 

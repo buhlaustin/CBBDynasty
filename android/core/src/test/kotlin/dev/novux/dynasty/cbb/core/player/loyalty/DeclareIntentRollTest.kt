@@ -27,6 +27,7 @@ class DeclareIntentRollTest {
     private fun basePlayer(loyalty: Int): DynastyPlayer = DynastyPlayer(
         playerId = "p-declare",
         dynastyId = "d1",
+        appearance = dev.novux.dynasty.cbb.core.player.appearance.PlayerAppearance.fromPlayerId("p-declare"),
         identity = PlayerIdentity(
             displayName = "Star",
             hometownCity = "Dallas",

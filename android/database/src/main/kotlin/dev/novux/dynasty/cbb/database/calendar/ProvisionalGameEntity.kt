@@ -14,4 +14,6 @@ data class ProvisionalGameEntity(
     val homeScore: Int,
     val awayScore: Int,
     val simGeneration: Int,
+    val possessionEngine: Boolean = false,
+    val boxArchiveJson: String? = null,
 )

@@ -1,5 +1,6 @@
 package dev.novux.dynasty.cbb.data.seasonreview
 
+import dev.novux.dynasty.cbb.core.balance.BalanceNilAnnualPoolParser
 import dev.novux.dynasty.cbb.core.balance.BalanceRecruitingParser
 import dev.novux.dynasty.cbb.core.seasonreview.SeasonReviewSnapshot
 import dev.novux.dynasty.cbb.core.seasonreview.SeasonReviewSnapshotFactory
@@ -29,6 +30,7 @@ class SeasonReviewRepository(
         val standings = leagueWeekBatchRepository.loadStandings(loaded.dynastyId, loaded.metadata.seasonIndex)
         val ledger = recruitingEconomyRepository.loadOrOpenCycle(loaded, team.programPrestige)
         val economy = BalanceRecruitingParser.parse(loaded.balanceRuleset.recruiting)
+        val nilTables = BalanceNilAnnualPoolParser.parse(loaded.balanceRuleset.nil)
         val facilities = offseasonWeekNineRepository.loadEconomy(loaded.dynastyId, loaded.metadata.seasonIndex).facilityGrades
         val record = standings?.let {
             dev.novux.dynasty.cbb.core.seasonreview.SeasonReviewRecordBuilder.build(
@@ -54,6 +56,7 @@ class SeasonReviewRepository(
             standings = standings,
             ledger = ledger,
             economy = economy,
+            nilTables = nilTables,
             facilityGrades = facilities,
             coach = coachSecurity,
             contractYearsLeft = contractYearsLeft,

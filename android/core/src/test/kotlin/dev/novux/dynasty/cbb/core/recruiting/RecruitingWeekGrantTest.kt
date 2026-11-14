@@ -21,6 +21,22 @@ class RecruitingWeekGrantTest {
     }
 
     @Test
+    fun prestige_lowMajorVsBlueBlood_weeklyPoolMatchesSchoolTier() {
+        val economy = economy()
+        val lowMajor = RecruitingPrestigePool.weeklyPoolPoints(economy, programPrestige = 20)
+        val blueBlood = RecruitingPrestigePool.weeklyPoolPoints(economy, programPrestige = 92)
+        assertTrue(lowMajor in 1000..1250)
+        assertTrue(blueBlood in 4500..5000)
+        assertTrue(blueBlood > lowMajor + 2000)
+        val lowLedger = RecruitingWeekGrant.openCycle(economy, cycleSeasonIndex = 1, programPrestige = 20)
+        val eliteLedger = RecruitingWeekGrant.openCycle(economy, cycleSeasonIndex = 1, programPrestige = 92)
+        assertEquals(lowMajor, lowLedger.weeklyPoolBase)
+        assertEquals(blueBlood, eliteLedger.weeklyPoolBase)
+        assertEquals(20, lowLedger.programPrestige)
+        assertEquals(92, eliteLedger.programPrestige)
+    }
+
+    @Test
     fun carryover_isHalfOfUnspent() {
         val economy = economy()
         var ledger = RecruitingWeekGrant.openCycle(economy, cycleSeasonIndex = 1, programPrestige = 40)

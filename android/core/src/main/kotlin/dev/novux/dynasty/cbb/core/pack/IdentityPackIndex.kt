@@ -41,6 +41,7 @@ class IdentityPackIndex private constructor(
             displayName = conf.displayName,
             leagueGameCount = conf.leagueGameCount,
             tournamentTemplateId = conf.tournamentTemplateId,
+            standingsTiebreakers = conf.standingsTiebreakers,
         )
     }
 

@@ -1,5 +1,6 @@
 package dev.novux.dynasty.cbb.database.staff
 
+import dev.novux.dynasty.cbb.core.coach.CoachTrackPortraitIds
 import dev.novux.dynasty.cbb.core.coach.card.AssistantCoachCard
 import dev.novux.dynasty.cbb.core.coach.card.AssistantCoachRatings
 import dev.novux.dynasty.cbb.core.coach.staff.CoachTrackRole
@@ -45,6 +46,8 @@ fun SupportStaffMember.toEntity(dynastyId: String): DynastyStaffMemberEntity {
 fun DynastyStaffMemberEntity.toAssistant(schoolDisplayName: String, record: String): AssistantCoachCard? {
     if (staffKindWire != StaffKind.CoachTrack.name) return null
     val role = CoachTrackRole.fromWire(roleWire) ?: return null
+    val ratings = AssistantCoachRatings(recruitingRating, developmentRating, scoutingRating)
+    val salary = 175_000L + ratings.recruiting * 2_800L + ratings.development * 1_200L
     return AssistantCoachCard(
         staffId = staffId,
         displayName = "$firstName $lastName".trim(),
@@ -56,7 +59,10 @@ fun DynastyStaffMemberEntity.toAssistant(schoolDisplayName: String, record: Stri
         yearsAtSchool = yearsAtSchool,
         contractYearsLeft = contractYearsLeft,
         contractLengthYears = contractLengthYears,
-        ratings = AssistantCoachRatings(recruitingRating, developmentRating, scoutingRating),
+        ratings = ratings,
+        avatarPresetId = CoachTrackPortraitIds.forStaffId(staffId),
+        annualSalaryUsd = salary,
+        buyoutUsd = salary / 2,
     )
 }
 

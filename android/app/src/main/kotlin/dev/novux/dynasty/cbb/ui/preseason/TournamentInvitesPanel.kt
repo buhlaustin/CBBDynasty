@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -21,17 +22,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.novux.dynasty.cbb.R
 import dev.novux.dynasty.cbb.core.preseason.PreseasonTaskId
+import dev.novux.dynasty.cbb.core.preseason.tournament.EarlySeasonEvent
 import dev.novux.dynasty.cbb.core.preseason.tournament.TournamentInviteResolution
+import dev.novux.dynasty.cbb.core.preseason.tournament.TournamentInvitesPrestigePolicy
+import dev.novux.dynasty.cbb.core.preseason.tournament.TournamentInvitesPrestigeTier
 import dev.novux.dynasty.cbb.core.preseason.tournament.TournamentInvitesState
 import dev.novux.dynasty.cbb.data.preseason.PreseasonProgressRepository
 import dev.novux.dynasty.cbb.data.preseason.TournamentInvitesRepository
-import dev.novux.dynasty.cbb.data.recruiting.RecruitingEconomyRepository
 import kotlinx.coroutines.launch
 
 @Composable
 fun TournamentInvitesPanel(
     dynastyId: String,
     seasonIndex: Int,
+    programPrestige: Int,
     invitesRepository: TournamentInvitesRepository,
     progressRepository: PreseasonProgressRepository,
     onResolved: () -> Unit,
@@ -39,13 +43,13 @@ fun TournamentInvitesPanel(
 ) {
     var state by remember { mutableStateOf<TournamentInvitesState?>(null) }
     val scope = rememberCoroutineScope()
-    val prestige = RecruitingEconomyRepository.DEFAULT_PROGRAM_PRESTIGE
+    val prestigeTier = TournamentInvitesPrestigePolicy.tier(programPrestige)
 
     suspend fun refresh() {
-        state = invitesRepository.loadState(dynastyId, seasonIndex, prestige)
+        state = invitesRepository.loadState(dynastyId, seasonIndex, programPrestige)
     }
 
-    LaunchedEffect(dynastyId, seasonIndex) {
+    LaunchedEffect(dynastyId, seasonIndex, programPrestige) {
         refresh()
     }
 
@@ -63,6 +67,13 @@ fun TournamentInvitesPanel(
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
         )
+        if (!resolved) {
+            Text(
+                text = prestigeTierLabel(prestigeTier, inviteState.offers.size),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
         if (resolved) {
             BudgetSummary(inviteState)
             Text(
@@ -89,32 +100,26 @@ fun TournamentInvitesPanel(
             }
         } else {
             Text(
-                text = stringResource(R.string.tournament_invites_pick_one),
+                text = when {
+                    inviteState.offers.size > 1 ->
+                        stringResource(R.string.tournament_invites_pick_one_multi, inviteState.offers.size)
+                    else -> stringResource(R.string.tournament_invites_pick_one)
+                },
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             inviteState.offers.forEach { event ->
-                Card(modifier = Modifier.fillMaxWidth()) {
-                    Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        Text(event.displayName, fontWeight = FontWeight.SemiBold)
-                        Text(
-                            stringResource(R.string.tournament_invites_event_games, event.rsGameSpots),
-                            style = MaterialTheme.typography.bodySmall,
-                        )
-                        OutlinedButton(
-                            onClick = {
-                                scope.launch {
-                                    invitesRepository.acceptInvite(dynastyId, seasonIndex, event.templateId)
-                                    refresh()
-                                    finishTask()
-                                }
-                            },
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Text(stringResource(R.string.tournament_invites_accept))
+                TournamentInviteEventCard(
+                    event = event,
+                    useElevated = inviteState.offers.size > 1,
+                    onAccept = {
+                        scope.launch {
+                            invitesRepository.acceptInvite(dynastyId, seasonIndex, event.templateId)
+                            refresh()
+                            finishTask()
                         }
-                    }
-                }
+                    },
+                )
             }
             OutlinedButton(
                 onClick = {
@@ -130,6 +135,58 @@ fun TournamentInvitesPanel(
             }
         }
     }
+}
+
+@Composable
+private fun TournamentInviteEventCard(
+    event: EarlySeasonEvent,
+    useElevated: Boolean,
+    onAccept: () -> Unit,
+) {
+    val body: @Composable () -> Unit = {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            Text(event.displayName, fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.titleSmall)
+            Text(
+                text = stringResource(
+                    R.string.tournament_invites_event_detail,
+                    event.teamCount,
+                    event.rsCalendarWeeks,
+                ),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(
+                stringResource(R.string.tournament_invites_event_games, event.rsGameSpots),
+                style = MaterialTheme.typography.bodySmall,
+            )
+            OutlinedButton(
+                onClick = onAccept,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(stringResource(R.string.tournament_invites_accept))
+            }
+        }
+    }
+    if (useElevated) {
+        ElevatedCard(modifier = Modifier.fillMaxWidth(), content = body)
+    } else {
+        Card(modifier = Modifier.fillMaxWidth(), content = body)
+    }
+}
+
+@Composable
+private fun prestigeTierLabel(tier: TournamentInvitesPrestigeTier, offerCount: Int): String = when (tier) {
+    TournamentInvitesPrestigeTier.Low -> stringResource(R.string.tournament_invites_tier_low)
+    TournamentInvitesPrestigeTier.Mid -> stringResource(R.string.tournament_invites_tier_mid)
+    TournamentInvitesPrestigeTier.High ->
+        if (offerCount > 1) {
+            stringResource(R.string.tournament_invites_tier_high_multi, offerCount)
+        } else {
+            stringResource(R.string.tournament_invites_tier_high)
+        }
 }
 
 @Composable

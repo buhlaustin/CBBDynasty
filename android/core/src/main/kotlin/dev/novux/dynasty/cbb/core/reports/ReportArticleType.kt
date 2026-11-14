@@ -4,4 +4,5 @@ enum class ReportArticleType {
     Preseason,
     Pregame,
     Postgame,
+    NewsStory,
 }

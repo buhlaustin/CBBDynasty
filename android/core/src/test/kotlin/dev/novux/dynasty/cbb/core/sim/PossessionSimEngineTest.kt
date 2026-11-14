@@ -172,6 +172,44 @@ class PossessionSimEngineTest {
     }
 
     @Test
+    fun rosterSim_tracksPersonalFoulsUpToDisqualification() {
+        fun roster(vararg pairs: Pair<PlayerPosition, Int>) = pairs.map { (pos, off) ->
+            RosterPlayer(
+                playerId = pos.wire,
+                dynastyId = "d",
+                position = pos,
+                classYear = PlayerClassYear.Senior,
+                isStarter = true,
+                depthOrder = 1,
+                inTransferPortal = false,
+                ovr = off,
+                off = off,
+                def = off - 5,
+            )
+        }
+        val home = GameLineupPrep.build("h", roster(
+            PlayerPosition.PointGuard to 80,
+            PlayerPosition.ShootingGuard to 79,
+            PlayerPosition.SmallForward to 78,
+            PlayerPosition.PowerForward to 77,
+            PlayerPosition.Center to 76,
+        ))
+        val result = PossessionSimEngine.simulate(
+            GameSimInput(
+                home = GameSimTeamInput("h", 75, 75),
+                away = GameSimTeamInput("a", 75, 75),
+                tuning = tuning,
+                seed = 2024L,
+                homeRoster = home,
+                awayRoster = home.copy(teamId = "a"),
+            ),
+        )
+        val maxFouls = result.homePersonalFoulsByPlayer.values.maxOrNull() ?: 0
+        assertTrue(result.homeBox.personalFouls > 0 || result.awayBox.personalFouls > 0 || maxFouls > 0)
+        assertTrue(result.homePersonalFoulsByPlayer.values.all { it <= PersonalFoulRules.DISQUALIFICATION_FOUL_COUNT })
+    }
+
+    @Test
     fun strongerOffenseScoresMoreOften() {
         var homeTotal = 0
         var awayTotal = 0

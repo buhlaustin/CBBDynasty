@@ -64,7 +64,7 @@ In-app mirrors: `CreditsScreen` strings `credits_offline_play`, `credits_legal_d
 
 | Asset | Spec | Repo source |
 |-------|------|-------------|
-| **App icon** | Adaptive icon layers | [`Public-Assets/adaptive-icon/`](../Public-Assets/adaptive-icon/) → `android/app/src/main/res/` (checklist **1.5**) |
+| **App icon** | Adaptive icon layers | Regenerate: `python3 planning/tools/generate_adaptive_icon.py` → syncs [`Public-Assets/adaptive-icon/`](../Public-Assets/adaptive-icon/) + `android/.../ic_launcher_foreground.png` (checklist **1.5**) |
 | **Feature graphic** | 1024×500 PNG/JPG | Compose: `#181a25` background + [`Public-Assets/app-logo.svg`](../Public-Assets/app-logo.svg) + title lockup (export at ship) |
 | **Phone screenshots** | Min 2; 16:9 or device frames | [`Public-Assets/screen-previews/splash-screen.png`](../Public-Assets/screen-previews/splash-screen.png), [`studio-screen.png`](../Public-Assets/screen-previews/studio-screen.png); add in-dynasty shots before submission |
 | **Promo video** | Optional | — |

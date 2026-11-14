@@ -3,6 +3,7 @@ package dev.novux.dynasty.cbb.core.player
 import dev.novux.dynasty.cbb.core.roster.PlayerClassYear
 import dev.novux.dynasty.cbb.core.roster.PlayerPosition
 import dev.novux.dynasty.cbb.core.roster.RosterPlayerSeed
+import dev.novux.dynasty.cbb.core.player.appearance.PlayerAvatarPresets
 import dev.novux.dynasty.cbb.core.roster.SeasonOneRosterGenerator
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -15,6 +16,13 @@ class PlayerBootstrapFactoryTest {
         assertTrue(seeds.all { it.displayName.isNotBlank() })
         assertTrue(seeds.all { it.ovr in 45..92 })
         assertTrue(seeds.all { PlayerRatings.RATING_RANGE.contains(it.off) })
+    }
+
+    @Test
+    fun enrichSeed_assignsPackAppearanceIds() {
+        val seeds = SeasonOneRosterGenerator.generate("dyn-appearance")
+        assertTrue(seeds.all { it.skinToneId.isNotBlank() })
+        assertTrue(seeds.all { PlayerAvatarPresets.isKnownPreset(it.avatarPresetId) })
     }
 
     @Test

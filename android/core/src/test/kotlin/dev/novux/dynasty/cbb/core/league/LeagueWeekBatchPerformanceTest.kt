@@ -6,6 +6,7 @@ import kotlin.system.measureNanoTime
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
+/** Full-league JVM perf gate [MEGA-QA-015]. */
 class LeagueWeekBatchPerformanceTest {
     @Test
     fun fullLeague_regularSeasonWeek_underCoreBudget() {

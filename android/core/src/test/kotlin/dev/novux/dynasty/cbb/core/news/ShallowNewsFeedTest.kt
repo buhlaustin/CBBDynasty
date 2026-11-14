@@ -15,6 +15,18 @@ class ShallowNewsFeedTest {
     }
 
     @Test
+    fun snapshotReportsTruncation() {
+        val items = (1..12).map { i ->
+            NewsHeadline("id-$i", 1, kind = NewsHeadlineKind.General, title = "t$i", priority = i, createdAtMs = i.toLong())
+        }
+        val snap = ShallowNewsFeed.snapshot(items, maxItems = 10)
+        assertEquals(10, snap.headlines.size)
+        assertEquals(12, snap.mergedCount)
+        assertTrue(snap.truncated)
+        assertEquals(10, snap.cap)
+    }
+
+    @Test
     fun leagueInjuryTierFromCount() {
         val headline = NewsHeadlinePublisher.leagueInjuryWire(1, rsWeekIndex = 3, programsAffected = 6)
         assertTrue(headline != null)

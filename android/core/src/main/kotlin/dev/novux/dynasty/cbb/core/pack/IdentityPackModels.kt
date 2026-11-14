@@ -13,6 +13,8 @@ data class IdentityPack(
     val tournamentTemplates: List<TournamentTemplatePack> = emptyList(),
     val rulesetYear: Int,
     val packId: String? = null,
+    val manifestSignerId: String? = null,
+    val manifestSignature: String? = null,
 )
 
 @Serializable

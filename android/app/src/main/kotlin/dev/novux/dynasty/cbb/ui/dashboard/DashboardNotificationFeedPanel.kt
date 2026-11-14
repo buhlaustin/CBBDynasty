@@ -16,15 +16,26 @@ import androidx.compose.ui.unit.dp
 import dev.novux.dynasty.cbb.R
 import dev.novux.dynasty.cbb.core.dashboard.DashboardDeepLink
 import dev.novux.dynasty.cbb.core.notification.NotificationFeedItem
+import dev.novux.dynasty.cbb.core.notification.NotificationFeedCommitRowPolicy
+import dev.novux.dynasty.cbb.core.notification.NotificationFeedGameWeekRowPolicy
+import dev.novux.dynasty.cbb.core.notification.NotificationEventKind
+import dev.novux.dynasty.cbb.core.notification.NotificationFeedPlayWeekDeepLinkPolicy
+import dev.novux.dynasty.cbb.core.notification.NotificationFeedSigningDayFeedPolicy
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingHubTab
 
 @Composable
 fun DashboardNotificationFeedPanel(
     feed: List<NotificationFeedItem>,
-    onDeepLink: (RecruitingHubTab) -> Unit,
+    onDeepLink: (RecruitingHubTab, String?) -> Unit,
     onStrategyOpen: () -> Unit,
     onCoachCardOpen: () -> Unit,
-    onSigningDayOpen: () -> Unit = {},
+    onSigningDayOpen: (DashboardDeepLink) -> Unit = {},
+    onGamePreviewOpen: () -> Unit = onStrategyOpen,
+    onDisciplineOpen: () -> Unit = {},
+    onMarchMayhemOpen: () -> Unit = {},
+    onFundraisingOpen: () -> Unit = {},
+    onRankingsOpen: () -> Unit = onStrategyOpen,
+    onHistoryOpen: () -> Unit = onStrategyOpen,
     modifier: Modifier = Modifier,
 ) {
     if (feed.isEmpty()) return
@@ -43,14 +54,37 @@ fun DashboardNotificationFeedPanel(
                     .fillMaxWidth()
                     .clickable {
                         when (row.deepLink) {
-                            DashboardDeepLink.Strategy,
-                            DashboardDeepLink.PlayWeekGame,
-                            -> onStrategyOpen()
+                            DashboardDeepLink.Strategy -> onStrategyOpen()
+                            DashboardDeepLink.PlayWeekGame -> {
+                                if (NotificationFeedGameWeekRowPolicy.routesToGamePreview(row.deepLink)) {
+                                    onGamePreviewOpen()
+                                } else {
+                                    onStrategyOpen()
+                                }
+                            }
+                            DashboardDeepLink.RankingsHub -> onRankingsOpen()
+                            DashboardDeepLink.HistoryHub -> onHistoryOpen()
                             DashboardDeepLink.CoachCard -> onCoachCardOpen()
+                            DashboardDeepLink.DisciplineSheet -> onDisciplineOpen()
+                            DashboardDeepLink.MarchMayhemHub -> onMarchMayhemOpen()
+                            DashboardDeepLink.FundraisingWeekNine -> onFundraisingOpen()
                             DashboardDeepLink.SigningDayRankings,
                             DashboardDeepLink.SigningDayPositions,
-                            -> onSigningDayOpen()
-                            else -> onDeepLink(row.deepLink.toHubTab())
+                            -> {
+                                check(NotificationFeedSigningDayFeedPolicy.isSigningDayDeepLink(row.deepLink)) {
+                                    "Signing Day feed rows must use catalogued deep links"
+                                }
+                                onSigningDayOpen(row.deepLink)
+                            }
+                            else -> {
+                                val focusName = when (row.kind) {
+                                    NotificationEventKind.UserCommit,
+                                    NotificationEventKind.UserDecommit,
+                                    -> NotificationFeedCommitRowPolicy.prospectNameFromFeedBody(row.body)
+                                    else -> null
+                                }
+                                onDeepLink(row.deepLink.toHubTab(), focusName)
+                            }
                         }
                     },
             ) {
@@ -77,6 +111,6 @@ fun DashboardNotificationFeedPanel(
 private fun DashboardDeepLink.toHubTab(): RecruitingHubTab = when (this) {
     DashboardDeepLink.RecruitingRecommended -> RecruitingHubTab.Recommended
     DashboardDeepLink.RecruitingPortal -> RecruitingHubTab.TransferPortal
-    DashboardDeepLink.RecruitingHsJuco -> RecruitingHubTab.HsJuco
+    DashboardDeepLink.RecruitingHsJuco -> RecruitingHubTab.AllHsJuco
     else -> RecruitingHubTab.Recommended
 }

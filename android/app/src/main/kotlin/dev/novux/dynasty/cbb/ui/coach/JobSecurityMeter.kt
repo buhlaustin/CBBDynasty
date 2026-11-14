@@ -1,5 +1,6 @@
 package dev.novux.dynasty.cbb.ui.coach
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,14 +16,26 @@ import androidx.compose.ui.unit.dp
 import dev.novux.dynasty.cbb.R
 import dev.novux.dynasty.cbb.core.coach.security.CoachSecuritySnapshot
 import dev.novux.dynasty.cbb.core.coach.security.JobSecurityFactorContribution
+import dev.novux.dynasty.cbb.core.qa.CoachJobSecurityContractLinkPath
 
 @Composable
 fun JobSecurityMeter(
     snapshot: CoachSecuritySnapshot,
     modifier: Modifier = Modifier,
+    showFactorDetails: Boolean = true,
+    onNavigateToContract: (() -> Unit)? = null,
 ) {
+    @Suppress("unused")
+    val qaTrace = CoachJobSecurityContractLinkPath.MEGA_ID
     val job = snapshot.jobSecurity
-    Card(modifier = modifier.fillMaxWidth()) {
+    val cardModifier = if (onNavigateToContract != null) {
+        modifier
+            .fillMaxWidth()
+            .clickable(onClick = onNavigateToContract)
+    } else {
+        modifier.fillMaxWidth()
+    }
+    Card(modifier = cardModifier) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Text(
                 stringResource(R.string.job_security_title),
@@ -37,15 +50,24 @@ fun JobSecurityMeter(
                 ),
                 style = MaterialTheme.typography.bodyLarge,
             )
-            job.factors.forEach { factor ->
-                val chip = when (factor.contribution) {
-                    JobSecurityFactorContribution.Helping -> stringResource(R.string.job_security_helping)
-                    JobSecurityFactorContribution.Hurting -> stringResource(R.string.job_security_hurting)
-                    JobSecurityFactorContribution.Neutral -> stringResource(R.string.job_security_neutral)
+            if (showFactorDetails) {
+                job.factors.forEach { factor ->
+                    val chip = when (factor.contribution) {
+                        JobSecurityFactorContribution.Helping -> stringResource(R.string.job_security_helping)
+                        JobSecurityFactorContribution.Hurting -> stringResource(R.string.job_security_hurting)
+                        JobSecurityFactorContribution.Neutral -> stringResource(R.string.job_security_neutral)
+                    }
+                    Text(
+                        "${factor.label} ($chip): ${factor.summary}",
+                        style = MaterialTheme.typography.bodySmall,
+                    )
                 }
+            }
+            if (onNavigateToContract != null) {
                 Text(
-                    "${factor.label} ($chip): ${factor.summary}",
+                    stringResource(R.string.job_security_open_contract),
                     style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
         }

@@ -4,6 +4,8 @@ import dev.novux.dynasty.cbb.core.fatigue.FatigueEngine
 import dev.novux.dynasty.cbb.core.player.DynastyPlayer
 import dev.novux.dynasty.cbb.core.player.PlayerRatings
 import dev.novux.dynasty.cbb.core.player.RosterRatingSpread
+import dev.novux.dynasty.cbb.core.player.appearance.PlayerAppearance
+import dev.novux.dynasty.cbb.core.player.appearance.PlayerAvatarPresets
 
 data class RosterPlayer(
     val playerId: String,
@@ -22,6 +24,7 @@ data class RosterPlayer(
     val heightInches: Int = 76,
     val weightLbs: Int = 200,
     val nilUsdPerYear: Long = 0,
+    val nilDealRaisedThisSeason: Boolean = false,
     val ovr: Int = 60,
     val off: Int = 60,
     val def: Int = 60,
@@ -52,8 +55,25 @@ data class RosterPlayer(
     val promiseStatusWire: String = "",
     val promiseLockedSeasonIndex: Int? = null,
     val promiseStayTopN: Int? = null,
+    val promiseHistoryWire: String = "",
     val stamina: Int = FatigueEngine.FRESH,
+    val skinToneId: String = "",
+    val hairColorId: String = "",
+    val hairStyleId: String = "",
+    val avatarPresetId: String = "",
 ) {
+    fun resolvedAppearance(): PlayerAppearance = when {
+        avatarPresetId.isNotBlank() && PlayerAvatarPresets.isKnownPreset(avatarPresetId) ->
+            PlayerAppearance.fromPreset(avatarPresetId)
+        skinToneId.isNotBlank() ->
+            PlayerAppearance(
+                skinToneId = skinToneId,
+                hairColorId = hairColorId.ifBlank { PlayerAvatarPresets.hairColors.first().id },
+                hairStyleId = hairStyleId.ifBlank { PlayerAvatarPresets.hairStyles.first().id },
+            )
+        else -> PlayerAppearance.fromPlayerId(playerId)
+    }
+
     fun displayLabel(): String =
         if (displayName.isNotBlank()) displayName else "${position.label} · ${classYear.label}"
 

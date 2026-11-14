@@ -14,12 +14,16 @@ import dev.novux.dynasty.cbb.core.calendar.CalendarPhase
 import dev.novux.dynasty.cbb.core.calendar.CalendarPosition
 import dev.novux.dynasty.cbb.core.calendar.checkpoint.ProvisionalGameMark
 import dev.novux.dynasty.cbb.core.balance.selectionTuning
+import dev.novux.dynasty.cbb.core.injuries.InjuryOccurrenceEngine
+import dev.novux.dynasty.cbb.core.league.LeagueBatchSimParams
 import dev.novux.dynasty.cbb.core.league.LeagueGameResult
 import dev.novux.dynasty.cbb.core.league.LeagueStandingsState
 import dev.novux.dynasty.cbb.core.league.LeagueWeekBatchSimEngine
 import dev.novux.dynasty.cbb.core.league.LeagueWeekBatchWeeklyRankings
 import dev.novux.dynasty.cbb.data.balance.BalanceRulesetRepository
 import dev.novux.dynasty.cbb.data.pack.PackRepository
+import dev.novux.dynasty.cbb.data.sim.SimTuningRepository
+import dev.novux.dynasty.cbb.core.balance.injuryTuning
 import dev.novux.dynasty.cbb.core.preseason.tournament.EarlySeasonBracketEngine
 import dev.novux.dynasty.cbb.core.preseason.tournament.EarlySeasonBracketSeason
 import dev.novux.dynasty.cbb.core.schedule.PreseasonSchedulePlan
@@ -45,6 +49,7 @@ class LeagueWeekBatchRepository(
     private val database: DynastyDatabase,
     private val packRepository: PackRepository,
     private val balanceRulesetRepository: BalanceRulesetRepository,
+    private val simTuningRepository: SimTuningRepository,
 ) {
     suspend fun loadStandings(dynastyId: String, seasonIndex: Int): LeagueStandingsState? {
         val raw = context.leagueStandingsStore.data.first()[key(dynastyId, seasonIndex)] ?: return null
@@ -98,6 +103,17 @@ class LeagueWeekBatchRepository(
                     standings = eventOutcome.standings
                     earlySeasonBracketRepository.persist(dynastyId, eventOutcome.season)
                 }
+                val prestige = packRepository.activeSession().index.allTeamDisplays()
+                    .associate { it.teamId to it.programPrestige }
+                val ruleset = balanceRulesetRepository.activeRuleset()
+                val injuryTuning = ruleset.injuryTuning()
+                val batchParams = LeagueBatchSimParams(
+                    tuning = simTuningRepository.activeTuning(),
+                    programPrestigeByTeamId = prestige,
+                    phase = committedWeek.phase,
+                    injuryBank = InjuryOccurrenceEngine.bankFromBalance(ruleset.injuries.bank),
+                    injuryOccurrence = injuryTuning.occurrence,
+                )
                 val batch = LeagueWeekBatchSimEngine.runRegularSeasonWeek(
                     schedule = schedule,
                     standings = standings,
@@ -105,10 +121,17 @@ class LeagueWeekBatchRepository(
                     userTeamId = userTeamId,
                     userResult = userResult,
                     seed = seed,
+                    batch = batchParams,
                 )
                 val withNet = attachWeeklyNet(batch.standings, committedWeek.weekIndex)
                 persist(dynastyId, withNet)
-                newsFeedRepository.appendLeagueWeek(dynastyId, withNet)
+                val packIndex = packRepository.activeSession().index
+                newsFeedRepository.appendLeagueWeek(
+                    dynastyId = dynastyId,
+                    standings = withNet,
+                    userTeamId = userTeamId,
+                    teamDisplayName = { id -> packIndex.team(id)?.displayName ?: id },
+                )
             }
             else -> Unit
         }

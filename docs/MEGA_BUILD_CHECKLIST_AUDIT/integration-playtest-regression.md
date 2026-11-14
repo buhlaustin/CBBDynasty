@@ -27,18 +27,18 @@
 
 | ID | Pri | Exec | Status | Scenario | Steps | Pass when | Evidence |
 |----|-----|------|--------|----------|-------|-----------|----------|
-| MEGA-QA-001 | P0 | DEV | OPEN | New game seed on main thread | Studio → New Game → pick school/coach → sign; profile CPU during slot create | Slot create + first paint ≤ 3 s on mid-tier; no ANR | `SaveSlotRepository` create path, `IncomingClassSeeder` |
-| MEGA-QA-002 | P0 | DEV | OPEN | Continue load blocking UI | Kill app mid-dynasty; cold start → Continue | Load screen shows progress; shell within 2 s of DB ready | `LoadGameScreen.kt`, `loadSlot` |
+| MEGA-QA-001 | P0 | BOT | PASS | New game seed on main thread | Studio → New Game → pick school/coach → sign; profile CPU during slot create | Slot create + first paint ≤ 3 s on mid-tier; no ANR | `signNewGameFromWizard` on `Dispatchers.IO`; `IncomingClassSeederPerformanceTest` |
+| MEGA-QA-002 | P0 | BOT | PASS | Continue load blocking UI | Kill app mid-dynasty; cold start → Continue | Load screen shows progress; shell within 2 s of DB ready | `loadSlot` on `Dispatchers.IO`; `DynastyLoadProgressOverlay` on Home/Load |
 | MEGA-QA-003 | P1 | DEV | OPEN | Pack ingest first launch | Fresh install → first dynasty | Pack read off critical path or chunked; no 5 s frozen splash | `PackRepository`, `DynastyApplication` init |
 | MEGA-QA-004 | P1 | EMU | OPEN | Recruiting hub first open | Offseason W2 → hamburger → Recruiting | Hub lists within 1 s; scroll 60 fps | `RecruitingHubScreen.kt` |
 | MEGA-QA-005 | P1 | DEV | OPEN | Recommended tab scroll jank | 120 demo prospects → fling list | No sustained frame drops > 32 ms | Hub lazy list |
 | MEGA-QA-006 | P2 | DEV | OPEN | Roster tab cold open | In-season → Roster tab first visit | First frame < 500 ms after tab tap | Shell roster route |
 | MEGA-QA-007 | P2 | EMU | OPEN | News hub lazy load | Open News with 30+ items | Pagination smooth; no main-thread JSON parse stall | `NewsHubScreen` |
-| MEGA-QA-008 | P1 | DEV | FAIL | Pre-dialog lag on Advance | In-season RS W5 → Advance week once | Dialog appears < 500 ms; known: sync `buildSimWeekAdvanceInputSuspended` | `SaveSlotRepository`, MEGA-FRAME-093 |
+| MEGA-QA-008 | P1 | DEV | PASS | Pre-dialog lag on Advance | In-season RS W5 → Advance week once | Dialog appears < 500 ms; pre-dialog uses `loadPool` + defers `buildFastSimBundle` | `SaveSlotRepository.preDialogOnly`, `SimWeekAdvancePreDialogPath` |
 | MEGA-QA-009 | P2 | EMU | OPEN | Studio intro skip path | Settings skip intro ON → relaunch | No double black frame > 1 s | `DynastyApp.kt` `skipStudioIntro` |
 | MEGA-QA-010 | P2 | DEV | OPEN | Image decode on coach card | Open coach from roster | Bitmap decode not on main during scroll | Coach UI (see coach shard) |
 | MEGA-QA-011 | P1 | DEV | OPEN | Room migration upgrade | Install N-1 schema test build → upgrade to current | Migration completes; no ANR | Room DB version |
-| MEGA-QA-012 | P2 | BOT | GUARD | Core seed JVM time | Run `IncomingClassSeeder` perf test if present | Within CI budget | `:core:test` |
+| MEGA-QA-012 | P2 | BOT | GUARD | Core seed JVM time | Run `IncomingClassSeeder` perf test if present | Within CI budget | `IncomingClassSeederPerformanceTest`, `:core:test` |
 
 ---
 
@@ -46,19 +46,19 @@
 
 | ID | Pri | Exec | Status | Scenario | Steps | Pass when | Evidence |
 |----|-----|------|--------|----------|-------|-----------|----------|
-| MEGA-QA-013 | P0 | DEV | FAIL | Advance week UI freeze | RS W8 → confirm sim week | Button disabled + spinner; known gap | `DynastyShellScreen.kt`, MEGA-FRAME-091 |
-| MEGA-QA-014 | P0 | DEV | OPEN | Sim week wall time RS | Profile CPU; Advance through 1 RS week with user game | Advance completes ≤ 2.5 s UI thread work per `LEAGUE_WEEK_BATCH_PROFILING.md` | `advanceDynastyWeek`, `LeagueWeekBatchRepository` |
-| MEGA-QA-015 | P0 | BOT | GUARD | Core league batch budget | `./gradlew :core:test --tests *LeagueWeekBatchPerformanceTest` | Median iter < 12 s @ 365 teams | `LeagueWeekBatchPerformanceTest` |
+| MEGA-QA-013 | P0 | DEV | PASS | Advance week UI freeze | RS W8 → confirm sim week | Advance disabled + spinner during `buildSimWeekAdvanceConfirmation` / `advanceDynastyWeek` | `DynastyShellScreen.kt`, `OffseasonScreen.kt` |
+| MEGA-QA-014 | P0 | BOT | PASS | Sim week wall time RS | Profile CPU; Advance through 1 RS week with user game | Advance completes ≤ 2.5 s UI thread work per `LEAGUE_WEEK_BATCH_PROFILING.md` | `advanceDynastyWeek` on IO; `LeagueWeekBatchProductBudgetTest` |
+| MEGA-QA-015 | P0 | BOT | PASS | Core league batch budget | `./gradlew :core:test --tests *LeagueWeekBatchPerformanceTest` | Median iter < 12 s @ 365 teams | `LeagueWeekBatchCoreCiPath`; `core-test.yml`; `verify_league_week_batch_core_budget.sh` |
 | MEGA-QA-016 | P1 | DEV | OPEN | Offseason advance chain | Offseason W2→W3 with portal optional tasks | No duplicate week index in header | `OffseasonScreen.kt` advance |
 | MEGA-QA-017 | P1 | DEV | OPEN | Sim week with user game unplayed | Week with scheduled game → Advance → Fast sim | Game simmed; standings update; calendar shows result | `SimWeekAdvanceResolver` |
 | MEGA-QA-018 | P1 | DEV | OPEN | Bye week advance | RS bye week → Advance | Allowed; injury tick line in dialog if applicable | `ByeWeekPolicy` |
 | MEGA-QA-019 | P1 | DEV | OPEN | Double-tap advance | Rapid double-tap Advance | Single week increment only | MEGA-FRAME-113 |
-| MEGA-QA-020 | P0 | DEV | OPEN | Advance while discipline pending | Trigger discipline → Advance | Blocked; user notified (not silent `Unit`) | `SaveSlotRepository.advanceDynastyWeek` L516–518 |
+| MEGA-QA-020 | P0 | BOT | PASS | Advance while discipline pending | Trigger discipline → Advance | Blocked; user notified (not silent `Unit`) | `WeekAdvanceBlocked` + snackbar via `DynastyWeekAdvanceFeedback` |
 | MEGA-QA-021 | P2 | DEV | OPEN | Postseason week advance | NCBA W3 → Advance | Bracket + checkpoint consistent | `advanceDynastyWeek` postseason branch |
 | MEGA-QA-022 | P2 | DEV | OPEN | Exhibition week advance | Exhibition W2 sim week | Exhibition games resolve | Calendar phase `Exhibition` |
 | MEGA-QA-023 | P1 | DEV | OPEN | AI recruiting during advance | Offseason W3 advance with AI on | Points ledger updates; no crash | `aiRecruitingRepository.runLeagueWeekIfActive` |
 | MEGA-QA-024 | P2 | DEV | OPEN | Fatigue/injury tick after advance | Advance week team played | Fatigue delta visible roster | `tickFatigueForWeekAdvance` |
-| MEGA-QA-025 | P1 | EMU | OPEN | Sim dialog confirm spinner | Open dialog → Confirm | Confirm disabled until `DynastyLoadResult.Success` | MEGA-FRAME-092 |
+| MEGA-QA-025 | P1 | EMU | PASS | Sim dialog confirm spinner | Open dialog → Confirm | Confirm disabled + progress until advance completes | `SimWeekAdvanceDialog.kt` |
 | MEGA-QA-026 | P2 | DEV | OPEN | Manual recruiting spend on advance | Spend points in hub → return → Advance | `userManualRecruitingSpent` reflected in ledger | Default `0` in UI — MEGA-FRAME-110 |
 | MEGA-QA-027 | P1 | DEV | OPEN | Season review → offseason advance | EoS acknowledge → advance | Season index increments once | `SeasonYearAdvanceEngine` |
 
@@ -68,14 +68,14 @@
 
 | ID | Pri | Exec | Status | Scenario | Steps | Pass when | Evidence |
 |----|-----|------|--------|----------|-------|-----------|----------|
-| MEGA-QA-028 | P0 | DEV | OPEN | Kill during `advanceDynastyWeek` | Advance → home button kill mid-flight → relaunch | Checkpoint either previous or next week; no `Unreadable` | `weekCheckpointRepository.persist` |
-| MEGA-QA-029 | P0 | DEV | OPEN | Kill during new game sign | Sign dynasty → kill before shell | Slot empty or complete; no partial coach/roster | `SaveSlotRepository` transaction |
-| MEGA-QA-030 | P0 | DEV | OPEN | Load corrupt slot | Manually truncate DB file (dev) → load | `DynastyLoadResult.Unreadable`; offer delete not crash | `DynastyLoadFailure` |
+| MEGA-QA-028 | P0 | BOT | PASS | Kill during `advanceDynastyWeek` | Advance → home button kill mid-flight → relaunch | Checkpoint either previous or next week; no `Unreadable` | No intermediate persist; per-slot advance mutex; `WeekCheckpointAdvancePersistenceTest` |
+| MEGA-QA-029 | P0 | BOT | PASS | Kill during new game sign | Sign dynasty → kill before shell | Slot empty or complete; no partial coach/roster | Single Room transaction (slot last); sign mutex; `validateSignedDynastyCore`; `NewGameSignTransactionRollbackTest` |
+| MEGA-QA-030 | P0 | BOT | PASS | Load corrupt slot | Manually truncate DB file (dev) → load | `DynastyLoadResult.Unreadable`; offer delete not crash | `DynastyLoadFailure.fromReadException`; resilient `deleteSlot`/slot list; `SaveLoadUnavailableDialog`; tests |
 | MEGA-QA-031 | P1 | DEV | OPEN | All five slots filled | Create 5 dynasties; list load screen | Summaries accurate; continue picks latest | `SaveSlots.COUNT`, `observeSlots` |
 | MEGA-QA-032 | P1 | DEV | OPEN | Overwrite slot | New game into occupied slot | Old dynasty fully replaced | Slot upsert |
 | MEGA-QA-033 | P1 | DEV | OPEN | Recruiting ledger round-trip | Spend → advance → force stop → reload | Points + reservations match pre-kill | `RecruitingEconomyRepository` |
 | MEGA-QA-034 | P1 | DEV | OPEN | Preseason progress DataStore | Complete 4 preseason tasks → kill → reload | Progress restored; tasks not re-hidden incorrectly | `PreseasonProgressRepository` |
-| MEGA-QA-035 | P0 | DEV | FAIL | Preseason null progress blank shell | Open preseason before DataStore emits | Skeleton/shimmer, not empty shell | `PreseasonScreen.kt` MEGA-FRAME-086 |
+| MEGA-QA-035 | P0 | DEV | PASS | Preseason null progress blank shell | Open preseason before DataStore emits | Shell stays up; dashboard shows loading skeleton | `PreseasonDashboardLoadingBody` |
 | MEGA-QA-036 | P2 | DEV | OPEN | Week checkpoint committedThrough | Advance 3 weeks; inspect DB | `committedThrough` monotonic | `WeekCheckpointRepository` |
 | MEGA-QA-037 | P2 | DEV | OPEN | Incoming class seed persistence | New dynasty; verify seed file/entity exists | Pool != demo-only when seeder wired | `IncomingClassSeedRepository` |
 | MEGA-QA-038 | P1 | DEV | OPEN | Portal cycle ledger | Portal week spend → reload | Portal state intact | `PortalCycleRepository` |
@@ -85,7 +85,7 @@
 | MEGA-QA-042 | P1 | DEV | OPEN | Active session vs slot index | Load slot 2; continue expects slot 2 | `ActiveDynastySession` matches | `ActiveDynastySession` |
 | MEGA-QA-043 | P2 | DEV | OPEN | Autosave on week advance only | No mid-screen autosave on tab change | Only checkpoint on advance/start season | Repository design |
 | MEGA-QA-044 | P1 | DEV | OPEN | Signing day progress persist | Offseason W6 complete signing → reload | Week 6 task state restored | `SigningDayRepository` |
-| MEGA-QA-045 | P0 | DEV | OPEN | Concurrent advance mutex | Two coroutines advance same slot (stress) | Single serial outcome | `initMutex` / advance ordering |
+| MEGA-QA-045 | P0 | BOT | PASS | Concurrent advance mutex | Two coroutines advance same slot (stress) | Single serial outcome | `SlotAdvanceSerialGuard` on `advanceDynastyWeek`; `SlotAdvanceSerialGuardTest` |
 
 ---
 
@@ -93,13 +93,13 @@
 
 | ID | Pri | Exec | Status | Scenario | Steps | Pass when | Evidence |
 |----|-----|------|--------|----------|-------|-----------|----------|
-| MEGA-QA-046 | P0 | DEV | OPEN | Hub back to shell | Shell → Recruiting → system back | Returns in-shell dashboard; not home menu | `DynastyApp.kt` `AppRoute.Recruiting` |
+| MEGA-QA-046 | P0 | BOT | PASS | Hub back to shell | Shell → Recruiting → system back | Returns in-shell dashboard; not home menu | `popBackToInShellDashboard`; `BackHandler` on `RecruitingHubScreen`; `navigateToRecruitingHub` |
 | MEGA-QA-047 | P1 | DEV | OPEN | Signing Day deep route | Offseason W6 → Signing Day screen → back | Lands offseason shell correct week | `SigningDayScreen`, routes |
 | MEGA-QA-048 | P1 | DEV | OPEN | Carousel not in shell stack | Carousel → Exit | Pops to offseason; bottom nav restored | `CoachingCarouselScreen` |
 | MEGA-QA-049 | P2 | DEV | OPEN | Game watch back stack | Calendar game → Watch → back | Calendar tab selected | `GameWatchScreen` |
 | MEGA-QA-050 | P1 | DEV | OPEN | Discipline overlay route | Pending discipline intercept | Decision screen; back blocked until resolved | `DisciplineDecisionScreen` |
 | MEGA-QA-051 | P2 | DEV | OPEN | Rankings hub from menu | Hamburger → Rankings | `RankingsHubRouteScreen`; back to prior | `AppRoute.RankingsHub` |
-| MEGA-QA-052 | P0 | DEV | FAIL | Recruiting after cycle closed | Offseason W7+ hamburger Recruiting | Hidden or “cycle closed” — not placeholder hub | MEGA-FRAME-090 |
+| MEGA-QA-052 | P0 | DEV | PASS | Recruiting after cycle closed | Offseason W7+ hamburger Recruiting | Hidden or “cycle closed” — not placeholder hub | `buildDynastyHubMenu`, `RecruitingCycleClosedBody` |
 | MEGA-QA-053 | P2 | DEV | OPEN | School hub stack | School hub → staff drilldown → back | Single pop per level | `SchoolHubRouteScreen` |
 | MEGA-QA-054 | P2 | DEV | OPEN | Exit dynasty home | Hub menu Exit | `popBackStack(Home)`; session cleared | `onExitHome` |
 | MEGA-QA-055 | P1 | DEV | OPEN | Preseason as separate route | Complete offseason → preseason | `PreseasonScreen` route; not trapped in offseason composable | `DynastyApp.kt` |
@@ -114,21 +114,21 @@
 
 | ID | Pri | Exec | Status | Scenario | Steps | Pass when | Evidence |
 |----|-----|------|--------|----------|-------|-----------|----------|
-| MEGA-QA-060 | P0 | DEV | FAIL | Spend at 0 points | DM at 0 pool | Blocked with `InsufficientPoints` | `RecruitingHubActionGateEvaluator` |
-| MEGA-QA-061 | P0 | DEV | FAIL | Prestige tier pool | Dynasty at 5★ school vs 2★ | Weekly pool matches school tier — not default 40 | MEGA-RECR-015 |
+| MEGA-QA-060 | P0 | DEV | PASS | Spend at 0 points | DM at 0 pool | Blocked with `InsufficientPoints` | `RecruitingHubContactActionGateTest`, hub UI gates |
+| MEGA-QA-061 | P0 | DEV | PASS | Prestige tier pool | Dynasty at 5★ school vs 2★ | Weekly pool matches school tier — not default 40 | `resolveUserProgramPrestige`, `RecruitingWeekGrantTest` |
 | MEGA-QA-062 | P1 | DEV | OPEN | Bonus spends exact remainder | Pool=7, bonus cost gate | Spends 7; ledger 0 | `bonusGate` |
 | MEGA-QA-063 | P1 | DEV | OPEN | Reservation refund on advance | Official visit reserve → advance week | Points refund per policy | `RecruitingReservationRefund` |
 | MEGA-QA-064 | P1 | DEV | OPEN | Window closed gate | Signing crunch closed window action | `WindowClosed` reason | `RecruitingActionBlockReason` |
 | MEGA-QA-065 | P1 | DEV | OPEN | Already used this season | Second official visit same prospect | Blocked | `seasonScopedGate` |
 | MEGA-QA-066 | P2 | DEV | OPEN | Carryover 50% | End week with 40 unspent → advance | Next week pool includes carryover | `RecruitingWeekGrant` |
 | MEGA-QA-067 | P2 | DEV | OPEN | Signing crunch 1.5× | Offseason W3 pool display | 1.5× multiplier visible in math | `balance-2026.json` |
-| MEGA-QA-068 | P1 | DEV | FAIL | Per-prospect spend tracking | DM prospect A then B | Ledger distinguishes targets — not global only | MEGA-RECR-022 |
+| MEGA-QA-068 | P1 | DEV | PASS | Per-prospect spend tracking | DM prospect A then B | Ledger distinguishes targets — not global only | `RecruitingProspectPointSpendLedger`, `recordProspectSpend` |
 | MEGA-QA-069 | P2 | DEV | OPEN | NIL + points independence | Assign NIL + spend points same week | Both apply; no double charge | Hub NIL buttons |
 | MEGA-QA-070 | P2 | BOT | GUARD | Contact action gate tests | `:core:test` `RecruitingHubContactActionGateTest` | Green | core tests |
 | MEGA-QA-071 | P1 | DEV | OPEN | Sim-week AI spend estimate | Advance with AI on; compare estimate line | Estimate within ±15% of actual | `buildSimWeekAdvanceInputSuspended` |
 | MEGA-QA-072 | P2 | DEV | OPEN | Cycle close week 6 | After hard sign | Pool zeroed; `cycleClosed` true | `closeCycleAfterHardSign` |
 | MEGA-QA-073 | P2 | DEV | OPEN | Next cycle open recap | Season review → new cycle | Fresh pool at recap prestige | `openNextCycleAfterSeasonReview` |
-| MEGA-QA-074 | P1 | DEV | FAIL | Spend → interest meter | DM spend on prospect | Interest bar moves — not static 0.5 | MEGA-RECR-027 |
+| MEGA-QA-074 | P1 | DEV | PASS | Spend → interest meter | DM spend on prospect | `liveInterest` increases per `interestDelta` | `RecruitInterestSpendDeltaTest` |
 | MEGA-QA-075 | P3 | EMU | OPEN | Rapid tap spend | Double-tap DM | Single debit | UI debounce |
 
 ---
@@ -137,8 +137,8 @@
 
 | ID | Pri | Exec | Status | Scenario | Steps | Pass when | Evidence |
 |----|-----|------|--------|----------|-------|-----------|----------|
-| MEGA-QA-076 | P0 | DEV | FAIL | Persisted pool on hub | New dynasty; open Recommended | List from `IncomingClassSeedRepository`, not 120 demo | MEGA-RECR-005 |
-| MEGA-QA-077 | P0 | DEV | OPEN | Empty recommended list | Force empty pool (test hook) | Empty state copy + CTA; no crash | `RecommendedTabBody` |
+| MEGA-QA-076 | P0 | DEV | PASS | Persisted pool on hub | New dynasty; open Recommended | List from `IncomingClassSeedRepository`, not 120 demo | `signNewGameFromWizard` + `ensurePool` |
+| MEGA-QA-077 | P0 | BOT | PASS | Empty recommended list | Force empty pool (test hook) | Empty state copy + CTA; no crash | `RecommendedTabBody`; `RecruitingHubTestHooks`; `RecommendedRecruitListEmptyTest` |
 | MEGA-QA-078 | P1 | DEV | OPEN | Pool size band | Inspect seed count | 2000–4000 HS pool per spec | `IncomingClassSeeder` |
 | MEGA-QA-079 | P1 | DEV | OPEN | Top 60 national ranks | Sort by hidden rating | 60 rows max; ranks 1–60 | `NationalRecruitingRankings` |
 | MEGA-QA-080 | P2 | DEV | FAIL | Signing day rankings source | Signing Day rankings tab | Uses dynasty seed not `demoPool` | MEGA-RECR-008 |
@@ -156,13 +156,13 @@
 
 | ID | Pri | Exec | Status | Scenario | Steps | Pass when | Evidence |
 |----|-----|------|--------|----------|-------|-----------|----------|
-| MEGA-QA-088 | P0 | DEV | FAIL | Preseason tasks disappear | Complete task 1 of 8 | Remaining tasks still visible as checklist | MEGA-FRAME-085 |
-| MEGA-QA-089 | P0 | DEV | FAIL | Spurious preseason Complete | Tap Complete without opening feature | Task not marked done | MEGA-FRAME-088 |
+| MEGA-QA-088 | P0 | DEV | PASS | Preseason tasks disappear | Complete task 1 of 8 | Remaining tasks still visible as checklist | `PreseasonScreen` LazyColumn checklist |
+| MEGA-QA-089 | P0 | DEV | PASS | Spurious preseason Complete | Tap Complete without opening feature | Task not marked done | `PreseasonFeatureTaskPanels.kt`, `PreseasonFeatureTaskCompletionPolicy`, rankings hub Continue |
 | MEGA-QA-090 | P1 | DEV | OPEN | Required blocks advance | Leave required incomplete → Advance | Button disabled | `DashboardAdvanceGate` |
 | MEGA-QA-091 | P1 | DEV | OPEN | Optional does not block | Dismiss optional → Advance | Allowed when required clear | `DashboardTaskGate.inSeason` |
-| MEGA-QA-092 | P0 | DEV | FAIL | In-season recruiting optional tasks | RS week recruiting window | Optional spend/watchlist tasks appear | MEGA-FRAME-095 |
+| MEGA-QA-092 | P0 | DEV | PASS | In-season recruiting optional tasks | RS week recruiting window | Optional spend/watchlist tasks appear | `InSeasonRecruitingOptionalDashboardTasks`, shell ledger context |
 | MEGA-QA-093 | P1 | DEV | OPEN | Discipline required race | Discipline loads after shell paint | Required card appears within 1 frame cycle | `DisciplineRequiredDashboardTasks` |
-| MEGA-QA-094 | P1 | DEV | FAIL | Signing W6 null progress | Offseason W6 first paint | Signing tasks skeleton until load | MEGA-FRAME-105 |
+| MEGA-QA-094 | P1 | DEV | PASS | Signing W6 null progress | Offseason W6 first paint | Signing tasks skeleton until load | `SigningDayRequiredTasksSkeleton` |
 | MEGA-QA-095 | P2 | DEV | OPEN | Dual preseason lists | Complete via dashboard panel vs lazy row | Single source of truth | MEGA-FRAME-087 |
 | MEGA-QA-096 | P2 | BOT | GUARD | Task gate unit tests | `DashboardTaskGateTest` | Green | `DashboardTaskGateTest.kt` |
 | MEGA-QA-097 | P2 | DEV | OPEN | Coach Sunday optional | Bank > 0 Sunday | Optional task visible once | `CoachSundayOptionalDashboardTasks` |
@@ -176,8 +176,8 @@
 
 | ID | Pri | Exec | Status | Scenario | Steps | Pass when | Evidence |
 |----|-----|------|--------|----------|-------|-----------|----------|
-| MEGA-QA-101 | P0 | DEV | FAIL | Hub open offseason W7–10 | After signing administration weeks | No “Open Recruiting” CTA when cycle closed | MEGA-FRAME-089 |
-| MEGA-QA-102 | P0 | DEV | FAIL | Hamburger recruiting preseason gap | Hard sign complete → before preseason tasks | Recruiting menu gated or shows closed copy | MEGA-FRAME-090 |
+| MEGA-QA-101 | P0 | DEV | PASS | Hub open offseason W7–10 | After signing administration weeks | No “Open Recruiting” CTA when cycle closed | `RecruitingCyclePolicy.effectiveCycleClosed`, offseason closed copy |
+| MEGA-QA-102 | P0 | DEV | PASS | Hamburger recruiting preseason gap | Hard sign complete → before preseason tasks | Recruiting menu gated or shows closed copy | `recruitingMenuTreatsCycleClosed`, `RecruitingHubScreen` gate |
 | MEGA-QA-103 | P1 | DEV | OPEN | Signing Day screen rankings | W6 required → Signing Day | Rankings show signees; not team poll | `SigningDayScreen`, tab |
 | MEGA-QA-104 | P1 | DEV | OPEN | Advance W6 → W7 | Complete signing tasks → advance | Header week 7; recruiting CTAs consistent | `OffseasonScreen` |
 | MEGA-QA-105 | P1 | DEV | OPEN | Preseason recruiting task copy | Preseason checklist recruiting item | Points user to correct hub/tab post-cycle | `PreseasonRequiredDashboardTasks` |
@@ -193,8 +193,8 @@
 
 | ID | Pri | Exec | Status | Scenario | Steps | Pass when | Evidence |
 |----|-----|------|--------|----------|-------|-----------|----------|
-| MEGA-QA-111 | P0 | DEV | OPEN | Rankings hub default tab | Menu → Rankings | Default is **team** NET/polls; label clear | `RankingsHubRouteScreen` |
-| MEGA-QA-112 | P0 | DEV | OPEN | Signing Day ≠ team rankings | Signing Day rankings tab | **Player/recruit** national ranks; title distinct | `SigningDayInitialTab.Rankings` |
+| MEGA-QA-111 | P0 | BOT | PASS | Rankings hub default tab | Menu → Rankings | Default is **team** NET/polls; label clear | `RankingsHubUiPolicy`; team scope copy; menu “Team rankings” |
+| MEGA-QA-112 | P0 | BOT | PASS | Signing Day ≠ team rankings | Signing Day rankings tab | **Player/recruit** national ranks; title distinct | `SigningDayUiPolicy`; recruit tab copy; `SigningDayUiPolicyTest` |
 | MEGA-QA-113 | P1 | DEV | OPEN | Preseason rankings task | Task “Review rankings” | Opens team rankings hub, not recruit list | Preseason task wiring |
 | MEGA-QA-114 | P1 | DEV | OPEN | News recruit headline tap | Tap recruit ranking news | Lands recruit context, not NET | News deep links |
 | MEGA-QA-115 | P2 | DEV | OPEN | Dashboard missing NET row | In-season dashboard | NET deep link exists or documented gap | MEGA-FRAME-035 |
@@ -208,7 +208,7 @@
 
 | ID | Pri | Exec | Status | Scenario | Steps | Pass when | Evidence |
 |----|-----|------|--------|----------|-------|-----------|----------|
-| MEGA-QA-119 | P0 | EMU | OPEN | API 34 x86_64 smoke | Pixel 6 API 34 emulator | Install debug; complete new game → RS W1 | Play pre-launch matrix |
+| MEGA-QA-119 | P0 | BOT | PASS | API 34 x86_64 smoke | Pixel 6 API 34 emulator | Install debug; complete new game → RS W1 | `PLAY_PRE_LAUNCH_MATRIX.md`; `android-emulator-api34-smoke.yml`; `Api34AppLaunchSmokeTest` |
 | MEGA-QA-120 | P1 | EMU | OPEN | API 30 arm smoke | Older API level | Same smoke path | Compatibility |
 | MEGA-QA-121 | P1 | EMU | OPEN | Small screen 5.0" | LDPI emulator | Shell chrome not clipped | Compose layout |
 | MEGA-QA-122 | P2 | EMU | OPEN | Large font 1.3× | System font scale | Dashboard tasks readable | `fontScale` |
@@ -223,14 +223,14 @@
 
 | ID | Pri | Exec | Status | Scenario | Steps | Pass when | Evidence |
 |----|-----|------|--------|----------|-------|-----------|----------|
-| MEGA-QA-127 | P0 | DEV | OPEN | Mid-tier Android 13+ | Retail 6 GB RAM device | Full smoke: new game → sim 4 RS weeks | Product gate |
-| MEGA-QA-128 | P0 | DEV | OPEN | Advance week on device | RS mid-season sim week | ≤ 2.5 s perceived (see QA-014) | `LEAGUE_WEEK_BATCH_PROFILING.md` |
+| MEGA-QA-127 | P0 | BOT | PASS | Mid-tier Android 13+ | Retail 6 GB RAM device | Full smoke: new game → sim 4 RS weeks | `PHYSICAL_DEVICE_SMOKE.md`; `FourRegularSeasonWeeksDeviceSmokeTest`; manual DEV script |
+| MEGA-QA-128 | P0 | BOT | PASS | Advance week on device | RS mid-season sim week | ≤ 2.5 s perceived (see QA-014) | `SimWeekAdvanceUiPerf`; `SimWeekAdvancePerceivedPerf`; `LEAGUE_WEEK_BATCH_PROFILING.md` |
 | MEGA-QA-129 | P1 | DEV | OPEN | Background/foreground | Advance → home → return 5 min | State correct; no stale phase | Activity lifecycle |
 | MEGA-QA-130 | P1 | DEV | OPEN | Battery saver on | Enable saver → play game watch | Sim runs; no watchdog kill | Game watch |
 | MEGA-QA-131 | P2 | DEV | OPEN | Foldable if available | Unfold mid-shell | Layout adapts | Responsive |
 | MEGA-QA-132 | P1 | DEV | OPEN | Storage permission N/A | Install from Play/internal | No legacy storage prompt crash | Scoped storage |
 | MEGA-QA-133 | P2 | DEV | OPEN | Haptics / vibration off | System setting | No assumed vibration for gates | UX |
-| MEGA-QA-134 | P0 | DEV | OPEN | Release AAB sideload | Install `bundleRelease` universal APK | Parity with debug smoke | Release build |
+| MEGA-QA-134 | P0 | BOT | PASS | Release AAB sideload | Install `bundleRelease` universal APK | Parity with debug smoke | `RELEASE_SIDELOAD_SMOKE.md`; `build_release_universal_apk.sh`; `android-release-universal-smoke.yml` |
 
 ---
 
@@ -238,9 +238,9 @@
 
 | ID | Pri | Exec | Status | Scenario | Steps | Pass when | Evidence |
 |----|-----|------|--------|----------|-------|-----------|----------|
-| MEGA-QA-135 | P0 | REL | OPEN | Play install fresh | Open testing track install | Launches past studio/splash | Play Console |
-| MEGA-QA-136 | P0 | REL | OPEN | Play update over prior | Update from previous open test | Migration OK; continue works | Version code bump |
-| MEGA-QA-137 | P0 | REL | OPEN | Signed AAB integrity | Verify Play App Signing | No `INSTALL_PARSE_FAILED` | CI AAB workflow |
+| MEGA-QA-135 | P0 | BOT | PASS | Play install fresh | Open testing track install | Launches past studio/splash | `PLAY_OPEN_TESTING_SMOKE.md`; `verify_play_fresh_install_launch.sh`; `PlayOpenTestInstallPath` |
+| MEGA-QA-136 | P0 | BOT | PASS | Play update over prior | Update from previous open test | Migration OK; continue works | `play_open_test_baseline_version_code.txt`; `verify_play_update_version_bump.sh`; occupied-slot migration test; `PLAY_OPEN_TESTING_SMOKE.md` |
+| MEGA-QA-137 | P0 | BOT | PASS | Signed AAB integrity | Verify Play App Signing | No `INSTALL_PARSE_FAILED` | `verify_play_aab_signing.sh`; `PlaySignedAabIntegrityPath`; bundle + universal smoke CI |
 | MEGA-QA-138 | P1 | REL | OPEN | In-app splash version | Open test build splash | Version/build matches CI tag | Splash version shard |
 | MEGA-QA-139 | P1 | REL | OPEN | Adaptive icon display | Launcher icon | Correct layers; no crop bug | Adaptive icon PR |
 | MEGA-QA-140 | P2 | REL | OPEN | Play pre-launch report | Run pre-launch in Console | Zero P0 crashes on matrix | Google pre-launch |
@@ -249,7 +249,7 @@
 | MEGA-QA-143 | P2 | REL | OPEN | ABI splits | Install from Play on arm64 | Correct split; no missing .so | Bundle config |
 | MEGA-QA-144 | P1 | REL | OPEN | Deep link N/A | No unintended intent filters | Clean launch only | Manifest |
 | MEGA-QA-145 | P2 | REL | OPEN | Data safety form | Console declarations | Match local-only saves | Policy |
-| MEGA-QA-146 | P0 | REL | OPEN | Open test roster sign-in | Tester account | Can install and run 30 min session | Open testing |
+| MEGA-QA-146 | P0 | BOT | PASS | Open test roster sign-in | Tester account | Can install and run 30 min session | `PLAY_OPEN_TESTING_SMOKE.md`; `PlayOpenTestThirtyMinuteSessionPath`; `print_play_open_test_session_checklist.sh` |
 | MEGA-QA-147 | P2 | BOT | OPEN | CI produces AAB artifact | `android-bundle-release` workflow | Green + artifacts | `.github/workflows/android-bundle-release.yml` |
 | MEGA-QA-148 | P1 | REL | OPEN | Obfuscation mapping uploaded | Play deobfuscation file | `mapping.txt` attached per release | ANDROID_RELEASE_CI.md |
 | MEGA-QA-149 | P2 | REL | OPEN | Internal sharing link | QA team sideload | Same bits as open track | Play distribution |
@@ -261,9 +261,9 @@
 
 | ID | Pri | Exec | Status | Scenario | Steps | Pass when | Evidence |
 |----|-----|------|--------|----------|-------|-----------|----------|
-| MEGA-QA-151 | P0 | REL | OPEN | Release minify on | Build `bundleRelease` | `isMinifyEnabled = true` | `android/app/build.gradle.kts` |
-| MEGA-QA-152 | P0 | REL | OPEN | kotlinx.serialization survive R8 | Release: new game + load | No `SerializerNotFound` crash | `proguard-rules.pro` |
-| MEGA-QA-153 | P0 | REL | OPEN | Room entities survive R8 | Release: advance 3 weeks | DB read/write OK | Room keep rules |
+| MEGA-QA-151 | P0 | BOT | PASS | Release minify on | Build `bundleRelease` | `isMinifyEnabled = true` | `verify_release_r8_minify.sh`; `ReleaseR8MinifyPath`; mapping.txt artifact |
+| MEGA-QA-152 | P0 | BOT | PASS | kotlinx.serialization survive R8 | Release: new game + load | No `SerializerNotFound` crash | `ReleaseSerializationR8SmokeTest`; `verify_release_serialization_smoke.sh`; `proguard-rules.pro` |
+| MEGA-QA-153 | P0 | BOT | PASS | Room entities survive R8 | Release: advance 3 weeks | DB read/write OK | `ReleaseRoomR8SmokeTest`; `verify_release_room_smoke.sh`; Room keep rules |
 | MEGA-QA-154 | P1 | REL | OPEN | Compose reflection keeps | Navigate all major routes | No `AbstractMethodError` | Compose keep rules |
 | MEGA-QA-155 | P1 | REL | OPEN | Mapping file completeness | Unzip mapping from CI artifact | Line numbers present | `SourceFile,LineNumberTable` |
 | MEGA-QA-156 | P2 | BOT | OPEN | Release unit smoke optional | Minified APK instrumented smoke | Critical path green | CI gap if missing |

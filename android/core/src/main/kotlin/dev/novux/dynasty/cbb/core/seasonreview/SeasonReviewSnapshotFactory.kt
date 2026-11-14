@@ -1,6 +1,8 @@
 package dev.novux.dynasty.cbb.core.seasonreview
 
+import dev.novux.dynasty.cbb.core.balance.BalanceNilAnnualPoolTables
 import dev.novux.dynasty.cbb.core.balance.BalanceRecruitingEconomy
+import dev.novux.dynasty.cbb.core.nil.NilAnnualPoolEngine
 import dev.novux.dynasty.cbb.core.awards.AwardHonorLine
 import dev.novux.dynasty.cbb.core.coach.security.CoachSecuritySnapshot
 import dev.novux.dynasty.cbb.core.league.LeagueStandingsState
@@ -22,6 +24,7 @@ object SeasonReviewSnapshotFactory {
         standings: LeagueStandingsState?,
         ledger: RecruitingCycleLedger,
         economy: BalanceRecruitingEconomy,
+        nilTables: BalanceNilAnnualPoolTables,
         facilityGrades: FacilityGrades,
         coach: CoachSecuritySnapshot,
         contractYearsLeft: Int,
@@ -43,6 +46,7 @@ object SeasonReviewSnapshotFactory {
         val prestigeStart = ledger.programPrestige
         val prestigeEnd = userTeam.programPrestige
         val nextPool = RecruitingWeekGrant.previewNextCycleWeeklyPool(economy, prestigeEnd)
+        val nextNil = NilAnnualPoolEngine.resolve(userTeam.conferenceId, prestigeEnd, nilTables)
         val tier = RecruitingPrestigePool.tierForPrestige(economy, prestigeEnd)
         val gradeRows = FacilityCategory.entries.map { cat ->
             val g = facilityGrades.grade(cat)
@@ -69,6 +73,7 @@ object SeasonReviewSnapshotFactory {
             facilityGradeAverage = avg,
             currentCycleWeeklyPool = ledger.weeklyPoolBase,
             nextCycleWeeklyPool = nextPool,
+            nextCycleNilPoolUsd = nextNil,
             recruitingTierLabel = tier.label,
             jobSecurityScore = coach.jobSecurity.score,
             jobSecurityLabel = coach.jobSecurity.tier.label,

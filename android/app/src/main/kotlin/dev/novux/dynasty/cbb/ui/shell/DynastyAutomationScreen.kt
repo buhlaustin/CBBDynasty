@@ -26,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.novux.dynasty.cbb.R
 import dev.novux.dynasty.cbb.core.coach.CoachArchetype
+import dev.novux.dynasty.cbb.core.settings.DynastyAutomationPriorityPolicy
 import dev.novux.dynasty.cbb.core.save.LoadedDynasty
 import dev.novux.dynasty.cbb.core.settings.DynastyAutomationSettings
 import dev.novux.dynasty.cbb.data.coach.CoachSkillPointRepository
@@ -68,7 +69,21 @@ fun DynastyAutomationScreen(
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+        Text(
+            text = stringResource(
+                R.string.dynasty_automation_priority_hint,
+                DynastyAutomationPriorityPolicy.coachPriorityTreeDepth,
+            ),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = 8.dp),
+        )
         Spacer(modifier = Modifier.height(24.dp))
+        Text(
+            text = stringResource(R.string.dynasty_automation_recruiting_ledger_hint),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
         AutomationToggleRow(
             label = stringResource(R.string.dynasty_automation_recruiting),
             description = stringResource(R.string.dynasty_automation_recruiting_summary),

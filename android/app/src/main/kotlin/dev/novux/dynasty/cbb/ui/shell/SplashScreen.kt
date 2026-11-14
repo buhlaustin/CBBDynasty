@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -37,19 +38,20 @@ import androidx.compose.ui.unit.dp
 import dev.novux.dynasty.cbb.BuildConfig
 import dev.novux.dynasty.cbb.R
 import dev.novux.dynasty.cbb.core.GameConstants
+import dev.novux.dynasty.cbb.core.shell.SplashBootstrapPhase
+import dev.novux.dynasty.cbb.core.shell.SplashPackErrorPolicy
 import java.time.Year
-import kotlinx.coroutines.delay
 
 /** Game splash — [planning/app-shell.md#splash-loading-screen]. */
 @Composable
-fun SplashScreen(onTapToPlay: () -> Unit) {
-    var ready by remember { mutableStateOf(false) }
+fun SplashScreen(
+    bootstrapPhase: SplashBootstrapPhase,
+    onTapToPlay: () -> Unit,
+    onRetryLoad: () -> Unit,
+) {
     val copyrightYear = Year.now().value
-
-    LaunchedEffect(Unit) {
-        delay(600)
-        ready = true
-    }
+    val ready = bootstrapPhase == SplashBootstrapPhase.Ready
+    val failed = bootstrapPhase == SplashBootstrapPhase.Error
 
     val ctaTransition = rememberInfiniteTransition(label = "tapToPlayPulse")
     val ctaScale by ctaTransition.animateFloat(
@@ -97,9 +99,26 @@ fun SplashScreen(onTapToPlay: () -> Unit) {
                 textAlign = TextAlign.Center,
             )
 
-            if (!ready) {
-                CircularProgressIndicator(modifier = Modifier.padding(top = 28.dp))
-            } else {
+            when {
+                failed && SplashPackErrorPolicy.shouldOfferRetry(true) -> {
+                    Text(
+                        text = stringResource(R.string.splash_load_error),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.error,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(top = 28.dp),
+                    )
+                    Button(
+                        onClick = onRetryLoad,
+                        modifier = Modifier.padding(top = 16.dp),
+                    ) {
+                        Text(stringResource(R.string.splash_retry))
+                    }
+                }
+                !ready -> {
+                    CircularProgressIndicator(modifier = Modifier.padding(top = 28.dp))
+                }
+                else -> {
                 Text(
                     text = stringResource(R.string.tap_to_play),
                     style = MaterialTheme.typography.titleLarge,
@@ -114,6 +133,7 @@ fun SplashScreen(onTapToPlay: () -> Unit) {
                         }
                         .clickable(onClick = onTapToPlay),
                 )
+                }
             }
         }
 

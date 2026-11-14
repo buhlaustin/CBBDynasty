@@ -21,7 +21,12 @@ import dev.novux.dynasty.cbb.data.calendar.WeekCheckpointRepository
 import dev.novux.dynasty.cbb.data.portal.PortalCycleRepository
 import dev.novux.dynasty.cbb.data.recruiting.AiRecruitingRepository
 import dev.novux.dynasty.cbb.data.recruiting.RecruitingEconomyRepository
+import dev.novux.dynasty.cbb.data.recruiting.RecruitingInterestSpendRepository
+import dev.novux.dynasty.cbb.data.recruiting.RecruitOfferPromiseRepository
+import dev.novux.dynasty.cbb.data.recruiting.RecruitingLostProspectsRepository
 import dev.novux.dynasty.cbb.data.recruiting.RecruitingReservationRepository
+import dev.novux.dynasty.cbb.data.recruiting.RecruitingWatchlistRepository
+import dev.novux.dynasty.cbb.data.recruiting.RecruitingWatchlistTop60RankRepository
 import dev.novux.dynasty.cbb.data.save.SaveSlotRepository
 import dev.novux.dynasty.cbb.data.offseason.OffseasonSummerWorkoutRepository
 import dev.novux.dynasty.cbb.data.offseason.OffseasonWeekEightRepository
@@ -55,6 +60,14 @@ class DynastyApplication : Application() {
     lateinit var dynastyRosterRepository: DynastyRosterRepository
         private set
 
+    lateinit var dynastyStrategyPrepRepository: dev.novux.dynasty.cbb.data.strategy.DynastyStrategyPrepRepository
+    lateinit var userCalendarGameWatchBootstrap: dev.novux.dynasty.cbb.data.sim.UserCalendarGameWatchBootstrap
+        private set
+        private set
+
+    lateinit var scrimmageGameRecordRepository: dev.novux.dynasty.cbb.data.scrimmage.ScrimmageGameRecordRepository
+        private set
+
     lateinit var disciplineRepository: DisciplineRepository
         private set
 
@@ -79,6 +92,9 @@ class DynastyApplication : Application() {
     lateinit var packRepository: PackRepository
         private set
 
+    lateinit var packDynastyIdentityRepository: dev.novux.dynasty.cbb.data.pack.PackDynastyIdentityRepository
+        private set
+
     lateinit var balanceRulesetRepository: BalanceRulesetRepository
         private set
 
@@ -91,6 +107,11 @@ class DynastyApplication : Application() {
     lateinit var recruitingEconomyRepository: RecruitingEconomyRepository
         private set
 
+    lateinit var recruitOfferPromiseRepository: RecruitOfferPromiseRepository
+
+    lateinit var recruitLockedPromiseRepository: dev.novux.dynasty.cbb.data.recruiting.RecruitLockedPromiseRepository
+        private set
+
     lateinit var portalCycleRepository: PortalCycleRepository
         private set
 
@@ -100,6 +121,18 @@ class DynastyApplication : Application() {
     lateinit var signingDayRepository: SigningDayRepository
         private set
 
+    lateinit var recruitingWatchlistRepository: RecruitingWatchlistRepository
+        private set
+
+    lateinit var recruitingWatchlistTop60RankRepository: RecruitingWatchlistTop60RankRepository
+        private set
+
+    lateinit var recruitingLostProspectsRepository: RecruitingLostProspectsRepository
+        private set
+
+    lateinit var recruitingReservationRepository: RecruitingReservationRepository
+        private set
+
     lateinit var nilBudgetRepository: dev.novux.dynasty.cbb.data.nil.NilBudgetRepository
         private set
 
@@ -107,6 +140,13 @@ class DynastyApplication : Application() {
         private set
 
     lateinit var notificationFeedRepository: dev.novux.dynasty.cbb.data.notification.NotificationFeedRepository
+        private set
+
+    lateinit var dashboardLastGameRepository: dev.novux.dynasty.cbb.data.dashboard.DashboardLastGameRepository
+        private set
+
+    lateinit var dashboardOptionalDismissRepository:
+        dev.novux.dynasty.cbb.data.dashboard.DashboardOptionalDismissRepository
         private set
 
     lateinit var dynastyAutomationRepository: dev.novux.dynasty.cbb.data.settings.DynastyAutomationRepository
@@ -157,6 +197,9 @@ class DynastyApplication : Application() {
     lateinit var rankingsHubRepository: dev.novux.dynasty.cbb.data.rankings.RankingsHubRepository
         private set
 
+    lateinit var statisticsHubRepository: dev.novux.dynasty.cbb.data.statistics.StatisticsHubRepository
+        private set
+
     lateinit var selectionSundayRepository: dev.novux.dynasty.cbb.data.selection.SelectionSundayRepository
         private set
 
@@ -184,10 +227,26 @@ class DynastyApplication : Application() {
     lateinit var seasonReviewRepository: dev.novux.dynasty.cbb.data.seasonreview.SeasonReviewRepository
         private set
 
+    lateinit var seasonReviewProgressRepository: dev.novux.dynasty.cbb.data.seasonreview.SeasonReviewProgressRepository
+        private set
+
+    lateinit var playerStatsRepository: dev.novux.dynasty.cbb.data.player.PlayerStatsRepository
+        private set
+
     lateinit var yearlyAwardsRepository: dev.novux.dynasty.cbb.data.awards.YearlyAwardsRepository
         private set
 
     lateinit var historyRepository: dev.novux.dynasty.cbb.data.history.HistoryRepository
+        private set
+
+    lateinit var coachAchievementsRepository: dev.novux.dynasty.cbb.data.coach.CoachAchievementsRepository
+    lateinit var coachCareerSeasonRepository: dev.novux.dynasty.cbb.data.coach.CoachCareerSeasonRepository
+        private set
+
+    lateinit var coachCardDeepTabsRepository: dev.novux.dynasty.cbb.data.coach.CoachCardDeepTabsRepository
+        private set
+
+    lateinit var headCoachUserContractRepository: dev.novux.dynasty.cbb.data.coach.HeadCoachUserContractRepository
         private set
 
     lateinit var coachSkillPointRepository: CoachSkillPointRepository
@@ -202,14 +261,22 @@ class DynastyApplication : Application() {
         notificationFeedRepository = dev.novux.dynasty.cbb.data.notification.NotificationFeedRepository(
             applicationContext,
         )
+        dashboardLastGameRepository = dev.novux.dynasty.cbb.data.dashboard.DashboardLastGameRepository(
+            applicationContext,
+        )
         dynastyAutomationRepository = dev.novux.dynasty.cbb.data.settings.DynastyAutomationRepository(
             applicationContext,
         )
         packRepository = PackRepository(applicationContext)
         balanceRulesetRepository = BalanceRulesetRepository(applicationContext)
         simTuningRepository = SimTuningRepository(applicationContext)
-        coachingCarouselRepository = CoachingCarouselRepository(applicationContext)
-        val recruitingReservationRepository = RecruitingReservationRepository(applicationContext)
+        recruitingReservationRepository = RecruitingReservationRepository(applicationContext)
+        recruitOfferPromiseRepository = RecruitOfferPromiseRepository(applicationContext)
+        recruitLockedPromiseRepository =
+            dev.novux.dynasty.cbb.data.recruiting.RecruitLockedPromiseRepository(applicationContext)
+        val recruitingInterestSpendRepository = RecruitingInterestSpendRepository(applicationContext)
+        val recruitingManualWeekSpendRepository =
+            dev.novux.dynasty.cbb.data.recruiting.RecruitingManualWeekSpendRepository(applicationContext)
         nilBudgetRepository = dev.novux.dynasty.cbb.data.nil.NilBudgetRepository(
             applicationContext,
             recruitingReservationRepository,
@@ -221,25 +288,47 @@ class DynastyApplication : Application() {
             nilBudgetRepository,
         )
         portalCycleRepository = PortalCycleRepository(applicationContext)
-        aiRecruitingRepository = AiRecruitingRepository(
-            applicationContext,
-            nilAnnualPoolRepository,
-            dynastyAutomationRepository,
-        )
+        incomingClassSeedRepository = IncomingClassSeedRepository(applicationContext)
         weekCheckpointRepository = WeekCheckpointRepository(database)
         val postgameInjuryQueue = dev.novux.dynasty.cbb.data.injuries.PostgameInjuryQueue()
         dynastyRosterRepository = DynastyRosterRepository(database, postgameInjuryQueue)
+        scrimmageGameRecordRepository =
+            dev.novux.dynasty.cbb.data.scrimmage.ScrimmageGameRecordRepository()
         offseasonWeekNineRepository = OffseasonWeekNineRepository(applicationContext)
         recruitingEconomyRepository = RecruitingEconomyRepository(
             applicationContext,
             recruitingReservationRepository,
             dynastyRosterRepository,
             offseasonWeekNineRepository,
+            database,
+            packRepository,
+            recruitingInterestSpendRepository,
+            recruitingManualWeekSpendRepository,
         )
+        aiRecruitingRepository = AiRecruitingRepository(
+            applicationContext,
+            nilAnnualPoolRepository,
+            dynastyAutomationRepository,
+            incomingClassSeedRepository,
+            recruitingEconomyRepository,
+            packRepository,
+            database,
+        )
+        dashboardOptionalDismissRepository =
+            dev.novux.dynasty.cbb.data.dashboard.DashboardOptionalDismissRepository(applicationContext)
+        recruitingWatchlistRepository = RecruitingWatchlistRepository(applicationContext)
+        recruitingWatchlistTop60RankRepository = RecruitingWatchlistTop60RankRepository(applicationContext)
+        recruitingLostProspectsRepository = RecruitingLostProspectsRepository(applicationContext)
         signingDayRepository = SigningDayRepository(
             applicationContext,
             recruitingReservationRepository,
             nilBudgetRepository,
+            incomingClassSeedRepository,
+            recruitOfferPromiseRepository,
+            recruitLockedPromiseRepository,
+            recruitingEconomyRepository,
+            nilAnnualPoolRepository,
+            dynastyRosterRepository,
         )
         disciplineRepository = DisciplineRepository(applicationContext, database, balanceRulesetRepository)
         chemistryRepository = ChemistryRepository(applicationContext, balanceRulesetRepository)
@@ -248,13 +337,13 @@ class DynastyApplication : Application() {
         offseasonWeekEightRepository = OffseasonWeekEightRepository(applicationContext, dynastyRosterRepository)
         offseasonWeekTenRepository = OffseasonWeekTenRepository(applicationContext, packRepository, database)
         preseasonProgressRepository = PreseasonProgressRepository(applicationContext)
-        incomingClassSeedRepository = IncomingClassSeedRepository(applicationContext)
         tournamentInvitesRepository = TournamentInvitesRepository(applicationContext)
         earlySeasonBracketRepository = EarlySeasonBracketRepository(
             applicationContext,
             packRepository,
             tournamentInvitesRepository,
             database,
+            recruitingEconomyRepository,
         )
         leagueScheduleRepository = LeagueScheduleRepository(applicationContext, packRepository)
         preseasonScheduleRepository = PreseasonScheduleRepository(
@@ -263,6 +352,7 @@ class DynastyApplication : Application() {
             database,
             tournamentInvitesRepository,
             leagueScheduleRepository,
+            recruitingEconomyRepository,
         )
         newsFeedRepository = NewsFeedRepository(applicationContext, incomingClassSeedRepository)
         leagueWeekBatchRepository = LeagueWeekBatchRepository(
@@ -274,12 +364,25 @@ class DynastyApplication : Application() {
             database,
             packRepository,
             balanceRulesetRepository,
+            simTuningRepository,
+        )
+        coachAchievementsRepository = dev.novux.dynasty.cbb.data.coach.CoachAchievementsRepository(
+            applicationContext,
+            database,
+            leagueWeekBatchRepository,
+        )
+        coachCareerSeasonRepository = dev.novux.dynasty.cbb.data.coach.CoachCareerSeasonRepository(
+            database,
+            packRepository,
         )
         userCalendarRepository = UserCalendarRepository(
             preseasonScheduleRepository,
             packRepository,
             leagueWeekBatchRepository,
             database,
+            weekCheckpointRepository,
+            dashboardLastGameRepository,
+            earlySeasonBracketRepository,
         )
         preseasonReportRepository = PreseasonReportRepository(
             applicationContext,
@@ -288,6 +391,33 @@ class DynastyApplication : Application() {
             incomingClassSeedRepository,
         )
         coachSkillPointRepository = CoachSkillPointRepository(applicationContext)
+        playerStatsRepository = dev.novux.dynasty.cbb.data.player.PlayerStatsRepository(
+            applicationContext,
+            database,
+        )
+        dynastyStrategyPrepRepository = dev.novux.dynasty.cbb.data.strategy.DynastyStrategyPrepRepository(database)
+        userCalendarGameWatchBootstrap = dev.novux.dynasty.cbb.data.sim.UserCalendarGameWatchBootstrap(
+            database,
+            packRepository,
+            balanceRulesetRepository,
+            preseasonScheduleRepository,
+            dynastyRosterRepository,
+            dynastyStrategyPrepRepository,
+        )
+        val userLeagueGameSimFactory = dev.novux.dynasty.cbb.data.sim.UserLeagueGameSimFactory(
+            database,
+            packRepository,
+            balanceRulesetRepository,
+            simTuningRepository,
+            preseasonScheduleRepository,
+            dynastyRosterRepository,
+            dynastyStrategyPrepRepository,
+            chemistryRepository,
+        )
+        seasonReviewProgressRepository =
+            dev.novux.dynasty.cbb.data.seasonreview.SeasonReviewProgressRepository(applicationContext)
+        packDynastyIdentityRepository =
+            dev.novux.dynasty.cbb.data.pack.PackDynastyIdentityRepository(applicationContext)
         saveSlotRepository = SaveSlotRepository(
             database,
             weekCheckpointRepository,
@@ -307,6 +437,16 @@ class DynastyApplication : Application() {
             nilAnnualPoolRepository,
             dynastyAutomationRepository,
             appSettingsRepository,
+            playerStatsRepository,
+            incomingClassSeedRepository,
+            newsFeedRepository,
+            userLeagueGameSimFactory,
+            coachAchievementsRepository,
+            seasonReviewProgressRepository,
+            dashboardLastGameRepository,
+            recruitingManualWeekSpendRepository,
+            packDynastyIdentityRepository,
+            notificationFeedRepository,
         )
         preseasonSeasonStartRepository = PreseasonSeasonStartRepository(
             saveSlotRepository,
@@ -315,7 +455,14 @@ class DynastyApplication : Application() {
             leagueScheduleRepository,
             earlySeasonBracketRepository,
         )
-        schoolStaffRepository = SchoolStaffRepository(database, packRepository)
+        headCoachUserContractRepository = dev.novux.dynasty.cbb.data.coach.HeadCoachUserContractRepository(
+            applicationContext,
+        )
+        schoolStaffRepository = SchoolStaffRepository(
+            database,
+            packRepository,
+            headCoachUserContractRepository,
+        )
         schoolHubRepository = SchoolHubRepository(
             database,
             packRepository,
@@ -323,11 +470,19 @@ class DynastyApplication : Application() {
             leagueWeekBatchRepository,
             balanceRulesetRepository,
             offseasonWeekNineRepository,
+            nilBudgetRepository,
         )
         rankingsHubRepository = dev.novux.dynasty.cbb.data.rankings.RankingsHubRepository(
             packRepository,
             leagueWeekBatchRepository,
             preseasonProgressRepository,
+        )
+        statisticsHubRepository = dev.novux.dynasty.cbb.data.statistics.StatisticsHubRepository(
+            packRepository,
+            leagueWeekBatchRepository,
+            dynastyRosterRepository,
+            playerStatsRepository,
+            database,
         )
         selectionSundayRepository = dev.novux.dynasty.cbb.data.selection.SelectionSundayRepository(
             packRepository,
@@ -365,6 +520,17 @@ class DynastyApplication : Application() {
             database,
             packRepository,
         )
+        coachingCarouselRepository = CoachingCarouselRepository(
+            applicationContext,
+            dev.novux.dynasty.cbb.data.carousel.CarouselSimContextProvider(
+                database,
+                packRepository,
+                leagueWeekBatchRepository,
+                schoolStaffRepository,
+                coachSecurityRepository,
+                coachEmploymentRepository,
+            )::load,
+        )
         historyRepository = dev.novux.dynasty.cbb.data.history.HistoryRepository(
             applicationContext,
             database,
@@ -373,6 +539,17 @@ class DynastyApplication : Application() {
             dynastyRosterRepository,
             balanceRulesetRepository,
             newsFeedRepository,
+            coachAchievementsRepository,
+            coachCareerSeasonRepository,
+        )
+        coachCardDeepTabsRepository = dev.novux.dynasty.cbb.data.coach.CoachCardDeepTabsRepository(
+            database,
+            historyRepository,
+            coachAchievementsRepository,
+            leagueWeekBatchRepository,
+            offseasonWeekTwoRepository,
+            packRepository,
+            coachCareerSeasonRepository,
         )
         yearlyAwardsRepository = dev.novux.dynasty.cbb.data.awards.YearlyAwardsRepository(
             applicationContext,

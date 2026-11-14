@@ -71,6 +71,10 @@ jobs:
           fi
           ./gradlew :app:bundleRelease :app:extractReleaseNativeDebugMetadata --no-daemon
 
+      - name: Verify AAB signing (MEGA-QA-137)
+        working-directory: ${{ github.workspace }}
+        run: bash scripts/verify_play_aab_signing.sh
+
       - name: Upload release AAB
         uses: actions/upload-artifact@v4
         with:

@@ -32,6 +32,10 @@ fun RosterPlayerSeed.toEntity(): DynastyRosterPlayerEntity =
         promiseLockedSeasonIndex = promiseLockedSeasonIndex,
         promiseStayTopN = promiseStayTopN,
         stamina = stamina,
+        skinToneId = skinToneId,
+        hairColorId = hairColorId,
+        hairStyleId = hairStyleId,
+        avatarPresetId = avatarPresetId,
     )
 
 fun List<RosterPlayerSeed>.toEntities(): List<DynastyRosterPlayerEntity> = map { it.toEntity() }
@@ -58,6 +62,7 @@ fun DynastyRosterPlayerEntity.toDomain(): RosterPlayer {
         heightInches = heightInches,
         weightLbs = weightLbs,
         nilUsdPerYear = nilUsdPerYear,
+        nilDealRaisedThisSeason = nilDealRaisedThisSeason,
         ovr = ovr,
         off = offRating,
         def = defRating,
@@ -88,7 +93,12 @@ fun DynastyRosterPlayerEntity.toDomain(): RosterPlayer {
         promiseStatusWire = promiseStatusWire,
         promiseLockedSeasonIndex = promiseLockedSeasonIndex,
         promiseStayTopN = promiseStayTopN,
+        promiseHistoryWire = promiseHistoryWire,
         stamina = stamina,
+        skinToneId = skinToneId,
+        hairColorId = hairColorId,
+        hairStyleId = hairStyleId,
+        avatarPresetId = avatarPresetId,
     )
 }
 
@@ -110,6 +120,7 @@ fun RosterPlayer.toEntity(): DynastyRosterPlayerEntity =
         heightInches = heightInches,
         weightLbs = weightLbs,
         nilUsdPerYear = nilUsdPerYear,
+        nilDealRaisedThisSeason = nilDealRaisedThisSeason,
         ovr = ovr,
         offRating = off,
         defRating = def,
@@ -140,5 +151,10 @@ fun RosterPlayer.toEntity(): DynastyRosterPlayerEntity =
         promiseStatusWire = promiseStatusWire,
         promiseLockedSeasonIndex = promiseLockedSeasonIndex,
         promiseStayTopN = promiseStayTopN,
+        promiseHistoryWire = promiseHistoryWire,
         stamina = stamina,
+        skinToneId = skinToneId,
+        hairColorId = hairColorId,
+        hairStyleId = hairStyleId,
+        avatarPresetId = avatarPresetId,
     )

@@ -63,6 +63,22 @@ class PreseasonScheduleSolverTest {
     }
 
     @Test
+    fun noDoubleBookedRegularSeasonWeeks() {
+        val budget = RegularSeasonSlotBudget(eventRsGames = 0, builderSlots = 32)
+        val plan = PreseasonScheduleSolver.solve(
+            userTeam = user,
+            conference = conference,
+            conferenceOpponents = confOpponents,
+            nonConferencePool = nonConf,
+            budget = budget,
+            tournamentResolution = TournamentInviteResolution.DeclinedAll,
+            exhibitionCount = 0,
+            seed = 11,
+        )
+        assertTrue(plan.isValidFor(budget))
+    }
+
+    @Test
     fun allowsDoubleConferenceOpponent() {
         val plan = PreseasonScheduleSolver.solve(
             userTeam = user,

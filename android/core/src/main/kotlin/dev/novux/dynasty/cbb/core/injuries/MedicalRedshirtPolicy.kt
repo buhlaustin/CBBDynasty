@@ -3,7 +3,9 @@ package dev.novux.dynasty.cbb.core.injuries
 import dev.novux.dynasty.cbb.core.balance.BalanceMedicalRedshirtRules
 import dev.novux.dynasty.cbb.core.roster.RosterPlayer
 
+/** Medical RS gates + copy inputs for player cards ([MEGA-GDD-023]). */
 object MedicalRedshirtPolicy {
+    const val MEGA_ID: String = "MEGA-GDD-023"
     data class Eligibility(
         val eligible: Boolean,
         val reason: String? = null,
@@ -13,7 +15,9 @@ object MedicalRedshirtPolicy {
         player: RosterPlayer,
         rsWeekIndex: Int,
         rules: BalanceMedicalRedshirtRules,
+        countsTowardMedicalRedshirt: Boolean = true,
     ): Eligibility {
+        if (!countsTowardMedicalRedshirt) return Eligibility(false, "exhibition_game")
         if (!player.injuryActive) return Eligibility(false, "not_injured")
         if (player.medicalRedshirtSeason) return Eligibility(false, "already_medical_rs")
         val severity = player.injurySeverityWire?.let(InjurySeverity::fromWire)
@@ -44,4 +48,21 @@ object MedicalRedshirtPolicy {
             isStarter = false,
             starterSlotWire = null,
         )
+
+    /** Copy for medical RS confirmation — [planning/injuries.md#ux-flow]. */
+    fun confirmationDetail(player: RosterPlayer, rules: BalanceMedicalRedshirtRules): String =
+        buildString {
+            append("RS games played: ")
+            append(player.rsGamesPlayedSeason)
+            append(" (cap ")
+            append(rules.maxGamesPlayed)
+            append(")")
+            if (player.injuryOccurredAtRsGameIndex > 0) {
+                append(" · Schedule game ")
+                append(player.injuryOccurredAtRsGameIndex)
+                append(" (max ")
+                append(rules.maxScheduleRsGameIndex)
+                append(")")
+            }
+        }
 }

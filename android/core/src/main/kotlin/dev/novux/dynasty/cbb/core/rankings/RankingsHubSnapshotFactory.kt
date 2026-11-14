@@ -59,22 +59,13 @@ object RankingsHubSnapshotFactory {
                 ConferenceStandingsGroup(
                     conferenceId = confId,
                     conferenceName = packIndex.conference(confId)?.displayName ?: confId,
-                    teams = confTeams
-                        .map { team ->
-                            val rec = standings?.recordFor(team.teamId)
-                                ?: LeagueTeamRecord(teamId = team.teamId)
-                            ConferenceTeamRecordRow(
-                                teamId = team.teamId,
-                                displayName = team.displayName,
-                                wins = rec.wins,
-                                losses = rec.losses,
-                            )
-                        }
-                        .sortedWith(
-                            compareByDescending<ConferenceTeamRecordRow> { it.wins }
-                                .thenBy { it.losses }
-                                .thenBy { it.displayName },
-                        ),
+                    teams = ConferenceStandingsTiebreakerEngine.sortConferenceTeams(
+                        conferenceId = confId,
+                        teams = confTeams,
+                        records = standings?.records ?: emptyMap(),
+                        seasonResults = standings?.seasonResults ?: emptyList(),
+                        tiebreakers = packIndex.conference(confId)?.standingsTiebreakers ?: emptyList(),
+                    ),
                 )
             }
             .sortedBy { it.conferenceName }

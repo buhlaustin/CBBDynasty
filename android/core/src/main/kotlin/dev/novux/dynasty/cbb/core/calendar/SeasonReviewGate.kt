@@ -9,13 +9,19 @@ object SeasonReviewGate {
     fun isActive(state: WeekCheckpointState): Boolean =
         state.activePosition.phase == CalendarPhase.SeasonReview
 
-    fun canEnterOffseason(state: WeekCheckpointState): Boolean = isActive(state)
+    fun canEnterOffseason(state: WeekCheckpointState, seasonReviewAcknowledged: Boolean): Boolean =
+        isActive(state) && seasonReviewAcknowledged
 
     /**
      * Commits the review week and rolls calendar to **Offseason Week 1** of the next membership year.
      */
-    fun enterOffseason(state: WeekCheckpointState): SeasonReviewTransition {
-        require(canEnterOffseason(state)) { "not in End of Season week" }
+    fun enterOffseason(
+        state: WeekCheckpointState,
+        seasonReviewAcknowledged: Boolean,
+    ): SeasonReviewTransition {
+        require(canEnterOffseason(state, seasonReviewAcknowledged)) {
+            "not in End of Season week or season recap not acknowledged"
+        }
         val completedSeasonIndex = state.activePosition.seasonIndex
         val advance = state.advanceWeek()
         val next = advance.nextState.activePosition

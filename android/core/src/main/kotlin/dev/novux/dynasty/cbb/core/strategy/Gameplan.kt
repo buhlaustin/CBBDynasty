@@ -17,7 +17,10 @@ enum class LateGameFoulStrategy(val wireId: String) {
 data class GameplanInput(
     val usageWeights: Map<String, Int> = emptyMap(),
     val denyPrimaryScorer: Boolean = false,
+    /** Opponent slot treated as primary scorer when deny is on. */
     val primaryScorerSlot: PlayerPosition = PlayerPosition.PointGuard,
+    /** Opponent slot (PG–C) → your defender player id. */
+    val defensiveAssignments: Map<PlayerPosition, String> = emptyMap(),
     val lateGameFoulStrategy: LateGameFoulStrategy = LateGameFoulStrategy.Standard,
 ) {
     fun forSecondHalf(patch: GameplanInput): GameplanInput = patch

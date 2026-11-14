@@ -15,6 +15,7 @@ enum class SignLikelihoodBadge {
 data class RecommendedProspectRow(
     val prospect: RecruitProspect,
     val baselineInterest: Int,
+    val liveInterest: Int,
     val adjustedScore: Double,
     val badge: SignLikelihoodBadge,
     val inState: Boolean,
@@ -29,15 +30,24 @@ object SignLikelihoodEngine {
         recommended: BalanceRecruitingRecommended,
         nilOfferUsd: Int? = null,
         nilRules: BalanceNilRules? = null,
+        spendDelta: Int = 0,
+        promiseDelta: Int = 0,
     ): RecommendedProspectRow {
-        val snapshot = RecruitInterestEngine.baselineSnapshot(
+        val baselineSnapshot = RecruitInterestTwoSurfaces.baselineSnapshotForSignLikelihood(
             prospect,
             school,
             recommended,
+        )
+        val baseline = baselineSnapshot.baselineInterest
+        val live = RecruitInterestTwoSurfaces.liveInterestMeter(
+            prospect = prospect,
+            school = school,
+            recommended = recommended,
+            spendDelta = spendDelta,
+            promiseDelta = promiseDelta,
             nilOfferUsd = nilOfferUsd,
             nilRules = nilRules,
         )
-        val baseline = snapshot.baselineInterest
         var adjusted = baseline.toDouble()
         adjusted -= prestigeGapPenalty(prospect.stars, school.programPrestige, recommended)
         if (prospect.position in school.positionsNeed) {
@@ -47,7 +57,12 @@ object SignLikelihoodEngine {
         adjusted *= facilityPitch
         val inState = prospect.homeState.equals(school.schoolHomeState, ignoreCase = true)
         val positionNeed = prospect.position in school.positionsNeed
-        val badge = badgeForScore(adjusted, recommended.bands)
+        val badgeInput = RecruitNilInterestBadgeRefreshPolicy.badgeScoreForRow(
+            adjustedBaselineScore = adjusted,
+            liveInterest = live,
+            nilOfferUsd = nilOfferUsd,
+        )
+        val badge = badgeForAdjustedScore(badgeInput, recommended.bands)
         val influence = InfluenceBoardEngine.build(
             prospect = prospect,
             userSchool = school,
@@ -57,6 +72,7 @@ object SignLikelihoodEngine {
         return RecommendedProspectRow(
             prospect = prospect,
             baselineInterest = baseline,
+            liveInterest = live,
             adjustedScore = adjusted,
             badge = badge,
             inState = inState,
@@ -94,7 +110,7 @@ object SignLikelihoodEngine {
         return gap * recommended.prestigeGapPenaltyPerPoint
     }
 
-    private fun badgeForScore(score: Double, bands: BalanceSignLikelihoodBands): SignLikelihoodBadge =
+    fun badgeForAdjustedScore(score: Double, bands: BalanceSignLikelihoodBands): SignLikelihoodBadge =
         when {
             score >= bands.likelyMin -> SignLikelihoodBadge.Likely
             score >= bands.possibleMin -> SignLikelihoodBadge.Possible

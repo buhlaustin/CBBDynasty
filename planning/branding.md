@@ -1,6 +1,6 @@
 # Branding — Dynasty: College Basketball
 
-**Last updated:** 2025-11-09
+**Last updated:** 2026-11-11
 
 ---
 
@@ -56,10 +56,21 @@ Android adaptive layers in [`Public-Assets/adaptive-icon/`](../Public-Assets/ada
 | File | Role |
 |------|------|
 | `adaptive-icon-background.svg` | Background layer — `#181a25` |
-| `adaptive-icon-foreground.png` | Foreground layer — transparent logo (432×432) |
-| `adaptive-icon-canvas.png` | `#181A25` + `adaptive-icon-foreground.png` composited (logo on brand background only) |
+| `adaptive-icon-foreground.png` | Foreground layer — transparent logo (432×432); mark centered in **safe zone** |
+| `adaptive-icon-canvas.png` | `#181A25` + `adaptive-icon-foreground.png` composited (QA preview) |
 
-**Android:** `adaptive-icon-foreground.png` → `android/app/.../drawable-nodpi/ic_launcher_foreground.png`; background `@color/brand_background` (`#181A25`).
+**Safe zone (design lock):** On the 108×108 dp adaptive layer, logo art must fit the central **~66 dp** circle. Generator scales `app-logo.svg` to **58%** of 432 px and centers it — do not ship a full-bleed 432 px raster.
+
+**Generate & sync (source of truth → Android):**
+
+```bash
+python3 planning/tools/generate_adaptive_icon.py
+# or: bash scripts/sync_android_brand_assets.sh
+```
+
+Requires `pip install cairosvg pillow` (maintainer / CI only). CI **check**: `python3 planning/tools/generate_adaptive_icon.py --check`.
+
+**Android:** copy of `adaptive-icon-foreground.png` → `android/app/.../drawable-nodpi/ic_launcher_foreground.png`; background `@color/brand_background` (`#181A25`). Adaptive XML references the foreground **directly** (no runtime inset hacks).
 
 ---
 
@@ -109,3 +120,4 @@ Planning docs and code comments may use technical terms; **the APK may not**.
 | 2025-11-08 | Link `ncba-branding.md` |
 | 2025-11-09 | Novux Games; `app-shell.md` studio vs splash |
 | 2025-11-09 | UI copy rules + `lint_player_strings.py` |
+| 2026-11-11 | Adaptive icon generator + safe-zone lock; `planning/tools/generate_adaptive_icon.py` |

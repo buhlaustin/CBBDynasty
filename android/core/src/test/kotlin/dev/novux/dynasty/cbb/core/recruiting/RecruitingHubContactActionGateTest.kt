@@ -38,7 +38,30 @@ class RecruitingHubContactActionGateTest {
         assertEquals(200, gates.bonusPoints.pointCost)
     }
 
-  @Test
+    @Test
+    fun dm_blocked_whenZeroPoints() {
+        val gates = RecruitingHubActionGateEvaluator.forProspect(
+            prospectId = "p1",
+            prospectHomeState = "OH",
+            phase = CalendarPhase.RegularSeason,
+            offseasonWeekIndex = null,
+            pointsAvailable = 0,
+            actions = actions,
+            school = SchoolRecruitingContext(
+                programPrestige = 40,
+                schoolHomeState = "OH",
+                nilPoolAnnualUsd = 900_000,
+            ),
+            consumption = RecruitingSeasonConsumption(1),
+            activeReservations = emptyList(),
+        )
+        assertFalse(gates.dm.allowed)
+        assertEquals(RecruitingActionBlockReason.InsufficientPoints, gates.dm.blockReason)
+        assertFalse(gates.phoneCall.allowed)
+        assertEquals(RecruitingActionBlockReason.InsufficientPoints, gates.phoneCall.blockReason)
+    }
+
+    @Test
     fun scholarshipBlocked_whenOfferReservationActive() {
         val active = listOf(
             RecruitingWeekReservation("1", "p1", RecruitingRefundableAction.ScholarshipOffer, 150),

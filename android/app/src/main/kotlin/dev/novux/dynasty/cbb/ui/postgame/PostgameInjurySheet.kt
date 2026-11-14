@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.novux.dynasty.cbb.R
 import dev.novux.dynasty.cbb.core.injuries.GameSimInjuryEvent
+import dev.novux.dynasty.cbb.core.injuries.MedicalRedshirtPolicy
 import dev.novux.dynasty.cbb.core.roster.RosterPlayer
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,7 +28,8 @@ import dev.novux.dynasty.cbb.core.roster.RosterPlayer
 fun PostgameInjurySheet(
     events: List<GameSimInjuryEvent>,
     players: List<RosterPlayer>,
-    medicalEligible: (String) -> Boolean,
+    countsMedicalRedshirt: Boolean = true,
+    medicalEligibility: (String) -> MedicalRedshirtPolicy.Eligibility,
     onDismiss: () -> Unit,
     onApplyMedicalRedshirt: (String) -> Unit,
 ) {
@@ -47,8 +49,16 @@ fun PostgameInjurySheet(
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
             )
+            if (!countsMedicalRedshirt) {
+                Text(
+                    text = stringResource(R.string.postgame_injury_exhibition_note),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
             events.forEach { event ->
                 val name = nameById[event.playerId] ?: event.playerId
+                val player = players.firstOrNull { it.playerId == event.playerId }
                 Text(
                     text = stringResource(
                         R.string.postgame_injury_line,
@@ -58,13 +68,40 @@ fun PostgameInjurySheet(
                     ),
                     style = MaterialTheme.typography.bodyLarge,
                 )
-                if (medicalEligible(event.playerId)) {
+                player?.let {
+                    Text(
+                        text = stringResource(
+                            R.string.postgame_injury_rs_games_played,
+                            it.rsGamesPlayedSeason,
+                        ),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                val eligibility = medicalEligibility(event.playerId)
+                if (eligibility.eligible) {
                     OutlinedButton(
                         onClick = { onApplyMedicalRedshirt(event.playerId) },
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(stringResource(R.string.postgame_medical_redshirt_apply))
                     }
+                } else {
+                    val ineligibleCopy = when (eligibility.reason) {
+                        "exhibition_game" ->
+                            stringResource(R.string.postgame_medical_redshirt_exhibition)
+                        "too_many_games_played" ->
+                            stringResource(
+                                R.string.postgame_medical_redshirt_too_many_games,
+                                player?.rsGamesPlayedSeason ?: 0,
+                            )
+                        else -> stringResource(R.string.postgame_medical_redshirt_ineligible)
+                    }
+                    Text(
+                        text = ineligibleCopy,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
                 }
             }
             Button(onClick = onDismiss, modifier = Modifier.fillMaxWidth()) {

@@ -77,6 +77,11 @@ fun RosterCutsWeekEightPanel(
             ),
             style = MaterialTheme.typography.bodyLarge,
         )
+        Text(
+            text = stringResource(R.string.roster_cuts_walkon_tryout_hint),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
         if (atCap) {
             Text(
                 text = stringResource(R.string.roster_cuts_over_cap),

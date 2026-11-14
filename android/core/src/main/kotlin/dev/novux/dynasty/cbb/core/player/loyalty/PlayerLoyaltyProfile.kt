@@ -4,6 +4,7 @@ data class PlayerLoyaltyProfile(
     val loyalty: LoyaltyRating,
     val personality: LoyaltyPersonalityTag,
     val promise: CoachPromise?,
+    val promiseHistory: List<PlayerPromiseHistoryEntry> = emptyList(),
 ) {
     fun overviewLoyaltyLine(): String = "Loyalty: ${loyalty.value}"
 
@@ -13,6 +14,11 @@ data class PlayerLoyaltyProfile(
     }
 
     companion object {
-        val Empty = PlayerLoyaltyProfile(LoyaltyRating.Default, LoyaltyPersonalityTag.ProgramGuy, promise = null)
+        val Empty = PlayerLoyaltyProfile(
+            LoyaltyRating.Default,
+            LoyaltyPersonalityTag.ProgramGuy,
+            promise = null,
+            promiseHistory = emptyList(),
+        )
     }
 }

@@ -8,15 +8,21 @@ import org.junit.Test
 
 class DynastyHubMenuPolicyTest {
     @Test
-    fun marchMayhemVisibleInPostseason() {
+    fun marchMayhemVisibleAfterSelectionSundayInPostseason() {
         val position = CalendarPosition(1, CalendarPhase.Postseason, 1)
-        assertTrue(DynastyHubMenuPolicy.marchMayhemMenuVisible(position))
+        assertTrue(DynastyHubMenuPolicy.marchMayhemMenuVisible(position, selectionSundayPublished = true))
     }
 
     @Test
-    fun marchMayhemHiddenInRegularSeason() {
+    fun marchMayhemHiddenInPostseasonBeforeSelectionSunday() {
+        val position = CalendarPosition(1, CalendarPhase.Postseason, 1)
+        assertFalse(DynastyHubMenuPolicy.marchMayhemMenuVisible(position, selectionSundayPublished = false))
+    }
+
+    @Test
+    fun marchMayhemHiddenInRegularSeasonEvenIfSelectionPublished() {
         val position = CalendarPosition(1, CalendarPhase.RegularSeason, 10)
-        assertFalse(DynastyHubMenuPolicy.marchMayhemMenuVisible(position))
+        assertFalse(DynastyHubMenuPolicy.marchMayhemMenuVisible(position, selectionSundayPublished = true))
     }
 
     @Test

@@ -46,10 +46,10 @@ class GameSimInjuryRollTest {
         ),
     )
 
-    private fun starter(id: String) = RosterPlayer(
+    private fun starter(id: String, position: PlayerPosition, slotWire: String) = RosterPlayer(
         playerId = id,
         dynastyId = "d",
-        position = PlayerPosition.ShootingGuard,
+        position = position,
         classYear = PlayerClassYear.Junior,
         isStarter = true,
         depthOrder = 1,
@@ -57,12 +57,18 @@ class GameSimInjuryRollTest {
         ovr = 75,
         off = 75,
         def = 72,
-        starterSlotWire = "sg",
+        starterSlotWire = slotWire,
     )
 
     @Test
     fun highRateRollProducesInjuryAndLineupAdjust() {
-        val roster = listOf(starter("sg1"), starter("pg1"))
+        val roster = listOf(
+            starter("pg1", PlayerPosition.PointGuard, "pg"),
+            starter("sg1", PlayerPosition.ShootingGuard, "sg"),
+            starter("sf1", PlayerPosition.SmallForward, "sf"),
+            starter("pf1", PlayerPosition.PowerForward, "pf"),
+            starter("c1", PlayerPosition.Center, "c"),
+        )
         val simRoster = GameLineupPrep.build("h", roster)
         val input = GameSimInput(
             home = GameSimTeamInput("h", 75, 72),

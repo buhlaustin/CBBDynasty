@@ -9,7 +9,7 @@ class SeasonReviewGateTest {
     @Test
     fun enterOffseason_fromSeasonReview_rollsToNextYearOffseasonWeek1() {
         val state = WeekCheckpointState.bootstrap(1, CalendarPhase.SeasonReview)
-        val transition = SeasonReviewGate.enterOffseason(state)
+        val transition = SeasonReviewGate.enterOffseason(state, seasonReviewAcknowledged = true)
         val next = transition.advanceResult.nextState.activePosition
         assertEquals(CalendarPhase.Offseason, next.phase)
         assertEquals(2, next.seasonIndex)
@@ -23,5 +23,12 @@ class SeasonReviewGateTest {
         val off = WeekCheckpointState.bootstrap(1, CalendarPhase.Offseason)
         assertTrue(SeasonReviewGate.isActive(review))
         assertEquals(false, SeasonReviewGate.isActive(off))
+    }
+
+    @Test
+    fun canEnterOffseason_requiresAcknowledgement() {
+        val review = WeekCheckpointState.bootstrap(1, CalendarPhase.SeasonReview)
+        assertEquals(false, SeasonReviewGate.canEnterOffseason(review, seasonReviewAcknowledged = false))
+        assertTrue(SeasonReviewGate.canEnterOffseason(review, seasonReviewAcknowledged = true))
     }
 }

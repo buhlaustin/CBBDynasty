@@ -3,6 +3,7 @@ package dev.novux.dynasty.cbb.core.dashboard
 import dev.novux.dynasty.cbb.core.balance.BalanceMedicalRedshirtRules
 import dev.novux.dynasty.cbb.core.calendar.CalendarPhase
 import dev.novux.dynasty.cbb.core.calendar.CalendarPosition
+import dev.novux.dynasty.cbb.core.dashboard.InSeasonRecruitingDashboardContext
 import dev.novux.dynasty.cbb.core.preseason.PreseasonTaskId
 import dev.novux.dynasty.cbb.core.preseason.PreseasonTaskProgress
 import dev.novux.dynasty.cbb.core.schedule.PreseasonSchedulePlan
@@ -72,6 +73,26 @@ class DashboardTaskGateTest {
             BalanceMedicalRedshirtRules(),
         )
         assertTrue(snapshot.optional.none { it.id == DashboardTaskId.PlayScheduledGame })
+        assertTrue(snapshot.optional.any { it.id == DashboardTaskId.ReplayStagedWeekGame })
+    }
+
+    @Test
+    fun inSeasonRecruitingSpendOptionalWhenLedgerHasPoints() {
+        val snapshot = DashboardTaskGate.inSeason(
+            CalendarPosition(2, CalendarPhase.RegularSeason, 4),
+            null,
+            0,
+            false,
+            null,
+            emptyList(),
+            BalanceMedicalRedshirtRules(),
+            recruiting = InSeasonRecruitingDashboardContext(
+                phase = CalendarPhase.RegularSeason,
+                pointsAvailable = 150,
+                cycleClosed = false,
+            ),
+        )
+        assertTrue(snapshot.optional.any { it.id == DashboardTaskId.SpendRecruitingPoints })
     }
 
     @Test

@@ -46,10 +46,29 @@ data class MarchMayhemInvitationalPanel(
     val completed: Boolean,
 )
 
+/** Mini progress rail for one national event on the Overview tab ([`postseason-frame.md`](postseason-frame.md)). */
+data class MarchMayhemProgressRail(
+    val eventLabel: String,
+    val fieldSize: Int,
+    val gamesPlayed: Int,
+    val championDisplayName: String?,
+    val userTeamAlive: Boolean,
+    val userInField: Boolean,
+    val openingRoundActive: Boolean = false,
+    val openingAdvancerCount: Int = 0,
+)
+
+data class MarchMayhemOverviewPanel(
+    val selectionFieldCount: Int,
+    val rails: List<MarchMayhemProgressRail>,
+    val todaysGames: List<MarchMayhemGameRow>,
+)
+
 data class MarchMayhemHubSnapshot(
     val seasonIndex: Int,
     val selectionPublished: Boolean,
     val userTeamId: String,
+    val overview: MarchMayhemOverviewPanel,
     val ncba: MarchMayhemNcbaPanel,
     val nci: MarchMayhemInvitationalPanel,
     val heritage: MarchMayhemInvitationalPanel,
@@ -73,27 +92,37 @@ object MarchMayhemHubSnapshotFactory {
         val main = standings.ncbaMainBracket
         val nci = standings.nciBracket
         val heritage = standings.heritageBracket
+        val ncbaPanel = buildNcba(packIndex, selection, opening, main, userTeamId, seedByTeam)
+        val nciPanel = buildInvitational(
+            packIndex,
+            nci,
+            selection.nciField,
+            userTeamId,
+            "NCI",
+            nciSeed,
+        )
+        val heritagePanel = buildInvitational(
+            packIndex,
+            heritage,
+            selection.heritageField,
+            userTeamId,
+            "HC",
+            hcSeed,
+        )
         return MarchMayhemHubSnapshot(
             seasonIndex = seasonIndex,
             selectionPublished = true,
             userTeamId = userTeamId,
-            ncba = buildNcba(packIndex, selection, opening, main, userTeamId, seedByTeam),
-            nci = buildInvitational(
-                packIndex,
-                nci,
-                selection.nciField,
+            overview = buildOverview(
+                selection,
                 userTeamId,
-                "NCI",
-                nciSeed,
+                ncbaPanel,
+                nciPanel,
+                heritagePanel,
             ),
-            heritage = buildInvitational(
-                packIndex,
-                heritage,
-                selection.heritageField,
-                userTeamId,
-                "HC",
-                hcSeed,
-            ),
+            ncba = ncbaPanel,
+            nci = nciPanel,
+            heritage = heritagePanel,
         )
     }
 
@@ -101,10 +130,102 @@ object MarchMayhemHubSnapshotFactory {
         seasonIndex = seasonIndex,
         selectionPublished = false,
         userTeamId = userTeamId,
+        overview = MarchMayhemOverviewPanel(0, emptyList(), emptyList()),
         ncba = MarchMayhemNcbaPanel(false, emptyList(), false, emptyList(), emptyList(), null, emptyList()),
         nci = MarchMayhemInvitationalPanel("NCI", emptyList(), null, emptyList(), false),
         heritage = MarchMayhemInvitationalPanel("HC", emptyList(), null, emptyList(), false),
     )
+
+    private fun buildOverview(
+        selection: SelectionSundaySnapshot,
+        userTeamId: String,
+        ncba: MarchMayhemNcbaPanel,
+        nci: MarchMayhemInvitationalPanel,
+        heritage: MarchMayhemInvitationalPanel,
+    ): MarchMayhemOverviewPanel {
+        val allGames = ncba.games + nci.games + heritage.games
+        val latestWeek = allGames.maxOfOrNull { it.postseasonWeek }
+        val todaysGames = latestWeek?.let { week ->
+            allGames.filter { it.postseasonWeek == week }.sortedBy { it.homeDisplayName }
+        }.orEmpty()
+        val fieldCount =
+            selection.ncbaField.size + selection.nciField.size + selection.heritageField.size
+        val rails = listOf(
+            progressRail(
+                eventLabel = "NCBA",
+                panelField = ncba.field,
+                games = ncba.games,
+                champion = ncba.champion,
+                userTeamId = userTeamId,
+                openingRoundActive = ncba.openingSimmed && !ncba.mainBracketSimmed && ncba.openingAdvancers.isNotEmpty(),
+                openingAdvancerCount = ncba.openingAdvancers.size,
+            ),
+            progressRail(
+                eventLabel = nci.tournamentShortLabel,
+                panelField = nci.field,
+                games = nci.games,
+                champion = nci.champion,
+                userTeamId = userTeamId,
+            ),
+            progressRail(
+                eventLabel = heritage.tournamentShortLabel,
+                panelField = heritage.field,
+                games = heritage.games,
+                champion = heritage.champion,
+                userTeamId = userTeamId,
+            ),
+        )
+        return MarchMayhemOverviewPanel(
+            selectionFieldCount = fieldCount,
+            rails = rails,
+            todaysGames = todaysGames,
+        )
+    }
+
+    private fun progressRail(
+        eventLabel: String,
+        panelField: List<MarchMayhemTeamRow>,
+        games: List<MarchMayhemGameRow>,
+        champion: MarchMayhemTeamRow?,
+        userTeamId: String,
+        openingRoundActive: Boolean = false,
+        openingAdvancerCount: Int = 0,
+    ): MarchMayhemProgressRail {
+        val fieldSize = panelField.size.coerceAtLeast(
+            games.flatMap { listOf(it.homeTeamId, it.awayTeamId) }.distinct().size,
+        )
+        val userInField = panelField.any { it.teamId == userTeamId }
+        return MarchMayhemProgressRail(
+            eventLabel = eventLabel,
+            fieldSize = fieldSize,
+            gamesPlayed = games.size,
+            championDisplayName = champion?.displayName,
+            userTeamAlive = isUserTeamAlive(userTeamId, panelField, games, champion),
+            userInField = userInField,
+            openingRoundActive = openingRoundActive,
+            openingAdvancerCount = openingAdvancerCount,
+        )
+    }
+
+    private fun isUserTeamAlive(
+        userTeamId: String,
+        field: List<MarchMayhemTeamRow>,
+        games: List<MarchMayhemGameRow>,
+        champion: MarchMayhemTeamRow?,
+    ): Boolean {
+        if (field.none { it.teamId == userTeamId }) return false
+        if (champion != null) return champion.teamId == userTeamId
+        val eliminated = games.any { game ->
+            val userHome = game.homeTeamId == userTeamId
+            val userAway = game.awayTeamId == userTeamId
+            when {
+                userHome -> game.homeScore < game.awayScore
+                userAway -> game.awayScore < game.homeScore
+                else -> false
+            }
+        }
+        return !eliminated
+    }
 
     private fun buildNcba(
         index: IdentityPackIndex,

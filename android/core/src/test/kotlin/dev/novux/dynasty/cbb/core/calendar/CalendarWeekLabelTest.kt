@@ -13,6 +13,21 @@ class CalendarWeekLabelTest {
     }
 
     @Test
+    fun postseasonLabelIncludesNcbaRound() {
+        val label = CalendarWeekLabel.display(CalendarPosition(1, CalendarPhase.Postseason, 1))
+        assertEquals("Postseason Week 1 — Opening Round", label)
+    }
+
+    @Test
+    fun conferenceTournamentLabelIncludesPackMaxWhenProvided() {
+        val label = CalendarWeekLabel.display(
+            CalendarPosition(1, CalendarPhase.ConferenceTournament, 2),
+            leagueMaxConfTourneyWeeks = 4,
+        )
+        assertEquals("Conference Tournament Week 2 of 4", label)
+    }
+
+    @Test
     fun advancingEmptyExhibitionWeek_succeeds() {
         val state = WeekCheckpointState.bootstrap(1, CalendarPhase.Exhibition)
         val result = state.advanceWeek()

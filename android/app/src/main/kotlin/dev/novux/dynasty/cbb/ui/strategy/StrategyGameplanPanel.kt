@@ -57,6 +57,12 @@ fun StrategyGameplanPanel(
                 },
             )
         }
+        StrategyDefensiveAssignmentPanel(
+            players = players,
+            starters = starters,
+            gameplan = gameplan,
+            onGameplanChange = onGameplanChange,
+        )
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,

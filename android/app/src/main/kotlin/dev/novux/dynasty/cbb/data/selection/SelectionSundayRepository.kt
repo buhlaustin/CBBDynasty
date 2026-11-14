@@ -2,6 +2,7 @@ package dev.novux.dynasty.cbb.data.selection
 
 import dev.novux.dynasty.cbb.core.balance.selectionTuning
 import dev.novux.dynasty.cbb.core.selection.ConferenceChampionResolver
+import dev.novux.dynasty.cbb.core.selection.NcbaConferenceAutoBidPolicy
 import dev.novux.dynasty.cbb.core.selection.SelectionSundayEngine
 import dev.novux.dynasty.cbb.core.selection.SelectionSundayInput
 import dev.novux.dynasty.cbb.core.selection.SelectionSundaySnapshot
@@ -41,7 +42,15 @@ class SelectionSundayRepository(
                 heritageEligible = teams.associate { it.teamId to true },
                 conferenceChampions = standings.conferenceTournaments?.let {
                     ConferenceChampionResolver.ncbaAutoBidsFromTournaments(it)
-                } ?: ConferenceChampionResolver.topNetChampionPerConference(teams, net),
+                } ?: NcbaConferenceAutoBidPolicy.fromStandings(
+                    teams = teams,
+                    records = standings.records,
+                    seasonResults = standings.seasonResults,
+                    tiebreakersByConference = { confId ->
+                        index.conference(confId)?.standingsTiebreakers ?: emptyList()
+                    },
+                    netRankByTeam = net,
+                ),
                 programPrestige = teams.associate { it.teamId to it.programPrestige },
                 records = standings.records,
                 results = standings.seasonResults,

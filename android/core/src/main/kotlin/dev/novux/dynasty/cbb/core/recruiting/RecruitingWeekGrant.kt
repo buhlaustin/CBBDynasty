@@ -56,7 +56,7 @@ object RecruitingWeekGrant {
         offseasonWeekIndex: Int?,
         pointsSpentThisWeek: Int,
     ): Pair<RecruitingCycleLedger, WeekGrantBreakdown> {
-        if (ledger.cycleClosed) {
+        if (RecruitingClosedCycleWeekGrantPolicy.skipsWeeklyGrant(ledger)) {
             val breakdown = WeekGrantBreakdown(
                 weeklyBase = ledger.weeklyPoolBase,
                 crunchMultiplier = 1.0,

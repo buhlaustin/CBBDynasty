@@ -12,8 +12,9 @@ object PreseasonRequiredDashboardTasks {
                 DashboardTask(
                     id = DashboardTaskId.PreseasonRequired,
                     kind = DashboardTaskKind.Required,
-                    deepLink = DashboardDeepLink.PreseasonChecklist,
+                    deepLink = PreseasonTaskDeepLinks.deepLink(taskId),
                     stringFormatArgs = listOf(taskId.name),
+                    preseasonTaskId = taskId,
                 )
             }
 }

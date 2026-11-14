@@ -11,6 +11,7 @@ import dev.novux.dynasty.cbb.core.player.loyalty.PlayerLoyaltyProfile
 import dev.novux.dynasty.cbb.core.player.loyalty.PromiseStatus
 import dev.novux.dynasty.cbb.core.player.loyalty.TenurePromiseBootstrap
 import dev.novux.dynasty.cbb.core.roster.PlayerPosition
+import dev.novux.dynasty.cbb.core.player.appearance.PlayerAppearance
 import dev.novux.dynasty.cbb.core.roster.RosterPlayerSeed
 
 object PlayerBootstrapFactory {
@@ -32,6 +33,7 @@ object PlayerBootstrapFactory {
                 )
             }
         } ?: TenurePromiseBootstrap.atHardCommit(seed.isStarter)
+        val appearance = seed.resolvedAppearanceOrGenerate()
         return seed.copy(
             displayName = seed.displayName.ifBlank { placeholder.first },
             hometownCity = seed.hometownCity.ifBlank { placeholder.second },
@@ -65,17 +67,32 @@ object PlayerBootstrapFactory {
             promiseStatusWire = promise.status.wire,
             promiseLockedSeasonIndex = promise.lockedAtSeasonIndex,
             promiseStayTopN = promise.stayTopN,
+            skinToneId = appearance.skinToneId,
+            hairColorId = appearance.hairColorId,
+            hairStyleId = appearance.hairStyleId,
+            avatarPresetId = appearance.avatarPresetId,
         )
     }
+
+    private fun RosterPlayerSeed.resolvedAppearanceOrGenerate(): PlayerAppearance =
+        if (avatarPresetId.isNotBlank()) {
+            PlayerAppearance.fromPreset(avatarPresetId)
+        } else if (skinToneId.isNotBlank()) {
+            PlayerAppearance(skinToneId, hairColorId, hairStyleId)
+        } else {
+            PlayerAppearance.fromPlayerId(playerId)
+        }
 
     fun fromSeed(seed: RosterPlayerSeed): DynastyPlayer {
         val enriched = if (seed.displayName.isBlank() || seed.promiseTypeWire == null) enrichSeed(seed) else seed
         val ratings = enriched.toRatings()
         val archetype = PlayerArchetype.fromWire(enriched.archetypeWire)
             ?: PlayerArchetypeAssigner.assign(enriched.position, ratings)
+        val appearance = enriched.resolvedAppearanceOrGenerate()
         return DynastyPlayer(
             playerId = enriched.playerId,
             dynastyId = enriched.dynastyId,
+            appearance = appearance,
             identity = PlayerIdentity(
                 displayName = enriched.displayName,
                 hometownCity = enriched.hometownCity,

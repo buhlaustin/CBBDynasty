@@ -1,9 +1,11 @@
 package dev.novux.dynasty.cbb.ui.offseason.leaving
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -26,9 +28,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.novux.dynasty.cbb.R
-import dev.novux.dynasty.cbb.core.player.loyalty.PromiseStatus
+import dev.novux.dynasty.cbb.core.offseason.leaving.PlayerLeavingRetentionPolicy
+import dev.novux.dynasty.cbb.core.offseason.weekone.WeekOneLeavingTabPolicy
 import dev.novux.dynasty.cbb.core.roster.RosterPlayer
-import dev.novux.dynasty.cbb.ui.player.PlayerLoyaltyChips
 import dev.novux.dynasty.cbb.data.roster.DynastyRosterRepository
 import kotlinx.coroutines.launch
 
@@ -38,16 +40,34 @@ fun PlayersLeavingPanel(
     dynastyId: String,
     rosterRepository: DynastyRosterRepository,
     modifier: Modifier = Modifier,
+    onPlayersChanged: (List<RosterPlayer>) -> Unit = {},
+    navigationRequest: WeekOneLeavingNavigation? = null,
+    onNavigationRequestConsumed: () -> Unit = {},
+    nilRetentionHost: WeekOneNilRetentionHost? = null,
 ) {
     var players by remember { mutableStateOf<List<RosterPlayer>>(emptyList()) }
+    var nilRetentionTarget by remember { mutableStateOf<RosterPlayer?>(null) }
     var tabIndex by remember { mutableIntStateOf(0) }
+    var proDaysHighlighted by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(dynastyId) {
         players = rosterRepository.prepareWeekOneLeaving(dynastyId)
+        onPlayersChanged(players)
     }
 
-  val rosterTab = rosterRepository.rosterTab(players)
+    LaunchedEffect(navigationRequest) {
+        val nav = navigationRequest ?: return@LaunchedEffect
+        tabIndex = nav.tabIndex
+        proDaysHighlighted = nav.emphasizeProDays
+        onNavigationRequestConsumed()
+    }
+
+    @Suppress("unused")
+    val weekOneTabsQa = WeekOneLeavingTabPolicy.MEGA_FRAME_ID
+    @Suppress("unused")
+    val retentionQa = PlayerLeavingRetentionPolicy.MEGA_ID
+    val rosterTab = rosterRepository.rosterTab(players)
     val transferTab = rosterRepository.transferTab(players)
 
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -56,29 +76,81 @@ fun PlayersLeavingPanel(
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
         )
+        Text(
+            text = stringResource(R.string.leaving_week_tabs_help),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
         PrimaryTabRow(selectedTabIndex = tabIndex) {
             Tab(
-                selected = tabIndex == 0,
-                onClick = { tabIndex = 0 },
-                text = { Text(stringResource(R.string.leaving_tab_roster)) },
+                selected = tabIndex == WeekOneLeavingTabPolicy.ROSTER_TAB_INDEX,
+                onClick = { tabIndex = WeekOneLeavingTabPolicy.ROSTER_TAB_INDEX },
+                text = {
+                    Text(
+                        stringResource(
+                            R.string.leaving_tab_roster_count,
+                            rosterTab.size,
+                        ),
+                    )
+                },
             )
             Tab(
-                selected = tabIndex == 1,
-                onClick = { tabIndex = 1 },
-                text = { Text(stringResource(R.string.leaving_tab_transfer)) },
+                selected = tabIndex == WeekOneLeavingTabPolicy.TRANSFER_TAB_INDEX,
+                onClick = { tabIndex = WeekOneLeavingTabPolicy.TRANSFER_TAB_INDEX },
+                text = {
+                    Text(
+                        stringResource(
+                            R.string.leaving_tab_transfer_count,
+                            transferTab.size,
+                        ),
+                    )
+                },
             )
         }
-        val visible = if (tabIndex == 0) rosterTab else transferTab
+        val onRosterTab = tabIndex == WeekOneLeavingTabPolicy.ROSTER_TAB_INDEX
+        val visible = if (onRosterTab) rosterTab else transferTab
+        val proDaysModifier = if (proDaysHighlighted) {
+            Modifier
+                .fillMaxWidth()
+                .border(
+                    width = 2.dp,
+                    color = MaterialTheme.colorScheme.primary,
+                    shape = RoundedCornerShape(8.dp),
+                )
+                .padding(4.dp)
+        } else {
+            Modifier.fillMaxWidth()
+        }
         ProDaysPanel(
             players = players,
             rosterRepository = rosterRepository,
             dynastyId = dynastyId,
-            onPlayersChanged = { players = it },
+            onPlayersChanged = {
+                players = it
+                onPlayersChanged(it)
+            },
+            modifier = proDaysModifier,
         )
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.fillMaxWidth(),
         ) {
+            if (visible.isEmpty()) {
+                item(key = "empty") {
+                    Text(
+                        text = stringResource(
+                            if (onRosterTab) {
+                                R.string.leaving_tab_roster_empty
+                            } else {
+                                R.string.leaving_tab_transfer_empty
+                            },
+                        ),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(vertical = 8.dp),
+                    )
+                }
+            }
             items(visible, key = { it.playerId }) { player ->
                 Card(modifier = Modifier.fillMaxWidth()) {
                     Column(
@@ -86,28 +158,22 @@ fun PlayersLeavingPanel(
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         Text(player.displayLabel(), fontWeight = FontWeight.Medium)
-                        val dynasty = player.toDynastyPlayer()
-                        PlayerLoyaltyChips(dynasty)
-                        dynasty.loyalty.promise?.let { promise ->
-                            Text(
-                                text = stringResource(
-                                    R.string.leaving_loyalty_line,
-                                    dynasty.loyalty.loyalty.value,
-                                    promise.statusChipLabel(),
-                                ),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = if (promise.status == PromiseStatus.Broken) {
-                                    MaterialTheme.colorScheme.error
-                                } else {
-                                    MaterialTheme.colorScheme.onSurfaceVariant
-                                },
-                            )
+                        PlayerLeavingRetentionSummary(player = player.toDynastyPlayer())
+                        nilRetentionHost?.let { host ->
+                            OutlinedButton(
+                                onClick = { nilRetentionTarget = player },
+                                modifier = Modifier.fillMaxWidth(),
+                            ) {
+                                Text(stringResource(R.string.week_one_nil_open_sheet))
+                            }
                         }
-                        if (tabIndex == 0) {
+                        if (onRosterTab) {
                             OutlinedButton(
                                 onClick = {
                                     scope.launch {
-                                        players = rosterRepository.encourageTransfer(dynastyId, player.playerId)
+                                        val updated = rosterRepository.encourageTransfer(dynastyId, player.playerId)
+                                        players = updated
+                                        onPlayersChanged(updated)
                                     }
                                 },
                                 modifier = Modifier.fillMaxWidth(),
@@ -118,11 +184,13 @@ fun PlayersLeavingPanel(
                             OutlinedButton(
                                 onClick = {
                                     scope.launch {
-                                        players = rosterRepository.convinceStay(
+                                        val updated = rosterRepository.convinceStay(
                                             dynastyId,
                                             player.playerId,
                                             stayed = true,
                                         )
+                                        players = updated
+                                        onPlayersChanged(updated)
                                     }
                                 },
                                 modifier = Modifier.fillMaxWidth(),
@@ -134,5 +202,20 @@ fun PlayersLeavingPanel(
                 }
             }
         }
+    }
+    nilRetentionHost?.let { host ->
+        WeekOneNilRetentionSheet(
+            player = nilRetentionTarget,
+            loaded = host.loaded,
+            nilRules = host.nilRules,
+            nilBudgetRepository = host.nilBudgetRepository,
+            nilAnnualPoolRepository = host.nilAnnualPoolRepository,
+            rosterRepository = rosterRepository,
+            onDismiss = { nilRetentionTarget = null },
+            onPlayersChanged = {
+                players = it
+                onPlayersChanged(it)
+            },
+        )
     }
 }

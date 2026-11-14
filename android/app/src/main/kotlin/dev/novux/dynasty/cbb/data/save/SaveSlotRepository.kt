@@ -5,8 +5,12 @@ import dev.novux.dynasty.cbb.core.calendar.SeasonMembershipYear
 import dev.novux.dynasty.cbb.core.calendar.SeasonReviewGate
 import dev.novux.dynasty.cbb.core.calendar.SeasonYearAdvanceEngine
 import dev.novux.dynasty.cbb.core.save.DynastyBootstrap
+import dev.novux.dynasty.cbb.core.save.DynastyExportArchive
+import dev.novux.dynasty.cbb.core.save.DynastyExportEngine
+import dev.novux.dynasty.cbb.core.save.DynastyWizardBootstrapPolicy
 import dev.novux.dynasty.cbb.core.save.DynastyLoadFailure
 import dev.novux.dynasty.cbb.core.save.DynastyLoadResult
+import dev.novux.dynasty.cbb.core.save.DynastyWeekAdvanceBlockReason
 import dev.novux.dynasty.cbb.core.save.DynastySaveValidator
 import dev.novux.dynasty.cbb.core.roster.SeasonOneRosterGenerator
 import dev.novux.dynasty.cbb.core.save.NewGameDraft
@@ -15,6 +19,7 @@ import dev.novux.dynasty.cbb.core.save.DynastySchema
 import dev.novux.dynasty.cbb.core.save.LoadedDynasty
 import dev.novux.dynasty.cbb.core.save.SaveSlotSummary
 import dev.novux.dynasty.cbb.core.save.SaveSlots
+import dev.novux.dynasty.cbb.core.save.SlotAdvanceSerialGuard
 import dev.novux.dynasty.cbb.database.calendar.DynastyCalendarEntity
 import dev.novux.dynasty.cbb.data.calendar.WeekCheckpointRepository
 import dev.novux.dynasty.cbb.data.balance.BalanceParseException
@@ -22,6 +27,7 @@ import dev.novux.dynasty.cbb.data.balance.BalanceRulesetRepository
 import dev.novux.dynasty.cbb.data.pack.PackRepository
 import dev.novux.dynasty.cbb.data.sim.SimTuningParseException
 import dev.novux.dynasty.cbb.core.advance.SimWeekAdvanceInput
+import dev.novux.dynasty.cbb.core.advance.UserLeagueFastSimBundle
 import dev.novux.dynasty.cbb.core.dashboard.InSeasonWeekGames
 import dev.novux.dynasty.cbb.core.advance.SimWeekAdvanceResolver
 import dev.novux.dynasty.cbb.core.advance.SimWeekConfirmation
@@ -33,13 +39,25 @@ import kotlinx.coroutines.sync.withLock
 import dev.novux.dynasty.cbb.core.balance.BalanceRecruitingParser
 import dev.novux.dynasty.cbb.core.balance.BalanceRecruitingRecommendedParser
 import dev.novux.dynasty.cbb.core.calendar.CalendarPhase
+import dev.novux.dynasty.cbb.core.calendar.bye.ByeWeekPolicy
+import dev.novux.dynasty.cbb.core.calendar.checkpoint.ProvisionalGameMark
+import dev.novux.dynasty.cbb.core.calendar.checkpoint.ArchivedGameInjuryEvent
 import dev.novux.dynasty.cbb.core.calendar.checkpoint.WeekCheckpointState
+import dev.novux.dynasty.cbb.core.injuries.InjuryApplyContext
 import dev.novux.dynasty.cbb.core.preseason.SeasonStartFocus
 import dev.novux.dynasty.cbb.core.calendar.CalendarWeekLabel
 import dev.novux.dynasty.cbb.core.calendar.PhaseWeekPolicy
+import dev.novux.dynasty.cbb.core.advance.InSeasonAdvanceConfirmPolicy
+import dev.novux.dynasty.cbb.core.advance.OffseasonAdvanceConfirmPolicy
+import dev.novux.dynasty.cbb.core.advance.RegularSeasonWeekBatchPolicy
 import dev.novux.dynasty.cbb.core.portal.PortalCyclePolicy
-import dev.novux.dynasty.cbb.core.recruiting.RecruitingClassSeed
+import dev.novux.dynasty.cbb.data.news.NewsFeedRepository
+import dev.novux.dynasty.cbb.data.notification.DashboardNotificationWeekAdvanceAppender
+import dev.novux.dynasty.cbb.data.notification.NotificationFeedRepository
+import dev.novux.dynasty.cbb.data.preseason.IncomingClassSeedRepository
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingCyclePolicy
+import dev.novux.dynasty.cbb.core.recruiting.SeasonOneRecruitingBootstrap
+import dev.novux.dynasty.cbb.core.recruiting.SigningDayPreseasonRecruitingTransition
 import dev.novux.dynasty.cbb.core.recruiting.SchoolRecruitingContext
 import dev.novux.dynasty.cbb.core.recruiting.ai.AiRecruitingWeekRunner
 import dev.novux.dynasty.cbb.data.portal.PortalCycleRepository
@@ -48,11 +66,22 @@ import dev.novux.dynasty.cbb.data.chemistry.ChemistryRepository
 import dev.novux.dynasty.cbb.data.discipline.DisciplineRepository
 import dev.novux.dynasty.cbb.data.league.LeagueWeekBatchRepository
 import dev.novux.dynasty.cbb.data.preseason.PreseasonScheduleRepository
+import dev.novux.dynasty.cbb.core.calendar.CalendarPosition
+import dev.novux.dynasty.cbb.core.dashboard.DashboardLastGameSnapshotBuilder
+import dev.novux.dynasty.cbb.core.player.games.PlayerGameLogArchiveEngine
+import dev.novux.dynasty.cbb.data.dashboard.DashboardLastGameRepository
+import dev.novux.dynasty.cbb.core.player.games.PlayerGameLogEntry
+import dev.novux.dynasty.cbb.data.player.PlayerPromiseStatusRepository
+import dev.novux.dynasty.cbb.data.player.PlayerStatsRepository
+import dev.novux.dynasty.cbb.data.sim.UserLeagueGameSimFactory
 import dev.novux.dynasty.cbb.data.roster.DynastyRosterRepository
 import dev.novux.dynasty.cbb.core.coach.CoachArchetype
+import dev.novux.dynasty.cbb.data.coach.CoachAchievementsRepository
 import dev.novux.dynasty.cbb.data.coach.CoachSkillPointRepository
 import dev.novux.dynasty.cbb.data.recruiting.AiRecruitingRepository
 import dev.novux.dynasty.cbb.data.recruiting.RecruitingEconomyRepository
+import dev.novux.dynasty.cbb.data.recruiting.RecruitingManualWeekSpendRepository
+import dev.novux.dynasty.cbb.data.seasonreview.SeasonReviewProgressRepository
 import dev.novux.dynasty.cbb.data.sim.SimTuningRepository
 import dev.novux.dynasty.cbb.database.DynastyDatabase
 import dev.novux.dynasty.cbb.database.dynasty.toCoachEntity
@@ -62,8 +91,11 @@ import dev.novux.dynasty.cbb.database.dynasty.toDomain
 import dev.novux.dynasty.cbb.database.save.SaveSlotEntity
 import dev.novux.dynasty.cbb.database.save.ensureSlotRows
 import dev.novux.dynasty.cbb.database.save.toSummary
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import java.util.UUID
 
 private val SCHEDULED_GAME_PHASES = setOf(
@@ -92,7 +124,19 @@ class SaveSlotRepository(
     private val nilAnnualPoolRepository: dev.novux.dynasty.cbb.data.nil.NilAnnualPoolRepository,
     private val dynastyAutomationRepository: dev.novux.dynasty.cbb.data.settings.DynastyAutomationRepository,
     private val appSettingsRepository: dev.novux.dynasty.cbb.data.settings.AppSettingsRepository,
+    private val playerStatsRepository: PlayerStatsRepository,
+    private val incomingClassSeedRepository: IncomingClassSeedRepository,
+    private val newsFeedRepository: NewsFeedRepository,
+    private val userLeagueGameSimFactory: UserLeagueGameSimFactory,
+    private val coachAchievementsRepository: CoachAchievementsRepository,
+    private val seasonReviewProgressRepository: SeasonReviewProgressRepository,
+    private val dashboardLastGameRepository: DashboardLastGameRepository,
+    private val recruitingManualWeekSpendRepository: RecruitingManualWeekSpendRepository,
+    private val packDynastyIdentityRepository: dev.novux.dynasty.cbb.data.pack.PackDynastyIdentityRepository,
+    private val notificationFeedRepository: NotificationFeedRepository,
 ) {
+    private val dashboardNotificationWeekAdvanceAppender =
+        DashboardNotificationWeekAdvanceAppender(notificationFeedRepository)
     private val slotDao = database.saveSlotDao()
     private val metadataDao = database.dynastyMetadataDao()
     private val coachDao = database.dynastyCoachDao()
@@ -100,6 +144,8 @@ class SaveSlotRepository(
     private val staffDao = database.dynastyStaffDao()
     private val calendarDao = database.dynastyCalendarDao()
     private val initMutex = Mutex()
+    private val advanceSerialGuard = SlotAdvanceSerialGuard()
+    private val newGameSignMutex = Mutex()
 
     suspend fun ensureInitialized() {
         initMutex.withLock {
@@ -112,9 +158,9 @@ class SaveSlotRepository(
     }
 
     fun observeSlots(): Flow<List<SaveSlotSummary>> =
-        slotDao.observeAll().map { rows ->
-            ensureSlotRows(rows).map { it.toSummary() }
-        }
+        slotDao.observeAll()
+            .map { rows -> ensureSlotRows(rows).map { it.toSummary() } }
+            .catch { emit(defaultEmptySlotSummaries()) }
 
     fun observeContinueSlot(): Flow<SaveSlotSummary?> =
         observeSlots().map { slots ->
@@ -123,14 +169,18 @@ class SaveSlotRepository(
                 .maxByOrNull { it.lastPlayedAtEpochMillis ?: 0L }
         }
 
-    suspend fun listSlots(): List<SaveSlotSummary> {
+    suspend fun listSlots(): List<SaveSlotSummary> = try {
         ensureInitialized()
-        return ensureSlotRows(slotDao.listAll()).map { it.toSummary() }
+        ensureSlotRows(slotDao.listAll()).map { it.toSummary() }
+    } catch (_: Exception) {
+        defaultEmptySlotSummaries()
     }
 
-    suspend fun continueSlot(): SaveSlotSummary? {
+    suspend fun continueSlot(): SaveSlotSummary? = try {
         ensureInitialized()
-        return slotDao.getMostRecentlyPlayed()?.toSummary()
+        slotDao.getMostRecentlyPlayed()?.toSummary()
+    } catch (_: Exception) {
+        null
     }
 
     suspend fun firstEmptySlotIndex(): Int? {
@@ -140,17 +190,17 @@ class SaveSlotRepository(
             ?.slotIndex
     }
 
-    suspend fun loadSlot(slotIndex: Int): DynastyLoadResult {
+    suspend fun loadSlot(slotIndex: Int): DynastyLoadResult = withContext(Dispatchers.IO) {
         require(slotIndex in SaveSlots.INDICES) { "slotIndex out of range" }
-        return try {
+        try {
             ensureInitialized()
             val entity = slotDao.getByIndex(slotIndex)
-                ?: return DynastyLoadResult.Unreadable(
+                ?: return@withContext DynastyLoadResult.Unreadable(
                     slotIndex,
                     DynastyLoadFailure.DatabaseRead("slot row missing"),
                 )
             val summary = entity.toSummary()
-            if (summary.isEmpty) return DynastyLoadResult.SlotEmpty
+            if (summary.isEmpty) return@withContext DynastyLoadResult.SlotEmpty
 
             val slotSnap = DynastySaveValidator.SlotSnapshot(
                 slotIndex = slotIndex,
@@ -169,10 +219,16 @@ class SaveSlotRepository(
                 )
             }
             DynastySaveValidator.validateBeforeLoad(slotSnap, metaSnap)?.let { failure ->
-                return DynastyLoadResult.Unreadable(slotIndex, failure)
+                return@withContext DynastyLoadResult.Unreadable(slotIndex, failure)
+            }
+            val dynastyIdForCore = summary.dynastyId!!
+            val hasCoach = coachDao.getByDynastyId(dynastyIdForCore) != null
+            val rosterCount = rosterDao.listForDynasty(dynastyIdForCore).size
+            DynastySaveValidator.validateSignedDynastyCore(hasCoach, rosterCount)?.let { failure ->
+                return@withContext DynastyLoadResult.Unreadable(slotIndex, failure)
             }
             val meta = metadata
-                ?: return DynastyLoadResult.Unreadable(
+                ?: return@withContext DynastyLoadResult.Unreadable(
                     slotIndex,
                     DynastyLoadFailure.MissingMetadata(summary.dynastyId!!),
                 )
@@ -185,7 +241,7 @@ class SaveSlotRepository(
                     meta.balanceSchemaVersion,
                 )
             } catch (e: BalanceParseException) {
-                return DynastyLoadResult.Unreadable(
+                return@withContext DynastyLoadResult.Unreadable(
                     slotIndex,
                     DynastyLoadFailure.InvalidBalanceRuleset(e.message ?: "balance load failed"),
                 )
@@ -194,7 +250,7 @@ class SaveSlotRepository(
             val simTuning = try {
                 simTuningRepository.restorePinned(meta.simTuningId, meta.simSchemaVersion)
             } catch (e: SimTuningParseException) {
-                return DynastyLoadResult.Unreadable(
+                return@withContext DynastyLoadResult.Unreadable(
                     slotIndex,
                     DynastyLoadFailure.InvalidSimTuning(e.message ?: "sim tuning load failed"),
                 )
@@ -203,7 +259,7 @@ class SaveSlotRepository(
             val calendarRow = calendarDao.getByDynastyId(meta.dynastyId)
             calendarRow?.toCalendarSnapshot()?.let { snap ->
                 DynastySaveValidator.validateCalendar(snap)?.let { failure ->
-                    return DynastyLoadResult.Unreadable(slotIndex, failure)
+                    return@withContext DynastyLoadResult.Unreadable(slotIndex, failure)
                 }
             }
 
@@ -213,7 +269,7 @@ class SaveSlotRepository(
                 }
             } else {
                 weekCheckpointRepository.loadCheckpoint(meta.dynastyId)
-                    ?: return DynastyLoadResult.Unreadable(
+                    ?: return@withContext DynastyLoadResult.Unreadable(
                         slotIndex,
                         DynastyLoadFailure.InvalidCalendar("calendar row unreadable"),
                     )
@@ -236,37 +292,71 @@ class SaveSlotRepository(
         } catch (e: Exception) {
             DynastyLoadResult.Unreadable(
                 slotIndex,
-                DynastyLoadFailure.DatabaseRead(e.message ?: "load failed"),
+                DynastyLoadFailure.fromReadException(e),
             )
         }
     }
 
     /** True when occupied slot header rows are present (fast list hint; load still validates). */
     suspend fun isSlotLikelyLoadable(slotIndex: Int): Boolean {
-        ensureInitialized()
-        val entity = slotDao.getByIndex(slotIndex) ?: return false
-        val summary = entity.toSummary()
-        if (summary.isEmpty) return true
-        val dynastyId = summary.dynastyId
-        if (dynastyId.isNullOrBlank()) return true
-        return metadataDao.getById(dynastyId) != null
+        return try {
+            ensureInitialized()
+            val entity = slotDao.getByIndex(slotIndex) ?: return false
+            val summary = entity.toSummary()
+            when {
+                summary.isEmpty -> true
+                summary.dynastyId.isNullOrBlank() -> true
+                else -> metadataDao.getById(summary.dynastyId!!) != null
+            }
+        } catch (_: Exception) {
+            false
+        }
+    }
+
+    /** Portable export manifest for share/backup ([MEGA-COACH-183], ADR-001). */
+    suspend fun exportDynastyArchive(slotIndex: Int): DynastyExportArchive? = withContext(Dispatchers.IO) {
+        require(slotIndex in SaveSlots.INDICES) { "slotIndex out of range" }
+        try {
+            ensureInitialized()
+            val entity = slotDao.getByIndex(slotIndex) ?: return@withContext null
+            val summary = entity.toSummary()
+            if (summary.isEmpty) return@withContext null
+            val dynastyId = summary.dynastyId ?: return@withContext null
+            val meta = metadataDao.getById(dynastyId)?.toDomain() ?: return@withContext null
+            val checkpoint = weekCheckpointRepository.loadCheckpoint(dynastyId) ?: return@withContext null
+            val rosterCount = rosterDao.listForDynasty(dynastyId).size
+            DynastyExportEngine.build(slotIndex, summary, meta, checkpoint, rosterCount)
+        } catch (_: Exception) {
+            null
+        }
     }
 
     suspend fun deleteSlot(slotIndex: Int) {
         require(slotIndex in SaveSlots.INDICES) { "slotIndex out of range" }
-        ensureInitialized()
-        val dynastyId = slotDao.getByIndex(slotIndex)?.dynastyId
-        database.withTransaction {
-            if (!dynastyId.isNullOrBlank()) {
-                metadataDao.deleteById(dynastyId)
-                coachDao.deleteByDynastyId(dynastyId)
-                rosterDao.deleteForDynasty(dynastyId)
-                staffDao.deleteByDynastyId(dynastyId)
-                weekCheckpointRepository.deleteForDynasty(dynastyId)
+        try {
+            ensureInitialized()
+            val dynastyId = slotDao.getByIndex(slotIndex)?.dynastyId
+            database.withTransaction {
+                if (!dynastyId.isNullOrBlank()) {
+                    metadataDao.deleteById(dynastyId)
+                    coachDao.deleteByDynastyId(dynastyId)
+                    rosterDao.deleteForDynasty(dynastyId)
+                    staffDao.deleteByDynastyId(dynastyId)
+                    weekCheckpointRepository.deleteForDynasty(dynastyId)
+                    database.coachCareerSeasonDao().deleteForDynasty(dynastyId)
+                    database.playerSeasonStatsDao().deleteForDynasty(dynastyId)
+                }
+                slotDao.clearSlot(slotIndex)
             }
-            slotDao.clearSlot(slotIndex)
+        } catch (_: Exception) {
+            runCatching { slotDao.clearSlot(slotIndex) }
         }
     }
+
+    private fun defaultEmptySlotSummaries(): List<SaveSlotSummary> =
+        SaveSlots.INDICES.map { index ->
+            SaveSlotSummary(slotIndex = index, isEmpty = true)
+        }
 
     /**
      * Creates a new dynasty with default metadata (offseason, season 1, default pack).
@@ -356,9 +446,10 @@ class SaveSlotRepository(
         draft: NewGameDraft,
         schoolDisplayName: String,
         packId: String = DynastySchema.DEFAULT_PACK_ID,
-    ): LoadedDynasty? {
-        if (NewGameSignValidator.validate(draft) != null) return null
-        val slotIndex = firstEmptySlotIndex() ?: return null
+    ): LoadedDynasty? = withContext(Dispatchers.IO) {
+        newGameSignMutex.withLock {
+        if (NewGameSignValidator.validate(draft) != null) return@withLock null
+        val slotIndex = firstEmptySlotIndex() ?: return@withLock null
         val dynastyId = UUID.randomUUID().toString()
         val coachName = draft.coach.displayName()
         val shippedBalance = balanceRulesetRepository.ensureShippedDefaultLoaded()
@@ -373,12 +464,14 @@ class SaveSlotRepository(
         )
         val seasonLabel = SeasonMembershipYear.label(metadata.seasonIndex)
         val now = System.currentTimeMillis()
+        val rosterEntities =
+            SeasonOneRosterGenerator.generate(dynastyId).toEntities()
 
+        // MEGA-QA-029: metadata/coach/roster/calendar commit before slot row becomes visible.
         database.withTransaction {
             metadataDao.upsert(metadata.toEntity())
             coachDao.upsert(draft.toCoachEntity(dynastyId))
-            val roster = SeasonOneRosterGenerator.generate(dynastyId)
-            rosterDao.upsertAll(roster.toEntities())
+            rosterDao.upsertAll(rosterEntities)
             dynastyRosterRepository.normalizeDefaultLineup(dynastyId)
             weekCheckpointRepository.insertBootstrapCalendar(metadata)
             slotDao.upsert(
@@ -395,6 +488,7 @@ class SaveSlotRepository(
                 ),
             )
         }
+        coachAchievementsRepository.ensureEmpty(dynastyId)
 
         val weekCheckpoint = weekCheckpointRepository.loadOrBootstrap(metadata)
         val summary = SaveSlotSummary(
@@ -423,7 +517,48 @@ class SaveSlotRepository(
         if (appDefaults.defaultCoachAutoSpend) {
             coachSkillPointRepository.setAutoSpend(dynastyId, true, CoachArchetype.Balanced)
         }
-        return loaded
+        bootstrapSeasonOneRecruitingAfterSign(loaded, draft)
+        packDynastyIdentityRepository.recordMembershipYearAtSign(
+            dynastyId,
+            packRepository.activeSession().index.membershipYear,
+        )
+        loaded
+        }
+    }
+
+    /**
+     * Season 1 wizard sign bootstrap ([DynastyWizardBootstrapPolicy]) — class, news, recruiting ledger,
+     * and NIL annual pool for the chosen school (MEGA-RECR-053, MEGA-RECR-100).
+     */
+    private suspend fun bootstrapSeasonOneRecruitingAfterSign(loaded: LoadedDynasty, draft: NewGameDraft) {
+        if (DynastyWizardBootstrapPolicy.stepsAfterSign(loaded.metadata.seasonIndex).isEmpty()) return
+        if (!SeasonOneRecruitingBootstrap.appliesToMembershipYear(loaded.metadata.seasonIndex)) return
+        val seasonIndex = SeasonOneRecruitingBootstrap.poolStorageSeasonIndex(loaded.metadata.seasonIndex)
+        incomingClassSeedRepository.ensurePool(loaded.dynastyId, seasonIndex)
+        newsFeedRepository.publishRecruitingSpotlightWhenPoolReady(loaded.dynastyId, seasonIndex)
+        val coach = coachDao.getByDynastyId(loaded.dynastyId) ?: return
+        val teamId = draft.selectedTeamId ?: coach.userTeamId
+        val session = packRepository.restorePack(loaded.summary.packId ?: DynastySchema.DEFAULT_PACK_ID)
+        val team = session.index.team(teamId) ?: return
+        val ledger = recruitingEconomyRepository.loadOrOpenCycle(loaded, programPrestigeOverride = team.programPrestige)
+        val gated = if (
+            SigningDayPreseasonRecruitingTransition.seasonOneOffseasonWeekOne(
+                loaded.weekCheckpoint.activePosition,
+                loaded.metadata.seasonIndex,
+            )
+        ) {
+            SigningDayPreseasonRecruitingTransition.seasonOneOffseasonWeekOneLedger(ledger)
+        } else {
+            ledger
+        }
+        recruitingEconomyRepository.persistLedger(loaded.dynastyId, gated)
+        nilAnnualPoolRepository.openCyclePoolUsd(
+            dynastyId = loaded.dynastyId,
+            balanceNil = loaded.balanceRuleset.nil,
+            cycleSeasonIndex = loaded.metadata.seasonIndex,
+            conferenceId = team.conferenceId,
+            programPrestige = team.programPrestige,
+        )
     }
 
     suspend fun createEmptyDynastyInFirstOpenSlot(
@@ -446,21 +581,24 @@ class SaveSlotRepository(
     suspend fun buildSimWeekAdvanceConfirmation(
         slotIndex: Int,
         unresolvedOptionalTaskCount: Int = 0,
-    ): SimWeekConfirmation? {
+    ): SimWeekConfirmation? = withContext(Dispatchers.IO) {
         require(slotIndex in SaveSlots.INDICES) { "slotIndex out of range" }
         ensureInitialized()
         val loaded = when (val initial = loadSlot(slotIndex)) {
             is DynastyLoadResult.Success -> initial.loaded
-            else -> return null
+            else -> return@withContext null
         }
         val ledger = recruitingEconomyRepository.loadOrOpenCycle(loaded)
+        val manualSpent = recruitingManualWeekSpendRepository.totalForDynasty(loaded)
         val input = buildSimWeekAdvanceInputSuspended(
             loaded,
             ledger,
             unresolvedOptionalTaskCount = unresolvedOptionalTaskCount,
-            userManualRecruitingSpent = 0,
+            userManualRecruitingSpent = manualSpent,
+            dynastySeed = loaded.dynastyId.hashCode().toLong(),
+            preDialogOnly = true,
         )
-        return SimWeekAdvanceResolver.buildConfirmation(input)
+        SimWeekAdvanceResolver.buildConfirmation(input)
     }
 
     /**
@@ -506,27 +644,55 @@ class SaveSlotRepository(
     suspend fun advanceDynastyWeek(
         slotIndex: Int,
         userManualRecruitingSpent: Int = 0,
-    ): DynastyLoadResult {
+    ): DynastyLoadResult = withContext(Dispatchers.IO) {
+        advanceSerialGuard.withSlotAdvanceLock(slotIndex) {
         require(slotIndex in SaveSlots.INDICES) { "slotIndex out of range" }
         ensureInitialized()
         val loaded = when (val initial = loadSlot(slotIndex)) {
             is DynastyLoadResult.Success -> initial.loaded
-            else -> return initial
+            else -> return@withSlotAdvanceLock initial
         }
         if (disciplineRepository.hasPending(loaded.dynastyId, loaded.metadata.seasonIndex)) {
-            return loadSlot(slotIndex)
+            return@withSlotAdvanceLock DynastyLoadResult.WeekAdvanceBlocked(
+                slotIndex = slotIndex,
+                reason = DynastyWeekAdvanceBlockReason.DisciplinePending,
+                loaded = loaded,
+            )
         }
         val ledger = recruitingEconomyRepository.loadOrOpenCycle(loaded)
-        val input = buildSimWeekAdvanceInputSuspended(loaded, ledger, 0, userManualRecruitingSpent)
+        val dynastySeed = loaded.dynastyId.hashCode().toLong()
+        val manualSpent = userManualRecruitingSpent.takeIf { it > 0 }
+            ?: recruitingManualWeekSpendRepository.totalForDynasty(loaded)
+        val input = buildSimWeekAdvanceInputSuspended(
+            loaded,
+            ledger,
+            0,
+            manualSpent,
+            dynastySeed,
+        )
         val preAdvance = SimWeekAdvanceResolver.resolvePreAdvance(
             loaded.weekCheckpoint,
             input,
-            loaded.dynastyId.hashCode().toLong(),
+            dynastySeed,
         )
-        weekCheckpointRepository.persist(loaded.dynastyId, preAdvance.checkpointAfterPreAdvance)
+        if (preAdvance.fastSimmedGames > 0) {
+            applyFastSimInjuries(
+                dynastyId = loaded.dynastyId,
+                marks = preAdvance.checkpointAfterPreAdvance.provisionalGames.values,
+                weekIndex = loaded.weekCheckpoint.activePosition.weekIndex,
+            )
+        }
+        // Skip intermediate persist so kill mid-advance leaves prior week or final week only (MEGA-QA-028).
         val checkpoint = preAdvance.checkpointAfterPreAdvance
-        val aiWeek = aiRecruitingRepository.runLeagueWeekIfActive(loaded, ledger, userManualRecruitingSpent)
+        val aiWeek = aiRecruitingRepository.runLeagueWeekIfActive(loaded, ledger, manualSpent)
         val recruitingSpentClosingWeek = aiWeek?.userPointsSpent ?: 0
+        val rosterSizeBeforeWeek = dynastyRosterRepository.listPlayers(loaded.dynastyId).size
+        val userTeamId = coachDao.getByDynastyId(loaded.dynastyId)?.userTeamId
+        val standingsBeforeAdvance = leagueWeekBatchRepository.loadStandings(
+            loaded.dynastyId,
+            loaded.metadata.seasonIndex,
+        )
+        val userNetRankBefore = userTeamId?.let { standingsBeforeAdvance?.netRankByTeam?.get(it) }
         val advanceResult = weekCheckpointRepository.advanceWeek(loaded.dynastyId, checkpoint)
         leagueWeekBatchRepository.afterWeekAdvance(
             dynastyId = loaded.dynastyId,
@@ -550,12 +716,34 @@ class SaveSlotRepository(
             rollSeed = loaded.dynastyId.hashCode().toLong() + advanceResult.committedWeek.weekIndex,
         )
         val balance = balanceRulesetRepository.activeRuleset()
+        val userGamesThisWeek = advanceResult.gamesCommitted.size.coerceAtLeast(1)
+        val (offScheme, defScheme) = userLeagueGameSimFactory.resolveSchemesForFatigueTick(loaded.dynastyId)
         dynastyRosterRepository.tickFatigueForWeekAdvance(
             loaded.dynastyId,
             advanceResult.committedWeek.phase,
             teamPlayedGame,
             balance.fatigue,
+            userGamesThisWeek = if (teamPlayedGame) userGamesThisWeek else 1,
+            offensiveScheme = offScheme,
+            defensiveScheme = defScheme,
         )
+        if (teamPlayedGame && advanceResult.gamesCommitted.isNotEmpty()) {
+            ingestPlayerGameLogsFromCommittedMarks(
+                loaded = loaded,
+                committedWeek = advanceResult.committedWeek,
+                marks = advanceResult.gamesCommitted,
+            )
+            dynastyRosterRepository.recordGamesPlayedAfterCommittedWeek(
+                loaded.dynastyId,
+                teamPlayedGame = true,
+            )
+            playerStatsRepository.persistSeasonStatsForRoster(
+                dynastyId = loaded.dynastyId,
+                seasonIndex = loaded.metadata.seasonIndex,
+                players = dynastyRosterRepository.listDynastyPlayers(loaded.dynastyId),
+                schoolDisplayName = loaded.summary.schoolDisplayName.orEmpty(),
+            )
+        }
         val userWonGame = if (teamPlayedGame) {
             preAdvance.checkpointAfterPreAdvance.provisionalGames.values.lastOrNull()?.let { mark ->
                 mark.homeScore > mark.awayScore
@@ -563,14 +751,23 @@ class SaveSlotRepository(
         } else {
             null
         }
+        val playersForChemistry = dynastyRosterRepository.listPlayers(loaded.dynastyId)
+        val chemistryTickInput = dev.novux.dynasty.cbb.core.chemistry.ChemistryWeeklyTickInputPolicy.build(
+            players = playersForChemistry,
+            headCoachArchetype = coachArchetype(loaded.dynastyId),
+            rosterSizeBeforeWeek = rosterSizeBeforeWeek,
+            teamPlayedGame = teamPlayedGame,
+            userWonGame = userWonGame,
+        )
         chemistryRepository.afterWeekAdvance(
             loaded.dynastyId,
             loaded.metadata.seasonIndex,
             advanceResult.committedWeek.phase,
-            dynastyRosterRepository.listPlayers(loaded.dynastyId),
-            teamPlayedGame,
-            userWonGame,
+            playersForChemistry,
+            chemistryTickInput,
         )
+        PlayerPromiseStatusRepository(dynastyRosterRepository, playerStatsRepository)
+            .refreshInSeasonAfterWeek(loaded.dynastyId, loaded.metadata.seasonIndex)
         coachSkillPointRepository.ensureSundayGrant(
             loaded.dynastyId,
             advanceResult.committedWeek,
@@ -587,10 +784,39 @@ class SaveSlotRepository(
         }
         val afterAdvance = when (val again = loadSlot(slotIndex)) {
             is DynastyLoadResult.Success -> again.loaded
-            else -> return again
+            else -> return@withSlotAdvanceLock again
         }
         recruitingEconomyRepository.onCalendarWeekAdvanced(afterAdvance, recruitingSpentClosingWeek)
+        val standingsAfterAdvance = leagueWeekBatchRepository.loadStandings(
+            afterAdvance.dynastyId,
+            afterAdvance.metadata.seasonIndex,
+        )
+        val userNetRankAfter = userTeamId?.let { standingsAfterAdvance?.netRankByTeam?.get(it) }
+        val disciplinePending = disciplineRepository.loadState(
+            afterAdvance.dynastyId,
+            afterAdvance.metadata.seasonIndex,
+        ).pending
+        val disciplineHeadline = disciplinePending?.let { "${it.headline} — ${it.playerDisplayName}" }
+        val carouselState = coachingCarouselRepository.loadOrCreate(
+            afterAdvance.dynastyId,
+            afterAdvance.metadata.seasonIndex,
+        )
+        val hasCarouselApprovalTask = carouselState.status == dev.novux.dynasty.cbb.core.carousel.CarouselStatus.AwaitingUserApprovals &&
+            carouselState.pendingApprovals.isNotEmpty()
+        dashboardNotificationWeekAdvanceAppender.appendAfterWeekAdvance(
+            loaded = afterAdvance,
+            userNetRankBefore = userNetRankBefore,
+            userNetRankAfter = userNetRankAfter,
+            disciplineHeadline = disciplineHeadline,
+            hasRequiredCarouselApprovalTask = hasCarouselApprovalTask,
+        )
         val pos = afterAdvance.weekCheckpoint.activePosition
+        if (SigningDayPreseasonRecruitingTransition.enteringPreseason(pos)) {
+            val nextPoolSeason = SigningDayPreseasonRecruitingTransition.nextEnrollingClassSeasonIndex(
+                afterAdvance.metadata.seasonIndex,
+            )
+            incomingClassSeedRepository.ensurePool(afterAdvance.dynastyId, nextPoolSeason)
+        }
         if (pos.phase == CalendarPhase.Offseason) {
             portalCycleRepository.onOffseasonWeekStarted(
                 afterAdvance.dynastyId,
@@ -598,7 +824,100 @@ class SaveSlotRepository(
                 pos.weekIndex,
             )
         }
-        return loadSlot(slotIndex)
+        loadSlot(slotIndex)
+        }
+    }
+
+    private suspend fun ingestPlayerGameLogsFromCommittedMarks(
+        loaded: LoadedDynasty,
+        committedWeek: CalendarPosition,
+        marks: Map<String, ProvisionalGameMark>,
+    ) {
+        val marksWithBox = marks.values.filter { it.possessionEngine && it.boxArchive != null }
+        if (marksWithBox.isEmpty()) return
+        val coach = coachDao.getByDynastyId(loaded.dynastyId) ?: return
+        val userTeamId = coach.userTeamId
+        val ctx = resolveGameLogWeekContext(
+            dynastyId = loaded.dynastyId,
+            seasonIndex = loaded.metadata.seasonIndex,
+            userTeamId = userTeamId,
+            weekIndex = committedWeek.weekIndex,
+        ) ?: GameLogWeekContext(userTeamIsHome = true, opponentLabel = "Opponent")
+        val rosterIds = dynastyRosterRepository.listPlayers(loaded.dynastyId).map { it.playerId }.toSet()
+        val byPlayer = mutableMapOf<String, MutableList<PlayerGameLogEntry>>()
+        marksWithBox.forEach { mark ->
+            val entries = PlayerGameLogArchiveEngine.entriesForRosterPlayers(
+                mark = mark,
+                userTeamIsHome = ctx.userTeamIsHome,
+                opponentLabel = ctx.opponentLabel,
+                rsWeekIndex = committedWeek.weekIndex,
+                rosterPlayerIds = rosterIds,
+            )
+            entries.forEach { entry ->
+                val playerId = entry.gameKey.removePrefix("${mark.gameId}_")
+                byPlayer.getOrPut(playerId) { mutableListOf() }.add(entry)
+            }
+        }
+        if (byPlayer.isNotEmpty()) {
+            playerStatsRepository.ingestCommittedSimMarks(
+                dynastyId = loaded.dynastyId,
+                seasonIndex = loaded.metadata.seasonIndex,
+                entriesByPlayerId = byPlayer,
+            )
+        }
+        marksWithBox.firstOrNull()?.let { mark ->
+            val school = loaded.summary.schoolDisplayName.orEmpty().ifBlank { "Your program" }
+            val snapshot = DashboardLastGameSnapshotBuilder.fromCommittedMark(
+                mark = mark,
+                committedWeek = committedWeek,
+                userTeamIsHome = ctx.userTeamIsHome,
+                opponentDisplayName = ctx.opponentLabel,
+                userTeamDisplayName = school,
+            )
+            dashboardLastGameRepository.save(loaded.dynastyId, loaded.metadata.seasonIndex, snapshot)
+        }
+    }
+
+    private data class GameLogWeekContext(
+        val userTeamIsHome: Boolean,
+        val opponentLabel: String,
+    )
+
+    private suspend fun resolveGameLogWeekContext(
+        dynastyId: String,
+        seasonIndex: Int,
+        userTeamId: String,
+        weekIndex: Int,
+    ): GameLogWeekContext? {
+        val plan = preseasonScheduleRepository.loadPlan(dynastyId, seasonIndex) ?: return null
+        val game = plan.regularSeason.firstOrNull { it.rsWeekIndex == weekIndex } ?: return null
+        val opponentId = game.opponentTeamId
+        val opponentLabel = packRepository.activeSession().index.team(opponentId)?.displayName ?: opponentId
+        return GameLogWeekContext(userTeamIsHome = game.homeGame, opponentLabel = opponentLabel)
+    }
+
+    private suspend fun applyFastSimInjuries(
+        dynastyId: String,
+        marks: Collection<ProvisionalGameMark>,
+        weekIndex: Int,
+    ) {
+        marks.forEach { mark ->
+            val archived = mark.boxArchive?.userTeamInjuries.orEmpty()
+            if (archived.isEmpty()) return@forEach
+            val events = archived.map { ArchivedGameInjuryEvent.toDomain(it) }
+            val before = dynastyRosterRepository.listPlayers(dynastyId)
+            val rsGames = before.firstOrNull { it.playerId == events.first().playerId }
+                ?.rsGamesPlayedSeason ?: 0
+            dynastyRosterRepository.applyGameInjuries(
+                dynastyId,
+                events,
+                InjuryApplyContext(
+                    rsWeekIndex = weekIndex,
+                    rsGameIndex = weekIndex.coerceAtLeast(1),
+                    rsGamesPlayed = rsGames,
+                ),
+            )
+        }
     }
 
     private suspend fun buildSimWeekAdvanceInputSuspended(
@@ -606,11 +925,14 @@ class SaveSlotRepository(
         ledger: dev.novux.dynasty.cbb.core.recruiting.RecruitingCycleLedger,
         unresolvedOptionalTaskCount: Int,
         userManualRecruitingSpent: Int,
+        dynastySeed: Long,
+        /** When true, skip recruit seeding and fast-sim bundle assembly ([MEGA-QA-008]). */
+        preDialogOnly: Boolean = false,
     ): SimWeekAdvanceInput {
         val position = loaded.weekCheckpoint.activePosition
         val nextLabel = CalendarWeekLabel.display(PhaseWeekPolicy.nextPosition(position))
         val offseasonWeek = position.weekIndex.takeIf { position.phase == CalendarPhase.Offseason }
-        val hubOpen = RecruitingCyclePolicy.hubAccessible(position.phase, offseasonWeek)
+        val hubOpen = RecruitingCyclePolicy.hubNavigable(position.phase, offseasonWeek, ledger.cycleClosed)
         val portalOpen = PortalCyclePolicy.portalRecruitingWindowOpen(position.phase, offseasonWeek)
         val plan = preseasonScheduleRepository.loadPlan(loaded.dynastyId, loaded.metadata.seasonIndex)
         val exhibitionCount = preseasonScheduleRepository.loadExhibitionCount(
@@ -620,28 +942,37 @@ class SaveSlotRepository(
         val weekGames = InSeasonWeekGames.forPosition(position, plan, exhibitionCount)
         val hasScheduledGame = weekGames.isNotEmpty()
         val unplayed = UserWeekGameStatus.unplayedUserGames(loaded.weekCheckpoint, hasScheduledGame)
-        val economy = BalanceRecruitingParser.parse(loaded.balanceRuleset.recruiting)
-        val recommended = BalanceRecruitingRecommendedParser.parse(loaded.balanceRuleset.recruiting)
-        val pool = RecruitingClassSeed.demoPool(loaded.metadata.seasonIndex)
-        val userSchool = nilAnnualPoolRepository.userSchoolRecruitingContext(loaded)
-            ?: SchoolRecruitingContext(
-                programPrestige = RecruitingEconomyRepository.DEFAULT_PROGRAM_PRESTIGE,
-                schoolHomeState = "OH",
-                pipelineStates = setOf("KY", "IN", "MI", "PA", "WV"),
-                nilPoolAnnualUsd = dev.novux.dynasty.cbb.data.nil.NilAnnualPoolRepository.DEFAULT_FALLBACK_USD.toInt(),
-            )
-        val actionCosts = BalanceRecruitingActionsParser.parse(loaded.balanceRuleset.recruiting)
         val automation = dynastyAutomationRepository.load(loaded.dynastyId)
         val estimated = if (hubOpen && automation.recruitingAutoMaintain && userManualRecruitingSpent == 0) {
-            AiRecruitingWeekRunner.estimateUserAutoMaintainSpend(
-                prospectPool = pool,
-                economy = economy,
-                recommended = recommended,
-                userSchool = userSchool,
-                userProgramId = "user-${loaded.dynastyId}",
-                userPointsAvailable = ledger.pointsAvailable,
-                actionCosts = actionCosts,
-            )
+            val pool = if (preDialogOnly) {
+                incomingClassSeedRepository.loadPool(loaded.dynastyId, loaded.metadata.seasonIndex)
+            } else {
+                incomingClassSeedRepository.ensurePool(loaded.dynastyId, loaded.metadata.seasonIndex)
+            }
+            if (pool != null) {
+                val economy = BalanceRecruitingParser.parse(loaded.balanceRuleset.recruiting)
+                val recommended = BalanceRecruitingRecommendedParser.parse(loaded.balanceRuleset.recruiting)
+                val userSchool = nilAnnualPoolRepository.userSchoolRecruitingContext(loaded)
+                    ?: SchoolRecruitingContext(
+                        programPrestige = recruitingEconomyRepository.resolveUserProgramPrestige(loaded),
+                        schoolHomeState = "OH",
+                        pipelineStates = setOf("KY", "IN", "MI", "PA", "WV"),
+                        nilPoolAnnualUsd =
+                            dev.novux.dynasty.cbb.data.nil.NilAnnualPoolRepository.DEFAULT_FALLBACK_USD.toInt(),
+                    )
+                val actionCosts = BalanceRecruitingActionsParser.parse(loaded.balanceRuleset.recruiting)
+                AiRecruitingWeekRunner.estimateUserAutoMaintainSpend(
+                    prospectPool = pool,
+                    economy = economy,
+                    recommended = recommended,
+                    userSchool = userSchool,
+                    userProgramId = "user-${loaded.dynastyId}",
+                    userPointsAvailable = ledger.pointsAvailable,
+                    actionCosts = actionCosts,
+                )
+            } else {
+                0
+            }
         } else {
             0
         }
@@ -651,9 +982,15 @@ class SaveSlotRepository(
         } else {
             0
         }
+        val userLeagueFastSim: UserLeagueFastSimBundle? = if (!preDialogOnly && unplayed > 0) {
+            userLeagueGameSimFactory.buildFastSimBundle(loaded, unplayed, dynastySeed)
+        } else {
+            null
+        }
         return SimWeekAdvanceInput(
             nextWeekLabel = nextLabel,
             unplayedUserGameCount = unplayed,
+            unplayedUserGameOpponentDisplayName = weekGames.firstOrNull()?.opponentDisplayName,
             recruitingPointsAvailable = ledger.pointsAvailable,
             userManualRecruitingSpent = userManualRecruitingSpent,
             recruitingHubOpen = hubOpen,
@@ -661,7 +998,19 @@ class SaveSlotRepository(
             portalRecruitingWeekOpen = portalOpen,
             unresolvedOptionalTaskCount = unresolvedOptionalTaskCount,
             injuredPlayersTicking = injuredTicking,
+            userOnByeWeek = ByeWeekPolicy.isByeWeek(position.phase, hasScheduledGame),
             recruitingAutoMaintainEnabled = automation.recruitingAutoMaintain,
+            userLeagueFastSim = userLeagueFastSim,
+            simulatesLeagueWeekBatch = RegularSeasonWeekBatchPolicy.isRegularSeasonWeek(position),
+            offseasonMilestoneAdvance = OffseasonAdvanceConfirmPolicy.requiresLightweightDialog(
+                position.phase,
+                offseasonWeek,
+            ),
+            portalRecruitingWindowClosed = position.phase == CalendarPhase.Offseason &&
+                (offseasonWeek?.let { PortalCyclePolicy.portalWindowClosed(it) } == true) &&
+                !portalOpen,
+            inSeasonDestinationAcknowledgment = InSeasonAdvanceConfirmPolicy
+                .requiresDestinationAcknowledgment(position.phase),
         )
     }
 
@@ -679,10 +1028,20 @@ class SaveSlotRepository(
             is DynastyLoadResult.Success -> initial.loaded
             else -> return initial
         }
-        if (!SeasonReviewGate.canEnterOffseason(loaded.weekCheckpoint)) {
+        val reviewProgress = seasonReviewProgressRepository.load(
+            loaded.dynastyId,
+            loaded.metadata.seasonIndex,
+        )
+        if (!SeasonReviewGate.canEnterOffseason(loaded.weekCheckpoint, reviewProgress.acknowledged)) {
             return DynastyLoadResult.Unreadable(
                 slotIndex,
-                DynastyLoadFailure.InvalidCalendar("dynasty is not in End of Season week"),
+                DynastyLoadFailure.InvalidCalendar(
+                    if (SeasonReviewGate.isActive(loaded.weekCheckpoint) && !reviewProgress.acknowledged) {
+                        "acknowledge season recap before entering offseason"
+                    } else {
+                        "dynasty is not in End of Season week"
+                    },
+                ),
             )
         }
         val advancePlan = SeasonYearAdvanceEngine.planEnterOffseason(loaded.weekCheckpoint)
@@ -709,7 +1068,8 @@ class SaveSlotRepository(
             dynastyId = loaded.dynastyId,
             balance = loaded.balanceRuleset,
             nextSeasonIndex = meta.seasonIndex,
-            postRecapPrestige = team?.programPrestige ?: RecruitingEconomyRepository.DEFAULT_PROGRAM_PRESTIGE,
+            postRecapPrestige = team?.programPrestige
+                ?: recruitingEconomyRepository.resolveUserProgramPrestige(loaded),
         )
         if (team != null) {
             nilAnnualPoolRepository.openCyclePoolUsd(
@@ -722,6 +1082,7 @@ class SaveSlotRepository(
         }
         coachingCarouselRepository.loadOrCreate(loaded.dynastyId, meta.seasonIndex)
         portalCycleRepository.loadOrSimulate(loaded.dynastyId, meta.seasonIndex)
+        dynastyRosterRepository.clearNilDealRaisedFlags(loaded.dynastyId)
         return loadSlot(slotIndex)
     }
 }

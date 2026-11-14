@@ -30,6 +30,10 @@ fun RankingsHubRouteScreen(
         null -> Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
         }
-        else -> RankingsHubScreen(snapshot = data, onBack = onBack)
+        else -> RankingsHubScreen(
+            snapshot = data,
+            onBack = onBack,
+            onPublishPreseason = null,
+        )
     }
 }

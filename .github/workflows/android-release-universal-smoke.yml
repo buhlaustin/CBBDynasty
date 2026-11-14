@@ -1,0 +1,73 @@
+name: Android release universal APK smoke
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: android-release-universal-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release-universal-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Android SDK
+        working-directory: ${{ github.workspace }}
+        run: bash scripts/install_android_sdk.sh
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build release universal APK (sideload smoke)
+        working-directory: ${{ github.workspace }}
+        env:
+          RELEASE_SIDELOAD_OUT: ${{ github.workspace }}/android/app/build/outputs/sideload/release
+        run: bash scripts/build_release_universal_apk.sh
+
+      - name: Verify Play fresh-install launcher (MEGA-QA-135)
+        working-directory: ${{ github.workspace }}
+        run: bash scripts/verify_play_fresh_install_launch.sh
+
+      - name: Verify Play update versionCode bump (MEGA-QA-136)
+        working-directory: ${{ github.workspace }}
+        run: bash scripts/verify_play_update_version_bump.sh
+
+      - name: Verify Play AAB signing integrity (MEGA-QA-137)
+        working-directory: ${{ github.workspace }}
+        run: bash scripts/verify_play_aab_signing.sh
+
+      - name: Verify release R8 minify (MEGA-QA-151)
+        working-directory: ${{ github.workspace }}
+        run: bash scripts/verify_release_r8_minify.sh
+
+      - name: Verify kotlinx.serialization release smoke (MEGA-QA-152)
+        working-directory: ${{ github.workspace }}
+        run: bash scripts/verify_release_serialization_smoke.sh
+
+      - name: Verify Room release smoke (MEGA-QA-153)
+        working-directory: ${{ github.workspace }}
+        run: bash scripts/verify_release_room_smoke.sh
+
+      - name: Run Play update migration smoke tests
+        working-directory: android
+        run: |
+          ./gradlew :database:testDebugUnitTest --tests dev.novux.dynasty.cbb.database.DynastyDatabaseMigrationRobolectricTest.playUpdateOccupiedSlot_fullMigrationChain_preservesDynastyIdForContinue :core:test --tests dev.novux.dynasty.cbb.core.save.SaveLoadAfterUpdateFixtureTest --no-daemon
+
+      - name: Upload universal APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-universal-apk
+          path: android/app/build/outputs/sideload/release/universal.apk
+          if-no-files-found: error

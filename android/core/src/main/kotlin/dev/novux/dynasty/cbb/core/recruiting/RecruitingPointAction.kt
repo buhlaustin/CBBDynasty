@@ -30,6 +30,7 @@ data class RecruitingSpendResult(
     val countsAsWeekReservation: Boolean,
     val success: Boolean,
     val failure: RecruitingSpendFailure? = null,
+    val interestDeltaApplied: Int = 0,
 )
 
 /**

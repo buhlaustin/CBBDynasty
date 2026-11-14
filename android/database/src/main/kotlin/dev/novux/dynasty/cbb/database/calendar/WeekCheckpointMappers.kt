@@ -2,6 +2,7 @@ package dev.novux.dynasty.cbb.database.calendar
 
 import dev.novux.dynasty.cbb.core.calendar.CalendarPosition
 import dev.novux.dynasty.cbb.core.calendar.PhaseWeekPolicy
+import dev.novux.dynasty.cbb.core.calendar.checkpoint.ProvisionalGameBoxCodec
 import dev.novux.dynasty.cbb.core.calendar.checkpoint.ProvisionalGameMark
 import dev.novux.dynasty.cbb.core.calendar.checkpoint.WeekCheckpointState
 import dev.novux.dynasty.cbb.core.save.DynastyMetadata
@@ -51,6 +52,8 @@ fun ProvisionalGameEntity.toMark(): ProvisionalGameMark =
         homeScore = homeScore,
         awayScore = awayScore,
         simGeneration = simGeneration,
+        possessionEngine = possessionEngine,
+        boxArchive = ProvisionalGameBoxCodec.decode(boxArchiveJson),
     )
 
 fun ProvisionalGameMark.toEntity(dynastyId: String): ProvisionalGameEntity =
@@ -60,6 +63,8 @@ fun ProvisionalGameMark.toEntity(dynastyId: String): ProvisionalGameEntity =
         homeScore = homeScore,
         awayScore = awayScore,
         simGeneration = simGeneration,
+        possessionEngine = possessionEngine,
+        boxArchiveJson = boxArchive?.let { ProvisionalGameBoxCodec.encode(it) },
     )
 
 fun DynastyMetadata.bootstrapCalendarEntity(): DynastyCalendarEntity {

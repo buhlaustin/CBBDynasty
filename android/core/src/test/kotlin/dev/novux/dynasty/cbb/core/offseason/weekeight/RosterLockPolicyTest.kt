@@ -30,4 +30,33 @@ class RosterLockPolicyTest {
         assertTrue(RosterLockPolicy.canOfferWalkOn(players, walkOnsSignedThisSeason = 0))
         assertFalse(RosterLockPolicy.canOfferWalkOn(players, walkOnsSignedThisSeason = 2))
     }
+
+    @Test
+    fun walkOnsDoNotCountAgainstScholarshipCap() {
+        val scholarshipPlayers = List(15) { idx ->
+            RosterPlayer(
+                "s$idx",
+                "d",
+                PlayerPosition.Center,
+                PlayerClassYear.Sophomore,
+                false,
+                idx,
+                false,
+            )
+        }
+        val walkOns = List(2) { idx ->
+            RosterPlayer(
+                "w$idx",
+                "d",
+                PlayerPosition.PointGuard,
+                PlayerClassYear.WalkOn,
+                false,
+                100 + idx,
+                false,
+            )
+        }
+        val roster = scholarshipPlayers + walkOns
+        assertTrue(RosterLockPolicy.canAdvanceOffseasonWeek8(roster))
+        assertFalse(RosterLockPolicy.canOfferWalkOn(roster, walkOnsSignedThisSeason = 2))
+    }
 }

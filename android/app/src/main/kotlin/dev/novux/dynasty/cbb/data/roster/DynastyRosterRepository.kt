@@ -6,8 +6,11 @@ import dev.novux.dynasty.cbb.core.fatigue.FatigueEngine
 import dev.novux.dynasty.cbb.core.injuries.GameSimInjuryEvent
 import dev.novux.dynasty.cbb.core.injuries.InjuryApplyContext
 import dev.novux.dynasty.cbb.core.injuries.InjuryRosterOps
+import dev.novux.dynasty.cbb.core.player.stats.PlayerSeasonStatFinalizeGate
 import dev.novux.dynasty.cbb.core.injuries.MedicalRedshirtPolicy
 import dev.novux.dynasty.cbb.core.lineup.DefaultStarterAlgorithm
+import dev.novux.dynasty.cbb.core.lineup.RosterStarterWireResolver
+import dev.novux.dynasty.cbb.core.roster.PlayerPosition
 import dev.novux.dynasty.cbb.core.offseason.weekone.DraftStockLine
 import dev.novux.dynasty.cbb.core.offseason.weekone.PortalWeekOnePartition
 import dev.novux.dynasty.cbb.core.offseason.weekone.ProDayEligibility
@@ -18,7 +21,10 @@ import dev.novux.dynasty.cbb.core.offseason.weekone.WeekTwoDraftResults
 import dev.novux.dynasty.cbb.core.offseason.weektwo.NbaDraftResolution
 import dev.novux.dynasty.cbb.core.roster.PlayerClassYear
 import dev.novux.dynasty.cbb.core.player.DynastyPlayer
+import dev.novux.dynasty.cbb.core.player.nil.PlayerNilSeasonDealEngine
 import dev.novux.dynasty.cbb.core.roster.RosterPlayer
+import dev.novux.dynasty.cbb.core.signingday.IncomingSignee
+import dev.novux.dynasty.cbb.core.signingday.SigningDayRosterEnrollPolicy
 import dev.novux.dynasty.cbb.data.injuries.PostgameInjuryQueue
 import dev.novux.dynasty.cbb.database.DynastyDatabase
 import dev.novux.dynasty.cbb.database.roster.toDomain
@@ -84,6 +90,21 @@ class DynastyRosterRepository(
         dao.upsert(player.toEntity())
     }
 
+    suspend fun applyNilRetentionBump(dynastyId: String, playerId: String, newUsdPerYear: Long): List<RosterPlayer> {
+        val player = listPlayers(dynastyId).first { it.playerId == playerId }
+        val updated = PlayerNilSeasonDealEngine.applyRetentionBump(player, newUsdPerYear)
+        dao.upsert(updated.toEntity())
+        return listPlayers(dynastyId)
+    }
+
+    suspend fun clearNilDealRaisedFlags(dynastyId: String) {
+        listPlayers(dynastyId).forEach { player ->
+            if (player.nilDealRaisedThisSeason) {
+                dao.upsert(player.copy(nilDealRaisedThisSeason = false).toEntity())
+            }
+        }
+    }
+
     suspend fun applyNbaDraftResolution(dynastyId: String, resolution: NbaDraftResolution) {
         resolution.playersToRemove.forEach { playerId ->
             dao.deletePlayer(dynastyId, playerId)
@@ -128,10 +149,21 @@ class DynastyRosterRepository(
         phaseCommitted: CalendarPhase,
         teamPlayedGame: Boolean,
         tuning: BalanceFatigue,
+        userGamesThisWeek: Int = 1,
+        offensiveScheme: dev.novux.dynasty.cbb.core.strategy.OffensiveSchemePreset =
+            dev.novux.dynasty.cbb.core.strategy.OffensiveSchemePreset.Balanced,
+        defensiveScheme: dev.novux.dynasty.cbb.core.strategy.DefensiveSchemePreset =
+            dev.novux.dynasty.cbb.core.strategy.DefensiveSchemePreset.ManToMan,
     ): List<RosterPlayer> {
         var players = listPlayers(dynastyId)
         if (teamPlayedGame) {
-            players = FatigueEngine.applyEstimatedGameDrain(players, tuning)
+            players = FatigueEngine.applyEstimatedGameDrain(
+                players,
+                tuning,
+                offensiveScheme = offensiveScheme,
+                defensiveScheme = defensiveScheme,
+                userGamesThisWeek = userGamesThisWeek,
+            )
         }
         players = FatigueEngine.applyWeeklyRecovery(players, phaseCommitted, teamPlayedGame, tuning)
         players.forEach { dao.upsert(it.toEntity()) }
@@ -155,10 +187,54 @@ class DynastyRosterRepository(
 
     fun clearPostgameInjuries(dynastyId: String) = postgameInjuryQueue.clear(dynastyId)
 
+    suspend fun recordGamesPlayedAfterCommittedWeek(
+        dynastyId: String,
+        teamPlayedGame: Boolean,
+    ): List<RosterPlayer> {
+        val players = listPlayers(dynastyId)
+        val recipients = PlayerSeasonStatFinalizeGate.playersReceivingGamePlayed(players, teamPlayedGame)
+        if (recipients.isEmpty()) return players
+        val recipientIds = recipients.map { it.playerId }.toSet()
+        val updated = players.map { player ->
+            if (player.playerId in recipientIds) {
+                player.copy(rsGamesPlayedSeason = player.rsGamesPlayedSeason + 1)
+            } else {
+                player
+            }
+        }
+        updated.filter { it.playerId in recipientIds }.forEach { dao.upsert(it.toEntity()) }
+        return updated
+    }
+
     suspend fun applyMedicalRedshirt(dynastyId: String, playerId: String): List<RosterPlayer> {
         val player = listPlayers(dynastyId).first { it.playerId == playerId }
         val next = MedicalRedshirtPolicy.apply(player)
         dao.upsert(next.toEntity())
         return listPlayers(dynastyId)
+    }
+
+    suspend fun applyStarterLineup(dynastyId: String, starters: Map<PlayerPosition, String>): List<RosterPlayer> {
+        val players = listPlayers(dynastyId)
+        RosterStarterWireResolver.applyToRoster(players, starters).forEach { dao.upsert(it.toEntity()) }
+        return listPlayers(dynastyId)
+    }
+
+    suspend fun enrollIncomingSignees(dynastyId: String, signees: List<IncomingSignee>) {
+        val existing = listPlayers(dynastyId)
+        val existingIds = existing.map { it.playerId }.toSet()
+        var scholarshipCount = existing.count { !it.inTransferPortal }
+        var depthOrder = (existing.maxOfOrNull { it.depthOrder } ?: 0) + 1
+        signees.forEach { signee ->
+            if (signee.prospectId in existingIds) return@forEach
+            val player = SigningDayRosterEnrollPolicy.enrollSignee(
+                dynastyId = dynastyId,
+                signee = signee,
+                depthOrder = depthOrder,
+                existingScholarshipCount = scholarshipCount,
+            ) ?: return@forEach
+            dao.upsert(player.toEntity())
+            scholarshipCount++
+            depthOrder++
+        }
     }
 }

@@ -24,13 +24,13 @@
 | MEGA-SHELL-003 | SHIP | Studio tap skip after 0.5s min | `STUDIO_MIN_SKIP_MS`; clickable gated on `skipEnabled` | `StudioScreen.kt` |
 | MEGA-SHELL-004 | SHIP | Studio Novux lockup, not game logo | `R.drawable.novux_studio_lockup` hero | `StudioScreen.kt`, `app-shell.md` |
 | MEGA-SHELL-005 | SHIP | Studio novux.dev line | `R.string.studio_website` | `StudioScreen.kt` |
-| MEGA-SHELL-006 | PARTIAL | Studio background `#181a25` full bleed | Theme uses brand hex; studio screen relies on Material `background` — verify edge-to-edge on device | `Theme.kt`, `StudioScreen.kt` |
-| MEGA-SHELL-007 | GAP | Studio tap hint in `strings.xml` | Hard-coded `"Tap to continue"` in Compose — violates branding single-source copy rule | `StudioScreen.kt` vs `branding.md#ui-copy` |
+| MEGA-SHELL-006 | SHIP | Studio background `#181a25` full bleed | `StudioBrandBackgroundPolicy` paints full-bleed brand hex on studio route. | `StudioScreen.kt` |
+| MEGA-SHELL-007 | SHIP | Studio tap hint in `strings.xml` | `studio_tap_to_continue` replaces hard-coded Compose copy. | `StudioScreen.kt`, `strings.xml` |
 | MEGA-SHELL-008 | SHIP | Settings: skip studio intro | `AppSettings.skipStudioIntro` → start at Splash | `SettingsScreen`, `DynastyApp` `startRoute` |
 | MEGA-SHELL-009 | SHIP | Splash: game logo + official title | `app_logo`, `GameConstants.GAME_TITLE` | `SplashScreen.kt` |
 | MEGA-SHELL-010 | SHIP | Splash pulsing Tap to Play CTA | Scale 0.94↔1.06, opacity 0.78↔1.0, 900ms | `SplashScreen.kt`, `app-shell.md#tap-to-play` |
-| MEGA-SHELL-011 | PARTIAL | Splash loading gate before CTA | Fixed `delay(600)` — not tied to pack/save index readiness | `SplashScreen.kt` |
-| MEGA-SHELL-012 | GAP | Splash pack / asset fail + Retry | Spec: stay on splash with error + Retry | `app-shell.md#loading--errors` — not implemented |
+| MEGA-SHELL-011 | SHIP | Splash loading gate before CTA | `SplashReadyGatePolicy` + bootstrap in `DynastyApp` after pack + save init. | `SplashScreen.kt`, `DynastyApp.kt` |
+| MEGA-SHELL-012 | SHIP | Splash pack / asset fail + Retry | `SplashPackErrorPolicy` — error copy + **Retry** relaunches bootstrap. | `SplashScreen.kt` |
 | MEGA-SHELL-013 | SHIP | Splash footer © Novux + director line | `splash_copyright`, `game_director_line` | `SplashScreen.kt` |
 | MEGA-SHELL-014 | SHIP | Brand background `#181A25` in theme + launcher | `GameConstants.BRAND_BACKGROUND_HEX`, `colors.xml`, adaptive icon | `Theme.kt`, `mipmap-anydpi-v26` |
 | MEGA-SHELL-015 | SHIP | Contrast tokens on brand field | `#E8EAED` on-surface, `#A8AEB8` muted | `Theme.kt` vs `branding.md#color` |
@@ -53,14 +53,14 @@
 | MEGA-SHELL-025 | GAP | Story date chip on feed lines | Spec: headline + date chip | `news-hub.md#stories-feed` — titles only |
 | MEGA-SHELL-026 | SHIP | Hamburger → full News hub route | `AppRoute.NewsHub`, menu item | `DynastyHubMenu.kt`, `NewsHubScreen.kt` |
 | MEGA-SHELL-027 | SHIP | Hub tabs: Stories / Portal / Recruits / Draft | Four tabs implemented | `NewsHubScreen.kt` |
-| MEGA-SHELL-028 | PARTIAL | Portal tab hidden outside OS weeks 1–5 | Tab **row always shows Portal**; body shows “hidden” copy | `NewsHubPolicy`, `PortalTab` |
+| MEGA-SHELL-028 | SHIP | Portal tab hidden outside OS weeks 1–5 | `NewsHubPortalTabVisibilityPolicy` omits Portal from hub tab row. | `NewsHubScreen.kt` |
 | MEGA-SHELL-029 | SHIP | Portal tab visible OS weeks 1–5 | Policy matches `PortalConstants.PORTAL_RECRUITING_WEEKS` | `NewsHubPolicyTest.kt` |
 | MEGA-SHELL-030 | SHIP | Week 1 Top 40 placeholder until lock | `news_hub_portal_pre_lock` when `!top40Locked` | `NewsHubScreen.kt` |
-| MEGA-SHELL-031 | GAP | Portal Top 40 full #1–#40 human labels | Rows use `entrantId` / `priorProgramId` not display names | `news_hub_portal_row` |
-| MEGA-SHELL-032 | GAP | Portal recent commits / entrants sections | Only Top 40 block — no rolling commit/entrant lists | `news-hub.md#portal-tab` |
-| MEGA-SHELL-033 | GAP | Portal filters row | Conference, stars, position, pipeline — absent | `news-hub.md#portal-tab` |
-| MEGA-SHELL-034 | GAP | Portal row tap → profile / school hub | Plain `Text` rows — no navigation | `NewsHubScreen.kt` |
-| MEGA-SHELL-035 | GAP | Add to board deep link | Spec CTA to Recruiting Portal Recommended | `news-hub.md#row-interactions` |
+| MEGA-SHELL-031 | SHIP | Portal Top 40 full #1–#40 human labels | `NewsHubPortalHumanRowPolicy` + pack display names on portal rows. | `news_hub_portal_row` |
+| MEGA-SHELL-032 | SHIP | Portal recent commits / entrants sections | Top 40 + **Recent portal entrants** via `NewsHubPortalRecentSectionsPolicy`. | `NewsHubScreen.kt` |
+| MEGA-SHELL-033 | SHIP | Portal filters row | Star filter chips + cadence hint (`NewsHubPortalFiltersPolicy`). | `NewsHubScreen.kt` |
+| MEGA-SHELL-034 | SHIP | Portal row tap → profile / school hub | Row tap opens Transfer Portal recruiting (`NewsHubPortalRowNavigationPolicy`). | `DynastyApp.kt` |
+| MEGA-SHELL-035 | SHIP | Add to board deep link | **Add to board** CTA → `NewsHubPortalAddToBoardPolicy.recruitingHubTab`. | `RecruitingHub` route |
 | MEGA-SHELL-036 | SHIP | Recruits tab national Top 60 #1–#60 | Seed or `NationalRecruitingRankings.top60` | `NewsHubScreen.kt` |
 | MEGA-SHELL-037 | PARTIAL | Draft tab dynamic pro pool | Offseason week 2 published lines only — not in-season dynamic board | `offseasonWeekTwoRepository` |
 | MEGA-SHELL-038 | GAP | Story detail mini-article | `ReportArticleView` used elsewhere — **no** story detail screen for headlines | `news-hub.md#story-detail--articles` |
@@ -81,14 +81,14 @@
 | MEGA-SHELL-046 | SHIP | User commits / decommits → high | Repository helpers + composer kinds | `NotificationFeedRepository`, composer |
 | MEGA-SHELL-047 | SHIP | Fired / postseason eliminated blocking modal | `requiresBlockingModal` + `CareerBlockNotificationDialog` | `DynastyShellScreen` |
 | MEGA-SHELL-048 | PARTIAL | Week advance snapshot breadth | Shell snapshot wires injury, game week, coach points, fired — **not** decommit, signing recap, rankings, postseason invite on advance | `DynastyShellScreen` LaunchedEffect |
-| MEGA-SHELL-049 | GAP | Discipline sheet opened → feed row | Spec high-priority row; composer has no discipline kind | `notifications.md#event-catalog` |
-| MEGA-SHELL-050 | GAP | Carousel offer / must-sign extension feed rows | Not in composer catalog | `notifications.md` high tier |
-| MEGA-SHELL-051 | GAP | Selection Sunday feed row | Not composed | `notifications.md` |
-| MEGA-SHELL-052 | GAP | Medical redshirt eligible feed row | Not composed | `notifications.md` medium |
-| MEGA-SHELL-053 | GAP | Fundraising / facility complete (low) | Not composed | `notifications.md` |
+| MEGA-SHELL-049 | SHIP | Discipline sheet opened → feed row | `NotificationFeedDisciplineRowPolicy` + sidecar discipline headline | `notifications.md#event-catalog` |
+| MEGA-SHELL-050 | SHIP | Carousel offer / must-sign extension feed rows | Carousel pending cards in composer | `notifications.md` high tier |
+| MEGA-SHELL-051 | SHIP | Selection Sunday feed row | In-field seed row → March Mayhem hub | `notifications.md` |
+| MEGA-SHELL-052 | SHIP | Medical redshirt eligible feed row | `MedicalRedshirtPolicy` bodies in composer | `notifications.md` medium |
+| MEGA-SHELL-053 | SHIP | Fundraising / facility complete (low) | `FundraisingComplete` rows from week-nine economy | `notifications.md` |
 | MEGA-SHELL-054 | SHIP | Stories not duplicated in notification feed | League churn goes to News archive, not notification kinds for league-only events | architecture split |
-| MEGA-SHELL-055 | PARTIAL | Feed deep links | Panel routes Strategy, Coach, Signing Day, Recruiting tabs — `PlayWeekGame` opens Strategy not preview | `DashboardNotificationFeedPanel.kt` |
-| MEGA-SHELL-056 | GAP | Notification feed on offseason dashboard | Feed load gated to in-season shell path only | compare `OffseasonScreen` |
+| MEGA-SHELL-055 | SHIP | Feed deep links | `PlayWeekGame` → `ShellWeekGamePreviewLauncher`; discipline / carousel / fundraising routes wired | `DashboardNotificationFeedPanel.kt` |
+| MEGA-SHELL-056 | SHIP | Notification feed on offseason dashboard | `OffseasonScreen` loads feed + sidecar like shell | `NotificationFeedOffseasonPhasePolicy` |
 
 ---
 
@@ -110,8 +110,8 @@
 | MEGA-SHELL-068 | SHIP | Weekly academic support GPA tick | `tickAcademicSupport` on week advance | `DisciplineResolver`, repository |
 | MEGA-SHELL-069 | GAP | Cover-up audit end of season | `academicCoverUp` flag set; **no** `auditBaseChance` roll in save flow | `balance-2026.json`, `SaveSlotRepository` |
 | MEGA-SHELL-070 | GAP | AD trust / job security / News on discipline outcomes | Fields in spec table — not wired from resolver to coach card + News | `in-season-systems.md#ad-trust` |
-| MEGA-SHELL-071 | PARTIAL | Conduct flavor from balance templates | Engine uses templates; headlines in core English | `DisciplineOccurrenceEngine.rollConduct` |
-| MEGA-SHELL-072 | PARTIAL | Academic window RS weeks 18–22 | `academicWindowWeeks` in balance JSON | confirm tuning matches spec default |
+| MEGA-SHELL-071 | SHIP | Conduct flavor from balance templates | `DisciplineConductFlavorPolicy` uses template id + label | `DisciplineOccurrenceEngine.rollConduct` |
+| MEGA-SHELL-072 | SHIP | Academic window RS weeks 18–22 | `DisciplineAcademicWindowPolicy` matches balance default weeks | `balance-2026.json` |
 
 ---
 
@@ -123,13 +123,13 @@
 | MEGA-SHELL-074 | SHIP | Bootstrap ~70 new save | `ChemistryWeekEngine.bootstrap` | core tests |
 | MEGA-SHELL-075 | SHIP | Weekly tick after advance (in-season phases) | `afterWeekAdvance` in repository + `SaveSlotRepository` | win/loss streak inputs |
 | MEGA-SHELL-076 | SHIP | Display on School hub Overview + Strategy strip | `school_hub_chemistry`, `strategy_chemistry` | `SchoolHubScreen`, `StrategyScreen` |
-| MEGA-SHELL-077 | GAP | Chemistry clutch modifier in live sim | `ChemistryRepository.clutchModifier` defined — **not referenced** in sim package | grep `sim/` |
-| MEGA-SHELL-078 | PARTIAL | Promise broken / roster churn / charisma inputs | Engine supports; shell tick passes `userWonGame` only — other inputs default false | `ChemistryWeeklyTickInput` wiring |
+| MEGA-SHELL-077 | SHIP | Chemistry clutch modifier in live sim | `SimChemistryClutchPolicy` in `PossessionSimSession` clutch possessions | `GameSimInput` chemistry fields |
+| MEGA-SHELL-078 | SHIP | Promise broken / roster churn / charisma inputs | `ChemistryWeeklyTickInputPolicy.build` on week advance | `SaveSlotRepository` |
 | MEGA-SHELL-079 | SHIP | Per-player `stamina` on roster model | DB columns + `FatigueEngine` | `RosterPlayer`, migrations |
 | MEGA-SHELL-080 | SHIP | Fatigue tick on week advance | `DynastyRosterRepository.tickFatigueForWeekAdvance` | `SaveSlotRepository` |
 | MEGA-SHELL-081 | SHIP | Strategy stamina readout + starter block &lt;20 | `strategy_stamina`, `starterBlockThreshold` | `StrategyScreen.kt` |
-| MEGA-SHELL-082 | PARTIAL | Fatigue rotation pull in sim | `shouldPullInRotation` in core — sim integration not audited here | `FatigueEngine.kt` |
-| MEGA-SHELL-083 | PARTIAL | Press scheme / back-to-back drain extras | Base drain in `FatigueEngine` — press/B2B penalties thin vs spec formula | `in-season-systems.md#fatigue` |
+| MEGA-SHELL-082 | SHIP | Fatigue rotation pull in sim | `SimFatigueRotationPolicy` in rotation band + path test | `RotationBandFloorPolicy` |
+| MEGA-SHELL-083 | SHIP | Press scheme / back-to-back drain extras | `FatiguePressBackToBackPolicy` on estimated game drain | `FatigueEngine.applyEstimatedGameDrain` |
 | MEGA-SHELL-084 | SHIP | Chemistry does not block lineup edits | Display-only chemistry on Strategy | `StrategyScreen` |
 
 ---
@@ -138,7 +138,7 @@
 
 | ID | Status | Spec / topic | Finding | Code / notes |
 |----|--------|--------------|---------|--------------|
-| MEGA-SHELL-085 | PARTIAL | Resume from background skip studio | No lifecycle handler documented in app — cold start only path audited | `app-shell.md#launch-flow` |
+| MEGA-SHELL-085 | SHIP | Resume from background skip studio | `LaunchResumeSkipStudioPolicy` + `rememberSaveable` studio beat consumed | `DynastyApp.kt` |
 | MEGA-SHELL-086 | SHIP | Official product title constant | `Dynasty: College Basketball` single constant | `GameConstants.GAME_TITLE` |
 | MEGA-SHELL-087 | GAP | `lint_player_strings.py` CI on notification composer | Hard-coded user-facing strings in core composer may fail lint if extended to core | `branding.md#ui-copy` |
 
@@ -153,18 +153,18 @@
 | MEGA-SHELL-090 | SHIP | March Mayhem item phase-gated | Visible only `CalendarPhase.Postseason` | `DynastyHubMenuPolicy.kt` |
 | MEGA-SHELL-091 | SHIP | Exit to Home menu | `shell_menu_exit_home` callback pops to home | `DynastyHubMenu.kt` |
 | MEGA-SHELL-092 | SHIP | Strategy only via hamburger (not bottom nav) | Dedicated menu item; bottom bar is Roster/Calendar/Dashboard/News | `DynastyShellChrome.kt` |
-| MEGA-SHELL-093 | PARTIAL | In-season menu extras: Staff + Automation | `leadingExtras` on in-season shell only — offseason/preseason omit | `DynastyShellScreen.kt` |
+| MEGA-SHELL-093 | SHIP | In-season menu extras: Staff + Automation | `InSeasonShellMenuExtrasPolicy` gates Staff + Automation `leadingExtras` on live in-season shell | `InSeasonShellMenuExtrasPolicy.kt`, `DynastyShellScreen.kt` |
 | MEGA-SHELL-094 | SHIP | Offseason/preseason reuse same hub builder | `buildDynastyHubMenu(position, hubMenuCallbacks)` on all shell phases | `OffseasonScreen.kt`, `PreseasonScreen.kt` |
 | MEGA-SHELL-095 | SHIP | News hub route from menu all phases | `AppRoute.NewsHub` via `onOpenNewsHub` | `DynastyApp.kt` |
-| MEGA-SHELL-096 | GAP | Statistics hub product vs menu promise | Menu opens hub; body is **placeholder** only | `statistics_hub_placeholder`, `HubScaffoldScreen` |
+| MEGA-SHELL-096 | SHIP | Statistics hub product vs menu promise | `StatisticsHubRouteScreen` + live leaderboards via `StatisticsHubLiveContentPolicy` | `StatisticsHubLiveContentPolicy.kt`, `StatisticsHubScreen.kt` |
 | MEGA-SHELL-097 | SHIP | Rankings hub route (NET / Media / Coaches) | `AppRoute.RankingsHub` from menu | `DynastyApp.kt`, `RankingsHubScreen.kt` |
-| MEGA-SHELL-098 | PARTIAL | History hub vs design depth | Route + GOAT tabs exist; record book / major-record feed thin vs `history-hub.md` | `HistoryHubScreen.kt` |
-| MEGA-SHELL-099 | PARTIAL | Hamburger UI pattern | `DropdownMenu` under icon — not navigation drawer | `DynastyShellChrome.kt` vs `game-frame.md` |
-| MEGA-SHELL-100 | GAP | Hub routes lose shell bottom tabs | Full-screen hub composables — back returns to shell but no persistent chrome on hub | `NewsHubScreen.kt`, hub routes in `DynastyApp.kt` |
+| MEGA-SHELL-098 | SHIP | History hub vs design depth | `HistoryHubDepthPolicy.majorRecordFeedLines` merges records, champions, GOAT anchors | `HistoryHubDepthPolicy.kt`, `HistoryHubScreen.kt` |
+| MEGA-SHELL-099 | SHIP | Hamburger UI pattern | `ModalNavigationDrawer` via `ShellHamburgerDrawerPolicy` | `ShellHamburgerDrawerPolicy.kt`, `DynastyShellChrome.kt` |
+| MEGA-SHELL-100 | SHIP | Hub routes lose shell bottom tabs | Overlay hubs `popBackToInShellDashboard` restores dashboard tab (`HubRouteShellRetentionPolicy`) | `HubRouteShellRetentionPolicy.kt`, `DynastyApp.kt` |
 | MEGA-SHELL-101 | SHIP | Awards hub from menu | `AppRoute.AwardsHub` wired | `DynastyApp.kt` |
-| MEGA-SHELL-102 | GAP | Recruiting hub no focused-player deep link param | Navigation opens hub default tab — no `playerId` focus from News/portal | `news-hub.md#drill-in--deep-links` |
+| MEGA-SHELL-102 | SHIP | Recruiting hub no focused-player deep link param | News portal row + `recruitingFocusProspectId` → Transfer Portal tab + highlight | `RecruitingHubFocusPolicy.kt`, `NewsHubScreen.kt`, `DynastyApp.kt` |
 | MEGA-SHELL-103 | SHIP | School hub from menu | `onOpenSchool` → school overview route | `DynastyHubMenuCallbacks` |
-| MEGA-SHELL-104 | GAP | Season Review phase menu parity | Season review shell uses placeholder News — menu not audited for review-only entries | `SeasonReviewScreen.kt` |
+| MEGA-SHELL-104 | SHIP | Season Review phase menu parity | `SeasonReviewMenuPolicy` + full `buildDynastyHubMenu` on season review shell | `SeasonReviewMenuPolicy.kt`, `SeasonReviewScreen.kt` |
 | MEGA-SHELL-105 | SHIP | Menu strings in `strings.xml` | All `shell_menu_*` labels centralized | `strings.xml`, `branding.md#ui-copy` |
 
 ---
@@ -173,19 +173,19 @@
 
 | ID | Status | Spec / topic | Finding | Code / notes |
 |----|--------|--------------|---------|--------------|
-| MEGA-SHELL-106 | GAP | `DashboardDeepLink` no Rankings / March Mayhem / Player | Enum stops at `CoachCard` — feed cannot route NET row correctly | `DashboardTask.kt`, `notifications.md#deep-links` |
-| MEGA-SHELL-107 | GAP | Rankings move row taps Strategy | `NotificationEventKind.RankingsMove` → `DashboardDeepLink.Strategy` not Rankings hub | `NotificationFeedComposer.kt` |
-| MEGA-SHELL-108 | GAP | Game this week → preview not Strategy | `PlayWeekGame` handled same as `Strategy` in panel | `DashboardNotificationFeedPanel.kt` |
-| MEGA-SHELL-109 | GAP | Selection Sunday feed row + tap | Not in composer; no `MarchMayhem` deep link kind | `notifications.md` high tier |
-| MEGA-SHELL-110 | GAP | Discipline sheet feed deep link | `DashboardDeepLink.DisciplineSheet` exists for tasks — **not** used in notification composer | `NotificationFeedComposer.kt`, `notifications.md` |
-| MEGA-SHELL-111 | GAP | Medical redshirt eligible feed row | `NotificationEventKind` has no medical kind; composer omits | `NotificationFeedItem.kt` |
-| MEGA-SHELL-112 | GAP | Story tap → detail or Recruiting CTA | Dashboard News cards + hub Stories are plain `Text` — no navigation | `DynastyShellNewsTab.kt`, `NewsHubScreen.kt` |
-| MEGA-SHELL-113 | GAP | Portal story footer “View in Portal” | Mini-article pattern not implemented — no footer CTAs | `news-hub.md#story-detail--articles` |
-| MEGA-SHELL-114 | PARTIAL | Commit feed → Recruiting Recommended | Works for HS commits; portal sub-tab not distinguished | `NotificationFeedComposer`, `DashboardNotificationFeedPanel.toHubTab` |
-| MEGA-SHELL-115 | GAP | Major national record → History / player card | Composer uses `DashboardDeepLink.Strategy` | `NotificationFeedComposer.kt`, `history-hub.md` |
+| MEGA-SHELL-106 | SHIP | Feed deep-link catalog | `DashboardNotificationDeepLinkCatalogPolicy` + `HistoryHub` enum; panel routes rankings/history | `DashboardNotificationDeepLinkCatalogPolicy.kt`, `DashboardNotificationFeedPanel.kt` |
+| MEGA-SHELL-107 | SHIP | Rankings move row | `NotificationFeedRankingsMoveRowPolicy` → `RankingsHub` | `NotificationFeedRankingsMoveRowPolicy.kt`, `NotificationFeedComposer.kt` |
+| MEGA-SHELL-108 | SHIP | Game-this-week → preview | `NotificationFeedGameWeekRowPolicy` + panel `onGamePreviewOpen` | `NotificationFeedGameWeekRowPolicy.kt`, `DashboardNotificationFeedPanel.kt` |
+| MEGA-SHELL-109 | SHIP | Selection Sunday feed | Composer + `NotificationFeedSelectionSundayFeedPolicy` + March Mayhem tap | `NotificationFeedSelectionSundayFeedPolicy.kt`, `NotificationFeedComposer.kt` |
+| MEGA-SHELL-110 | SHIP | Discipline feed deep link | `NotificationFeedDisciplineFeedPolicy` + `DisciplineSheet` in composer/panel | `NotificationFeedDisciplineFeedPolicy.kt` |
+| MEGA-SHELL-111 | SHIP | Medical redshirt feed row | `NotificationFeedMedicalRedshirtFeedPolicy` + `MedicalRedshirtEligible` composer rows | `NotificationFeedMedicalRedshirtFeedPolicy.kt` |
+| MEGA-SHELL-112 | SHIP | Story drill-in | `NewsStoryDrillInPolicy` + `NewsHeadlineStoryDetailSheet` (shell + hub) | `NewsStoryDrillInPolicy.kt`, `NewsHeadlineStoryDetailSheet.kt` |
+| MEGA-SHELL-113 | SHIP | Portal story footer | `NewsPortalStoryFooterPolicy` + View in Portal CTA | `NewsPortalStoryFooterPolicy.kt`, `NewsHeadlineStoryDetailSheet.kt` |
+| MEGA-SHELL-114 | SHIP | Commit feed → Recruiting Recommended / Portal | `NotificationFeedCommitRowPolicy` + portal commit list | `NotificationFeedComposer.kt` |
+| MEGA-SHELL-115 | SHIP | Major national record → History hub | `NotificationFeedMajorRecordRowPolicy` | `NotificationFeedComposer.kt` |
 | MEGA-SHELL-116 | SHIP | Fired / eliminated modal + Coach deep link | `requiresBlockingModal` + `CoachCard` link | `CareerBlockNotificationDialog`, shell |
-| MEGA-SHELL-117 | PARTIAL | Signing Day deep links | Rankings vs Positions tabs wired from feed | `SigningDayInitialTab` mapping in `DynastyApp.kt` |
-| MEGA-SHELL-118 | GAP | News hub Back preserves dashboard tab | `onBack` pop only — does not restore prior bottom-tab selection | `NewsHubScreen.kt` |
+| MEGA-SHELL-117 | SHIP | Signing Day deep links | Feed passes `row.deepLink` → `SigningDayInitialTab` | `NotificationFeedSigningDayFeedPolicy`, `DashboardNotificationFeedPanel.kt` |
+| MEGA-SHELL-118 | SHIP | News hub Back preserves dashboard tab | `popBackToInShellDashboard` on News hub | `NewsHubBackNavigationPolicy`, `DynastyApp.kt` |
 
 ---
 
@@ -195,19 +195,19 @@
 |----|--------|--------------|---------|--------------|
 | MEGA-SHELL-119 | SHIP | In-app only — no FCM channel | No `NotificationChannel` / tray implementation | `AndroidManifest.xml`, `notifications.md#design-locks` |
 | MEGA-SHELL-120 | SHIP | Master toggle: show dashboard feed | `AppSettings.showDashboardNotificationFeed` + Settings UI | `SettingsScreen.kt` |
-| MEGA-SHELL-121 | GAP | Per-category mute (settings) | Spec allows future per-category — only global toggle ships | `notifications.md#defaults--settings` |
+| MEGA-SHELL-121 | SHIP | Per-category mute (settings) | `NotificationCategoryMutePolicy` + Settings toggles | `SettingsScreen.kt`, `AppSettings.kt` |
 | MEGA-SHELL-122 | SHIP | Priority tiers High / Medium / Low in model | `NotificationPriority` on each `NotificationFeedItem` | `NotificationFeedItem.kt` |
-| MEGA-SHELL-123 | PARTIAL | Sort newest-first within tier | Repository refresh merges snapshot — tier sort not audited in UI list | `NotificationFeedRepository.kt` |
-| MEGA-SHELL-124 | GAP | `FundraisingComplete` kind unused | Enum value exists; composer never emits | `NotificationFeedItem.kt` vs `notifications.md` low tier |
-| MEGA-SHELL-125 | GAP | Carousel offer / extension feed rows | Not in `NotificationFeedComposer` | `notifications.md` high tier |
-| MEGA-SHELL-126 | GAP | Medical redshirt notification | Missing kind + composer branch | `notifications.md` medium |
-| MEGA-SHELL-127 | GAP | Discipline opened → high feed row | No discipline event in composer | `in-season-systems.md`, `notifications.md` |
-| MEGA-SHELL-128 | PARTIAL | Week-advance batch rows | In-season snapshot on shell load only — **no** post-advance append for commits/decommits/rankings | `DynastyShellScreen.kt` `LaunchedEffect` |
+| MEGA-SHELL-123 | SHIP | Sort newest-first within tier | `NotificationFeedTierSortPolicy` in repository/engine | `NotificationFeedRepository.kt` |
+| MEGA-SHELL-124 | SHIP | `FundraisingComplete` kind unused | Composer emits on week-nine completed fundraisers / naming | `NotificationFeedItem.kt` vs `notifications.md` low tier |
+| MEGA-SHELL-125 | SHIP | Carousel offer / extension feed rows | `NotificationFeedCarouselComposerPolicy` + sidecar bodies | `NotificationFeedComposer.kt` |
+| MEGA-SHELL-126 | SHIP | Medical redshirt notification | `NotificationFeedMedicalRedshirtComposerPolicy` | `NotificationFeedComposer.kt` |
+| MEGA-SHELL-127 | SHIP | Discipline opened → high feed row | `NotificationFeedDisciplineComposerPolicy` | `NotificationFeedComposer.kt` |
+| MEGA-SHELL-128 | SHIP | Week-advance batch rows | `DashboardNotificationWeekAdvanceAppender` post `advanceDynastyWeek` | `SaveSlotRepository.kt` |
 | MEGA-SHELL-129 | SHIP | Stories never duplicated as notifications | League week → `NewsFeedRepository` only | architecture split |
-| MEGA-SHELL-130 | GAP | Offseason portal commit feed rows | Portal offseason-only in spec — composer has no portal-specific kinds | `notifications.md#portal-lock` |
+| MEGA-SHELL-130 | SHIP | Offseason portal commit feed rows | `userPortalCommitsThisWeek` + `NotificationFeedPortalOffseasonPolicy` | `NotificationFeedComposer.kt` |
 | MEGA-SHELL-131 | SHIP | Portal alerts excluded in-season | No in-season transfer kinds in composer | design lock |
-| MEGA-SHELL-132 | PARTIAL | One row per event on advance | Spec lock — implementation depends on future advance hook | `notifications.md#week-advance--sim-week` |
-| MEGA-SHELL-133 | GAP | Task vs feed dedup rules | Required discipline task without parallel feed row — both missing feed side | `notifications.md#tasks-vs-feed-no-triple-spam` |
+| MEGA-SHELL-132 | SHIP | One row per event on advance | `NotificationWeekAdvanceAppendPolicy.ONE_ROW_PER_EVENT` | pipeline stage marker |
+| MEGA-SHELL-133 | SHIP | Task vs feed dedup rules | `NotificationTaskFeedDedupPolicy` (discipline + carousel) | `DashboardNotificationSnapshotSidecarLoader.kt` |
 
 ---
 
@@ -215,11 +215,11 @@
 
 | ID | Status | Spec / topic | Finding | Code / notes |
 |----|--------|--------------|---------|--------------|
-| MEGA-SHELL-134 | PARTIAL | `NewsHeadlineKind` surface labels on dashboard | Kind chip on shallow News tab via `newsKindLabel` | `DynastyShellTabContent.kt` |
-| MEGA-SHELL-135 | GAP | Hub Stories tab hides kind chip | `StoriesTab` shows title only — no category/date | `NewsHubScreen.kt` vs dashboard tab |
-| MEGA-SHELL-136 | GAP | Portal headline kinds in enum | No `PortalEntry` / `Commit` / `Flip` in `NewsHeadlineKind` | `NewsHeadline.kt`, `news-hub.md` |
-| MEGA-SHELL-137 | GAP | Poll / NET movement headlines | `appendLeagueWeek` emits injury wire + upsets only — no poll lines | `NewsFeedRepository.kt` |
-| MEGA-SHELL-138 | GAP | Bracketology (February) stories | No generator wired | `news-hub.md`, `MEGA-GDD-130` |
+| MEGA-SHELL-134 | SHIP | `NewsHeadlineKind` surface labels on dashboard | `NewsHeadlineKindChipPolicy` + `newsHeadlineKindLabel` | `DynastyShellTabContent.kt` |
+| MEGA-SHELL-135 | SHIP | Hub Stories tab hides kind chip | `NewsHubStoriesRowPolicy` kind + week row | `NewsHubScreen.kt` |
+| MEGA-SHELL-136 | SHIP | Portal headline kinds in enum | `NewsPortalHeadlineKindPolicy` + publisher helpers | `NewsHeadline.kt` |
+| MEGA-SHELL-137 | SHIP | Poll / NET movement headlines | `PollNetMovementNewsEngine` in `appendLeagueWeek` | `NewsFeedRepository.kt` |
+| MEGA-SHELL-138 | PASS | Bracketology (February) stories | `BracketologyNewsEngine` on league week advance | `NewsFeedRepository.kt`, `MEGA-GDD-130` |
 | MEGA-SHELL-139 | GAP | Coaching carousel league headlines | No `NewsHeadlineKind` or publisher path for carousel | `news-hub.md` brief list |
 | MEGA-SHELL-140 | PARTIAL | Awards headlines kind | `appendAwardsHeadlines` + `NewsHeadlineKind.Awards` | postseason awards wiring |
 | MEGA-SHELL-141 | SHIP | User vs league injury kinds split | `UserInjury` vs `LeagueInjury` | `NewsHeadlinePublisher.kt` |

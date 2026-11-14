@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -23,6 +25,7 @@ import dev.novux.dynasty.cbb.core.save.SaveSlotSummary
 @Composable
 fun HomeMenuScreen(
     continueSlot: SaveSlotSummary?,
+    continueLoading: Boolean = false,
     onContinue: () -> Unit,
     onNew: () -> Unit,
     onLoad: () -> Unit,
@@ -53,9 +56,17 @@ fun HomeMenuScreen(
             )
             Button(
                 onClick = onContinue,
+                enabled = !continueLoading,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text(stringResource(R.string.menu_continue))
+                if (continueLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(22.dp),
+                        strokeWidth = 2.dp,
+                    )
+                } else {
+                    Text(stringResource(R.string.menu_continue))
+                }
             }
         }
 

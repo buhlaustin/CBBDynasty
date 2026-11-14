@@ -1,5 +1,7 @@
 package dev.novux.dynasty.cbb.core.recruiting.ai
 
+import dev.novux.dynasty.cbb.core.pack.TeamDisplayOverlay
+import dev.novux.dynasty.cbb.core.recruiting.RecruitingPipelineStates
 import dev.novux.dynasty.cbb.core.recruiting.SchoolRecruitingContext
 import dev.novux.dynasty.cbb.core.roster.PlayerPosition
 
@@ -23,6 +25,26 @@ data class AiProgramSnapshot(
 
 object AiLeagueProgramGenerator {
     private val states = listOf("TX", "OH", "FL", "CA", "NC", "IN", "KY", "VA", "IL", "GA")
+
+    /** Pack-backed league — same prestige / pipeline / NIL rules as the user ([MEGA-RECR-068]). */
+    fun fromPackTeams(
+        teams: List<TeamDisplayOverlay>,
+        excludeTeamId: String?,
+        nilPoolAnnualUsd: (TeamDisplayOverlay) -> Long,
+    ): List<AiProgramSnapshot> =
+        teams
+            .asSequence()
+            .filter { it.teamId != excludeTeamId }
+            .map { team ->
+                AiProgramSnapshot(
+                    programId = team.teamId,
+                    programPrestige = team.programPrestige,
+                    schoolHomeState = team.homeState,
+                    pipelineStates = RecruitingPipelineStates.forHomeState(team.homeState),
+                    nilPoolAnnualUsd = nilPoolAnnualUsd(team).toInt().coerceAtLeast(0),
+                )
+            }
+            .toList()
 
     fun demoLeague(
         count: Int = 365,

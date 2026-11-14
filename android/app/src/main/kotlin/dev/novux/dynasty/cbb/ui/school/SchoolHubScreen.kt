@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.novux.dynasty.cbb.R
 import dev.novux.dynasty.cbb.core.school.SchoolHubOverview
+import dev.novux.dynasty.cbb.core.school.SchoolHubViewOnlyPolicy
 
 @Composable
 fun SchoolHubScreen(
@@ -35,6 +36,13 @@ fun SchoolHubScreen(
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
         )
+        if (SchoolHubViewOnlyPolicy.showViewOnlyBanner(overview)) {
+            Text(
+                text = stringResource(R.string.school_hub_view_only),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
         SchoolHubOverviewCard(overview)
         if (overview.isUserSchool) {
             teamChemistry?.let { chem ->

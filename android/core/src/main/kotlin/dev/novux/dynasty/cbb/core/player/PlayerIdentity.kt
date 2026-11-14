@@ -7,6 +7,7 @@ data class PlayerIdentity(
     val heightInches: Int,
     val weightLbs: Int,
     val nilUsdPerYear: Long = 0,
+    val nilDealRaisedThisSeason: Boolean = false,
 ) {
     val hometownLabel: String
         get() = if (hometownCity.isBlank()) hometownState else "$hometownCity, $hometownState"

@@ -37,6 +37,7 @@ class WeekCheckpointRepository(
         loadCheckpoint(metadata.dynastyId)
             ?: repairCalendarFromMetadata(metadata)
 
+    /** Persists sim staging (watch/fast-sim). Not used mid-`advanceDynastyWeek` — see MEGA-QA-028. */
     suspend fun persist(dynastyId: String, state: WeekCheckpointState) {
         database.withTransaction {
             calendarDao.upsert(state.toCalendarEntity(dynastyId))

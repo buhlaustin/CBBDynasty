@@ -31,6 +31,8 @@ sealed class PackValidationError {
         val teamId: String,
         val detail: String,
     ) : PackValidationError()
+
+    data class InvalidManifestSignature(val detail: String) : PackValidationError()
 }
 
 sealed class PackLoadResult {

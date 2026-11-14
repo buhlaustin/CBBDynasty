@@ -32,36 +32,32 @@ class GameLineupPrepTest {
 
     @Test
     fun userInterchangeHonorsSlotPolicy() {
-        val pg = RosterPlayer(
-            playerId = "pg1",
+        fun rosterPlayer(id: String, pos: PlayerPosition, ovr: Int) = RosterPlayer(
+            playerId = id,
             dynastyId = "d",
-            position = PlayerPosition.PointGuard,
+            position = pos,
             classYear = PlayerClassYear.Senior,
             isStarter = true,
             depthOrder = 1,
             inTransferPortal = false,
-            ovr = 90,
-            off = 90,
-            def = 70,
+            ovr = ovr,
+            off = ovr,
+            def = ovr - 2,
         )
-        val sg = RosterPlayer(
-            playerId = "sg1",
-            dynastyId = "d",
-            position = PlayerPosition.ShootingGuard,
-            classYear = PlayerClassYear.Senior,
-            isStarter = true,
-            depthOrder = 2,
-            inTransferPortal = false,
-            ovr = 72,
-            off = 72,
-            def = 70,
-        )
+        val pg = rosterPlayer("pg1", PlayerPosition.PointGuard, 90)
+        val sg = rosterPlayer("sg1", PlayerPosition.ShootingGuard, 72)
+        val sf = rosterPlayer("sf1", PlayerPosition.SmallForward, 70)
+        val pf = rosterPlayer("pf1", PlayerPosition.PowerForward, 68)
+        val c = rosterPlayer("c1", PlayerPosition.Center, 71)
         val prep = GameLineupPrep.build(
             "team",
-            listOf(pg, sg),
+            listOf(pg, sg, sf, pf, c),
             userStarters = mapOf(
                 PlayerPosition.PointGuard to "pg1",
                 PlayerPosition.ShootingGuard to "pg1",
+                PlayerPosition.SmallForward to "sf1",
+                PlayerPosition.PowerForward to "pf1",
+                PlayerPosition.Center to "c1",
             ),
         )
         assertTrue(prep.participants.any { it.playerId == "pg1" && it.slotPlayed == PlayerPosition.ShootingGuard })

@@ -31,6 +31,7 @@ class PlayerArchetypeAssignerTest {
         val player = dev.novux.dynasty.cbb.core.player.DynastyPlayer(
             playerId = "p",
             dynastyId = "d",
+            appearance = dev.novux.dynasty.cbb.core.player.appearance.PlayerAppearance.fromPlayerId("p"),
             identity = dev.novux.dynasty.cbb.core.player.PlayerIdentity(
                 "Test",
                 "City",

@@ -8,6 +8,9 @@ object DynastyHubMenuPolicy {
     fun conferenceTournamentMenuVisible(position: CalendarPosition): Boolean =
         position.phase == CalendarPhase.ConferenceTournament
 
-    fun marchMayhemMenuVisible(position: CalendarPosition): Boolean =
-        position.phase == CalendarPhase.Postseason
+    /** March Mayhem unlocks after Selection Sunday field is published, not merely entering postseason phase. */
+    fun marchMayhemMenuVisible(
+        position: CalendarPosition,
+        selectionSundayPublished: Boolean,
+    ): Boolean = position.phase == CalendarPhase.Postseason && selectionSundayPublished
 }

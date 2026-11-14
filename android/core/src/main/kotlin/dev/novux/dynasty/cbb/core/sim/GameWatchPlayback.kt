@@ -8,33 +8,68 @@ import kotlinx.coroutines.delay
 object GameWatchPlayback {
     const val DEFAULT_POSSESSION_DELAY_MS: Long = 2_000L
 
-    suspend fun watch(
-        input: GameSimInput,
-        speedMultiplier: Double = 1.0,
-        injuryRoll: GameSimInjuryRollInput? = null,
-        onLine: suspend (String) -> Unit,
-        onHalftime: suspend (GameSimResult, MidGameState) -> GameSimInput,
-    ): GameSimResult {
-        val lineDelay = if (speedMultiplier <= 0.0) {
+    /** Real-time watch uses ~2s per possession line at 1× (not scrimmage fast-forward). */
+    const val DEFAULT_WATCH_SPEED_MULTIPLIER: Double = 1.0
+
+    fun lineDelayMs(speedMultiplier: Double): Long =
+        if (speedMultiplier <= 0.0) {
             0L
         } else {
             (DEFAULT_POSSESSION_DELAY_MS / speedMultiplier).toLong().coerceAtLeast(0L)
         }
+
+    suspend fun watch(
+        input: GameSimInput,
+        speedMultiplier: Double = DEFAULT_WATCH_SPEED_MULTIPLIER,
+        injuryRoll: GameSimInjuryRollInput? = null,
+        onLineDelayMs: (() -> Long)? = null,
+        pauseGate: GameWatchPauseGate? = null,
+        onLine: suspend (PossessionStep) -> Unit,
+        onHalftime: suspend (GameSimResult, MidGameState) -> GameSimInput,
+    ): GameSimResult {
         var activeInput = input
-        var session = PossessionSimSession(activeInput, stopAtHalftime = true)
+        var session = PossessionSimSession(activeInput, stopAtHalftime = true, injuryRoll = injuryRoll)
         var resumedAfterHalftime = false
-        while (session.hasNext()) {
-            val step = session.step()
-            onLine(step.logLine)
+        suspend fun paceAfterLine(lineDelay: Long) {
+            pauseGate?.awaitUnpaused()
             if (lineDelay > 0) {
                 delay(lineDelay)
             }
+        }
+        while (session.hasNext()) {
+            val step = session.step()
+            onLine(step)
+            val lineDelay = onLineDelayMs?.invoke() ?: lineDelayMs(speedMultiplier)
+            paceAfterLine(lineDelay)
             if (step.haltedAtHalftime) {
                 val partial = session.toResult(isComplete = false)
                 val mid = checkNotNull(partial.midGame)
                 activeInput = onHalftime(partial, mid)
-                session = PossessionSimSession(activeInput, resume = mid, stopAtHalftime = false)
+                session = PossessionSimSession(
+                    activeInput,
+                    resume = mid,
+                    stopAtHalftime = false,
+                    injuryRoll = injuryRoll,
+                )
                 resumedAfterHalftime = true
+            }
+        }
+        while (session.isTiedAtBuzz()) {
+            session.beginOvertimePeriod()
+            onLine(
+                PossessionStep(
+                    logLine = session.latestLogLine(),
+                    haltedAtHalftime = false,
+                    chrome = session.currentWatchChrome(),
+                ),
+            )
+            val otBannerDelay = onLineDelayMs?.invoke() ?: lineDelayMs(speedMultiplier)
+            paceAfterLine(otBannerDelay)
+            while (session.hasNext()) {
+                val step = session.step()
+                onLine(step)
+                val lineDelay = onLineDelayMs?.invoke() ?: lineDelayMs(speedMultiplier)
+                paceAfterLine(lineDelay)
             }
         }
         var final = session.toResult(isComplete = true)

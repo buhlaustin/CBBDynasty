@@ -1,1755 +1,5 @@
 [
   {
-    "id": "MEGA-COACH-028",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-031",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-046",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-058",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-059",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-060",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-067",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-068",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-090",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-095",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-096",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-097",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-098",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-108",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-109",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-118",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-119",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-139",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-142",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-149",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-150",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-151",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-154",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-187",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-GDD-027",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-041",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-048",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-074",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-086",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-099",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-100",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-109",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-111",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-112",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-NOTES-036",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-037",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-042",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-RECR-001",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-002",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-005",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-006",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-015",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-035",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-036",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-042",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-053",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-082",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-100",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-133",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-139",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-145",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-SIM-086",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-087",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-090",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-101",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-102",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-103",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-112",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-119",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-120",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-125",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-129",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-130",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-137",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-138",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-145",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-149",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-153",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-154",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-160",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-165",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-171",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-175",
-    "pri": "P0",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-NOTES-029",
-    "pri": "P0",
-    "status": "GAP",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-035",
-    "pri": "P0",
-    "status": "GAP",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-058",
-    "pri": "P0",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-QA-001",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-002",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-013",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-014",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-015",
-    "pri": "P0",
-    "status": "BOT",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-020",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-028",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-029",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-030",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-035",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-045",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-046",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-052",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-060",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-061",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-076",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-077",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-088",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-089",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-092",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-101",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-102",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-111",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-112",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-119",
-    "pri": "P0",
-    "status": "EMU",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-127",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-128",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-134",
-    "pri": "P0",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-135",
-    "pri": "P0",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-136",
-    "pri": "P0",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-137",
-    "pri": "P0",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-146",
-    "pri": "P0",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-151",
-    "pri": "P0",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-152",
-    "pri": "P0",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-153",
-    "pri": "P0",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-RECR-131",
-    "pri": "P0",
-    "status": "RISK",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-161",
-    "pri": "P0",
-    "status": "RISK",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-NOTES-005",
-    "pri": "P0",
-    "status": "RULE",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-006",
-    "pri": "P0",
-    "status": "RULE",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-007",
-    "pri": "P0",
-    "status": "RULE",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-COACH-018",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-033",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-035",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-036",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-050",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-054",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-063",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-064",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-065",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-066",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-069",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-077",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-086",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-087",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-093",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-099",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-100",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-110",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-111",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-115",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-120",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-121",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-128",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-129",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-140",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-141",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-143",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-148",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-152",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-153",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-155",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-156",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-157",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-163",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-170",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-172",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-175",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-183",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-188",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-189",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-193",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-195",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-GDD-018",
-    "pri": "P1",
-    "status": "MISSING",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-090",
-    "pri": "P1",
-    "status": "MISSING",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-119",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-130",
-    "pri": "P1",
-    "status": "MISSING",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-NOTES-047",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-065",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-RECR-003",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-004",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-008",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-013",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-022",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-027",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-029",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-037",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-038",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-049",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-068",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-072",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-076",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-083",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-086",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-094",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-103",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-110",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-136",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-137",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-140",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-146",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-147",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-153",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-154",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-SIM-088",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-089",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-091",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-092",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-093",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-094",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-095",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-097",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-099",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-100",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-104",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-105",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-106",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-108",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-109",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-111",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-113",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-114",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-115",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-117",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-121",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-122",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-124",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-126",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-127",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-131",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-132",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-133",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-135",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-136",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-139",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-140",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-141",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-143",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-146",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-147",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-148",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-150",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-151",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-155",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-156",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-159",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-161",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-162",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-163",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-166",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-167",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-169",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-170",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-172",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-173",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-176",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-177",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-180",
-    "pri": "P1",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-COACH-029",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-030",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-040",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-041",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-057",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-114",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-123",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
     "id": "MEGA-GDD-009",
     "pri": "P1",
     "status": "GAP",
@@ -1757,315 +7,7 @@
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
   },
   {
-    "id": "MEGA-GDD-012",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-016",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-019",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-022",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-023",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-024",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-025",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-026",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-028",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-029",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-030",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-031",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-033",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-034",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-036",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-038",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-039",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-049",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-050",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-053",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-054",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-055",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-056",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-057",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-061",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-062",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-066",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-067",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-068",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-073",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-075",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-077",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-080",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-081",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-087",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-094",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-097",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-101",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-104",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
     "id": "MEGA-GDD-105",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-113",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-114",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-115",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-116",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-118",
     "pri": "P1",
     "status": "GAP",
     "shard": "game-design.md",
@@ -2086,13 +28,6 @@
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
   },
   {
-    "id": "MEGA-GDD-123",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
     "id": "MEGA-GDD-125",
     "pri": "P1",
     "status": "GAP",
@@ -2107,774 +42,11 @@
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
   },
   {
-    "id": "MEGA-GDD-131",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-135",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-GDD-136",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "game-design.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
     "id": "MEGA-GDD-145",
     "pri": "P1",
     "status": "GAP",
     "shard": "game-design.md",
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
-  },
-  {
-    "id": "MEGA-NOTES-012",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-014",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-016",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-019",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-020",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-021",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-022",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-023",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-024",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-027",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-028",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-030",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-031",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-032",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-033",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-034",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-039",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-040",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-041",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-043",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-044",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-045",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-046",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-048",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-049",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-050",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-052",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-053",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-054",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-059",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-060",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-064",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-067",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-069",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-075",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-076",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-078",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-080",
-    "pri": "P1",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-QA-003",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-004",
-    "pri": "P1",
-    "status": "EMU",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-005",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-008",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-011",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-016",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-017",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-018",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-019",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-023",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-025",
-    "pri": "P1",
-    "status": "EMU",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-027",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-031",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-032",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-033",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-034",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-038",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-040",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-042",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-044",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-047",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-048",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-050",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-055",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-057",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-062",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-063",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-064",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-065",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-068",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-071",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-074",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-078",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-079",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-083",
-    "pri": "P1",
-    "status": "EMU",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-086",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-090",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-091",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-093",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-094",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-099",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-103",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-104",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-105",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-109",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-113",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-114",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-120",
-    "pri": "P1",
-    "status": "EMU",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-121",
-    "pri": "P1",
-    "status": "EMU",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-124",
-    "pri": "P1",
-    "status": "EMU",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-129",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-130",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-132",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-138",
-    "pri": "P1",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-139",
-    "pri": "P1",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-141",
-    "pri": "P1",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-142",
-    "pri": "P1",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-144",
-    "pri": "P1",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-148",
-    "pri": "P1",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-150",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-154",
-    "pri": "P1",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-155",
-    "pri": "P1",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-157",
-    "pri": "P1",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-159",
-    "pri": "P1",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-161",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-162",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-165",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-167",
-    "pri": "P1",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
   },
   {
     "id": "MEGA-RECR-007",
@@ -2905,48 +77,6 @@
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
   },
   {
-    "id": "MEGA-RECR-032",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-039",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-043",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-046",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-050",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-051",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
     "id": "MEGA-RECR-052",
     "pri": "P1",
     "status": "GAP",
@@ -2968,56 +98,7 @@
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
   },
   {
-    "id": "MEGA-RECR-075",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-090",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-093",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-097",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-098",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-104",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
     "id": "MEGA-RECR-106",
-    "pri": "P1",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-109",
     "pri": "P1",
     "status": "GAP",
     "shard": "recruiting-transfer-start.md",
@@ -3052,18 +133,795 @@
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
   },
   {
-    "id": "MEGA-RECR-148",
+    "id": "MEGA-SHELL-016",
     "pri": "P1",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
+    "status": "PARTIAL",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
   },
   {
-    "id": "MEGA-RECR-159",
+    "id": "MEGA-SHELL-018",
     "pri": "P1",
     "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-021",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-023",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-024",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-025",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-037",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-038",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-039",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-040",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-044",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-048",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-062",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-065",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-067",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-069",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-070",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-087",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-139",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-140",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-142",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-143",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-145",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-146",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-148",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-150",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-151",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-152",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-153",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-155",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-159",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-160",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-161",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-163",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-165",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-169",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-170",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-175",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-176",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-177",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-179",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-180",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SHELL-182",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "news-shell-branding.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/news-shell-branding.md"
+  },
+  {
+    "id": "MEGA-SIM-003",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
+  },
+  {
+    "id": "MEGA-SIM-005",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
+  },
+  {
+    "id": "MEGA-SIM-006",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
+  },
+  {
+    "id": "MEGA-SIM-008",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
+  },
+  {
+    "id": "MEGA-SIM-009",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
+  },
+  {
+    "id": "MEGA-SIM-010",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
+  },
+  {
+    "id": "MEGA-SIM-014",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
+  },
+  {
+    "id": "MEGA-SIM-016",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
+  },
+  {
+    "id": "MEGA-SIM-017",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
+  },
+  {
+    "id": "MEGA-SIM-018",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
+  },
+  {
+    "id": "MEGA-SIM-028",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
+  },
+  {
+    "id": "MEGA-SIM-035",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
+  },
+  {
+    "id": "MEGA-SIM-047",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
+  },
+  {
+    "id": "MEGA-SIM-052",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
+  },
+  {
+    "id": "MEGA-SIM-060",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
+  },
+  {
+    "id": "MEGA-SIM-062",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
+  },
+  {
+    "id": "MEGA-SIM-063",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
+  },
+  {
+    "id": "MEGA-SIM-075",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
+  },
+  {
+    "id": "MEGA-SIM-085",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
+  },
+  {
+    "id": "MEGA-WORLD-006",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-010",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-017",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-019",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-023",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-025",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-026",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-029",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-035",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-037",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-040",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-041",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-046",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-047",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-050",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-052",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-054",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-058",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-060",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-068",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-071",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-072",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-074",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-077",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-078",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-081",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-091",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-092",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-104",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-109",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-110",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-111",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-112",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-113",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-114",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-119",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-120",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-121",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-122",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-123",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-125",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-126",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-128",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-129",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-132",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-135",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-136",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-142",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-144",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-147",
+    "pri": "P1",
+    "status": "GAP",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
+  },
+  {
+    "id": "MEGA-WORLD-151",
+    "pri": "P1",
+    "status": "PARTIAL",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
   },
   {
     "id": "MEGA-GDD-092",
@@ -3169,20 +1027,6 @@
     "status": "RISK",
     "shard": "recruiting-transfer-start.md",
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-NOTES-008",
-    "pri": "P1",
-    "status": "RULE",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-009",
-    "pri": "P1",
-    "status": "RULE",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
   },
   {
     "id": "MEGA-COACH-053",
@@ -3325,21 +1169,7 @@
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
   },
   {
-    "id": "MEGA-COACH-144",
-    "pri": "P2",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
     "id": "MEGA-COACH-147",
-    "pri": "P2",
-    "status": "FAIL",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-158",
     "pri": "P2",
     "status": "FAIL",
     "shard": "coach-player-ui.md",
@@ -3465,13 +1295,6 @@
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
   },
   {
-    "id": "MEGA-RECR-056",
-    "pri": "P2",
-    "status": "FAIL",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
     "id": "MEGA-RECR-088",
     "pri": "P2",
     "status": "FAIL",
@@ -3521,13 +1344,6 @@
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
   },
   {
-    "id": "MEGA-SIM-123",
-    "pri": "P2",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
     "id": "MEGA-SIM-128",
     "pri": "P2",
     "status": "FAIL",
@@ -3556,42 +1372,7 @@
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
   },
   {
-    "id": "MEGA-SIM-152",
-    "pri": "P2",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-164",
-    "pri": "P2",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-168",
-    "pri": "P2",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
     "id": "MEGA-SIM-174",
-    "pri": "P2",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-178",
-    "pri": "P2",
-    "status": "FAIL",
-    "shard": "sim-strategy-lineup-injuries.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
-  },
-  {
-    "id": "MEGA-SIM-179",
     "pri": "P2",
     "status": "FAIL",
     "shard": "sim-strategy-lineup-injuries.md",
@@ -3626,28 +1407,7 @@
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
   },
   {
-    "id": "MEGA-COACH-032",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
     "id": "MEGA-COACH-034",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-037",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-039",
     "pri": "P2",
     "status": "GAP",
     "shard": "coach-player-ui.md",
@@ -3717,13 +1477,6 @@
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
   },
   {
-    "id": "MEGA-COACH-079",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
     "id": "MEGA-COACH-084",
     "pri": "P2",
     "status": "GAP",
@@ -3759,21 +1512,7 @@
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
   },
   {
-    "id": "MEGA-COACH-102",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
     "id": "MEGA-COACH-106",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "coach-player-ui.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
-  },
-  {
-    "id": "MEGA-COACH-116",
     "pri": "P2",
     "status": "GAP",
     "shard": "coach-player-ui.md",
@@ -3934,496 +1673,6 @@
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/game-design.md"
   },
   {
-    "id": "MEGA-NOTES-018",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-026",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-056",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-070",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-071",
-    "pri": "P2",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-073",
-    "pri": "P2",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-079",
-    "pri": "P2",
-    "status": "PARTIAL",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-QA-006",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-007",
-    "pri": "P2",
-    "status": "EMU",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-009",
-    "pri": "P2",
-    "status": "EMU",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-010",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-012",
-    "pri": "P2",
-    "status": "BOT",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-021",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-022",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-024",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-026",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-036",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-037",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-039",
-    "pri": "P2",
-    "status": "EMU",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-041",
-    "pri": "P2",
-    "status": "BOT",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-043",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-049",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-051",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-053",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-054",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-056",
-    "pri": "P2",
-    "status": "EMU",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-058",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-066",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-067",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-069",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-070",
-    "pri": "P2",
-    "status": "BOT",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-072",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-073",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-080",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-081",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-082",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-084",
-    "pri": "P2",
-    "status": "BOT",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-085",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-095",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-096",
-    "pri": "P2",
-    "status": "BOT",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-097",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-098",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-100",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-106",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-107",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-108",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-110",
-    "pri": "P2",
-    "status": "EMU",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-115",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-116",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-118",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-122",
-    "pri": "P2",
-    "status": "EMU",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-123",
-    "pri": "P2",
-    "status": "EMU",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-125",
-    "pri": "P2",
-    "status": "EMU",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-126",
-    "pri": "P2",
-    "status": "EMU",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-131",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-133",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-140",
-    "pri": "P2",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-143",
-    "pri": "P2",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-145",
-    "pri": "P2",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-147",
-    "pri": "P2",
-    "status": "BOT",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-149",
-    "pri": "P2",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-156",
-    "pri": "P2",
-    "status": "BOT",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-158",
-    "pri": "P2",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-160",
-    "pri": "P2",
-    "status": "REL",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-163",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-164",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-166",
-    "pri": "P2",
-    "status": "EMU",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-168",
-    "pri": "P2",
-    "status": "DEV",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-169",
-    "pri": "P2",
-    "status": "BOT",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-170",
-    "pri": "P2",
-    "status": "BOT",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
     "id": "MEGA-RECR-009",
     "pri": "P2",
     "status": "GAP",
@@ -4445,48 +1694,6 @@
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
   },
   {
-    "id": "MEGA-RECR-023",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-028",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-030",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-033",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-034",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-040",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
     "id": "MEGA-RECR-041",
     "pri": "P2",
     "status": "GAP",
@@ -4494,28 +1701,7 @@
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
   },
   {
-    "id": "MEGA-RECR-047",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-054",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
     "id": "MEGA-RECR-059",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-065",
     "pri": "P2",
     "status": "GAP",
     "shard": "recruiting-transfer-start.md",
@@ -4571,13 +1757,6 @@
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
   },
   {
-    "id": "MEGA-RECR-085",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
     "id": "MEGA-RECR-087",
     "pri": "P2",
     "status": "GAP",
@@ -4585,42 +1764,7 @@
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
   },
   {
-    "id": "MEGA-RECR-089",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-091",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-092",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
     "id": "MEGA-RECR-095",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-096",
-    "pri": "P2",
-    "status": "GAP",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-RECR-101",
     "pri": "P2",
     "status": "GAP",
     "shard": "recruiting-transfer-start.md",
@@ -4795,13 +1939,6 @@
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
   },
   {
-    "id": "MEGA-RECR-024",
-    "pri": "P2",
-    "status": "RISK",
-    "shard": "recruiting-transfer-start.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
     "id": "MEGA-RECR-044",
     "pri": "P2",
     "status": "RISK",
@@ -4858,53 +1995,46 @@
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
   },
   {
-    "id": "MEGA-NOTES-003",
+    "id": "MEGA-SIM-036",
     "pri": "P2",
-    "status": "RULE",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
+    "status": "WIRE",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
   },
   {
-    "id": "MEGA-NOTES-004",
+    "id": "MEGA-SIM-053",
     "pri": "P2",
-    "status": "RULE",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
+    "status": "WIRE",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
   },
   {
-    "id": "MEGA-NOTES-010",
+    "id": "MEGA-SIM-058",
     "pri": "P2",
-    "status": "RULE",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
+    "status": "WIRE",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
   },
   {
-    "id": "MEGA-NOTES-011",
+    "id": "MEGA-SIM-064",
     "pri": "P2",
-    "status": "RULE",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
+    "status": "WIRE",
+    "shard": "sim-strategy-lineup-injuries.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/sim-strategy-lineup-injuries.md"
   },
   {
-    "id": "MEGA-NOTES-057",
+    "id": "MEGA-WORLD-065",
     "pri": "P2",
-    "status": "RULE",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
+    "status": "WIRE",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
   },
   {
-    "id": "MEGA-NOTES-074",
+    "id": "MEGA-WORLD-152",
     "pri": "P2",
-    "status": "META",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-082",
-    "pri": "P2",
-    "status": "META",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
+    "status": "WIRE",
+    "shard": "league-world-pack.md",
+    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/league-world-pack.md"
   },
   {
     "id": "MEGA-COACH-132",
@@ -4963,34 +2093,6 @@
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/coach-player-ui.md"
   },
   {
-    "id": "MEGA-QA-059",
-    "pri": "P3",
-    "status": "EMU",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-075",
-    "pri": "P3",
-    "status": "EMU",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-087",
-    "pri": "P3",
-    "status": "EMU",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
-    "id": "MEGA-QA-117",
-    "pri": "P3",
-    "status": "EMU",
-    "shard": "integration-playtest-regression.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/integration-playtest-regression.md"
-  },
-  {
     "id": "MEGA-RECR-118",
     "pri": "P3",
     "status": "GAP",
@@ -5003,19 +2105,5 @@
     "status": "GAP",
     "shard": "recruiting-transfer-start.md",
     "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/recruiting-transfer-start.md"
-  },
-  {
-    "id": "MEGA-NOTES-001",
-    "pri": "P3",
-    "status": "RULE",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
-  },
-  {
-    "id": "MEGA-NOTES-002",
-    "pri": "P3",
-    "status": "RULE",
-    "shard": "planning-notes-traceability.md",
-    "path": "docs/MEGA_BUILD_CHECKLIST_AUDIT/planning-notes-traceability.md"
   }
 ]

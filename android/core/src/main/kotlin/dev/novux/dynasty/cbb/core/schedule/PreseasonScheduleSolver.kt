@@ -16,19 +16,25 @@ object PreseasonScheduleSolver {
         tournamentResolution: TournamentInviteResolution,
         exhibitionCount: Int,
         seed: Long,
+        exhibitionStubs: List<ScheduledGameStub>? = null,
     ): PreseasonSchedulePlan {
         val random = Random(seed)
         val confTarget = conference.leagueGameCount.coerceAtMost(budget.builderSlots)
-        val confGames = buildConferenceGames(userTeam, conferenceOpponents, confTarget)
         val eventGames = buildEarlyEventGames(tournamentResolution)
+        val eventWeeks = eventGames.mapNotNull { it.rsWeekIndex }.toSet()
+        val confGames = buildConferenceGames(userTeam, conferenceOpponents, confTarget, eventWeeks)
+        val confWeeks = confGames.mapNotNull { it.rsWeekIndex }.toSet()
         val builderRemaining = (budget.builderSlots - confGames.size).coerceAtLeast(0)
         val nonConfGames = buildNonConferenceGames(
             userTeam,
             nonConferencePool,
             builderRemaining,
             random,
+            eventWeeks + confWeeks,
         )
-        val exhibitions = buildExhibitions(nonConferencePool, exhibitionCount, random)
+        val exhibitions =
+            exhibitionStubs?.takeIf { it.size == exhibitionCount.coerceIn(0, PreseasonScheduleConstants.MAX_EXHIBITION_GAMES) }
+                ?: buildExhibitions(nonConferencePool, exhibitionCount, random)
         val regularSeason = eventGames + confGames + nonConfGames
         return PreseasonSchedulePlan(
             exhibitions = exhibitions,
@@ -43,8 +49,10 @@ object PreseasonScheduleSolver {
         userTeam: TeamDisplayOverlay,
         opponents: List<TeamDisplayOverlay>,
         count: Int,
+        reservedWeeks: Set<Int>,
     ): List<ScheduledGameStub> {
         if (opponents.isEmpty() || count <= 0) return emptyList()
+        val weeks = ScheduleWeekAllocator.allocate(count, 5..RegularSeasonSlotBudget.RS_CAP, reservedWeeks)
         return List(count) { index ->
             val opp = opponents[index % opponents.size]
             val repeatRound = index / opponents.size
@@ -53,7 +61,7 @@ object PreseasonScheduleSolver {
                 opponentTeamId = opp.teamId,
                 opponentDisplayName = opp.displayName,
                 homeGame = (index + repeatRound) % 2 == 0,
-                rsWeekIndex = 5 + (index % RegularSeasonSlotBudget.RS_CAP),
+                rsWeekIndex = weeks.getOrElse(index) { 5 + index },
             )
         }
     }
@@ -63,9 +71,11 @@ object PreseasonScheduleSolver {
         pool: List<TeamDisplayOverlay>,
         count: Int,
         random: Random,
+        reservedWeeks: Set<Int>,
     ): List<ScheduledGameStub> {
         if (count <= 0 || pool.isEmpty()) return emptyList()
         val shuffled = pool.shuffled(random)
+        val weeks = ScheduleWeekAllocator.allocate(count, 8..RegularSeasonSlotBudget.RS_CAP, reservedWeeks)
         return List(count) { index ->
             val opp = shuffled[index % shuffled.size]
             ScheduledGameStub(
@@ -73,7 +83,7 @@ object PreseasonScheduleSolver {
                 opponentTeamId = opp.teamId,
                 opponentDisplayName = opp.displayName,
                 homeGame = random.nextBoolean(),
-                rsWeekIndex = 8 + (index % 20),
+                rsWeekIndex = weeks.getOrElse(index) { 8 + index },
             )
         }
     }

@@ -21,6 +21,10 @@ enum class NotificationEventKind {
     MajorNationalRecord,
     RankingsMove,
     FundraisingComplete,
+    DisciplinePending,
+    CarouselApproval,
+    SelectionSunday,
+    MedicalRedshirtEligible,
 }
 
 /**

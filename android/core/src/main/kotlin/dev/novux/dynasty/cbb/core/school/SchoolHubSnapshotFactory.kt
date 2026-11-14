@@ -2,6 +2,7 @@ package dev.novux.dynasty.cbb.core.school
 
 import dev.novux.dynasty.cbb.core.pack.IdentityPackIndex
 import dev.novux.dynasty.cbb.core.pack.TeamDisplayOverlay
+import dev.novux.dynasty.cbb.core.academics.ProgramAcademicsSnapshot
 import dev.novux.dynasty.cbb.core.facilities.FacilityGradeSummary
 import dev.novux.dynasty.cbb.core.resume.TeamResumeMetrics
 
@@ -17,6 +18,7 @@ object SchoolHubSnapshotFactory {
         mediaPollRankings: Map<String, Int>? = null,
         coachesPollRankings: Map<String, Int>? = null,
         facilitySummary: FacilityGradeSummary? = null,
+        programAcademics: ProgramAcademicsSnapshot? = null,
     ): SchoolHubOverview {
         val conference = packIndex.conference(team.conferenceId)
         val mates = packIndex.allTeamDisplays().filter {
@@ -66,6 +68,12 @@ object SchoolHubSnapshotFactory {
             record = record,
             rankings = rankings,
             facilitySummary = if (team.teamId == userTeamId) facilitySummary else null,
+            programAcademicsGrade = if (team.teamId == userTeamId) programAcademics?.programGrade else null,
+            recruitingBudgetMultiplier = if (team.teamId == userTeamId) {
+                programAcademics?.recruitingBudgetMultiplier
+            } else {
+                null
+            },
         )
     }
 }

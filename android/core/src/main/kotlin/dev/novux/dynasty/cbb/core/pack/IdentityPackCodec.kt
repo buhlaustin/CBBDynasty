@@ -20,6 +20,7 @@ object IdentityPackCodec {
         }
 
         val error = IdentityPackValidator.validate(decoded)
+            ?: PackManifestSignatureVerifier.validate(raw, decoded)
         return if (error != null) {
             PackLoadResult.Rejected(error)
         } else {

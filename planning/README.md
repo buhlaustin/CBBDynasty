@@ -8,7 +8,7 @@ Authoritative design for **Dynasty: College Basketball**. **Granular ship truth:
 | “What’s settled vs still tuning?” | [`planning-notes.md`](planning-notes.md) |
 | One topic, full depth | Table below → linked spec |
 
-**Layout:** Specs stay as **flat** `.md` files in this folder so links from `docs/`, `game-design`, and ADRs stay stable. Generators live in [`tools/`](tools/).
+**Layout:** Specs stay as **flat** `.md` files in this folder so links from `docs/`, `game-design`, and ADRs stay stable. Generators live in [`tools/`](tools/) (`generate_adaptive_icon.py`, `generate_default_pack.py`, …).
 
 ---
 

@@ -57,6 +57,14 @@ class RecruitingActionSpendTest {
         assertEquals(RecruitingSpendFailure.InsufficientPoints, house.failure)
     }
 
+    @Test
+    fun dm_atZeroPoints_failsInsufficient() {
+        val dm = RecruitingActionSpend.spend(RecruitingPointAction.Dm, pointsAvailable = 0, actions)
+        assertFalse(dm.success)
+        assertEquals(RecruitingSpendFailure.InsufficientPoints, dm.failure)
+        assertEquals(0, dm.pointsRemaining)
+    }
+
     private fun loadActions(): dev.novux.dynasty.cbb.core.balance.BalanceRecruitingActions {
         var dir = Path.of(System.getProperty("user.dir")).toAbsolutePath()
         while (dir != null && !dir.resolve("assets/balance/balance-2026.json").toFile().exists()) {

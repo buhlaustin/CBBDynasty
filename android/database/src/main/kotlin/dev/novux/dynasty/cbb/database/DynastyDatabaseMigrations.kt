@@ -4,6 +4,113 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import dev.novux.dynasty.cbb.core.save.DynastySchema
 
+val MIGRATION_21_22 = object : Migration(21, 22) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            """
+            CREATE TABLE IF NOT EXISTS dynasty_strategy_prep (
+                dynastyId TEXT NOT NULL PRIMARY KEY,
+                offensiveSchemeWire TEXT NOT NULL,
+                defensiveSchemeWire TEXT NOT NULL
+            )
+            """.trimIndent(),
+        )
+    }
+}
+
+val MIGRATION_20_21 = object : Migration(20, 21) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            """
+            CREATE TABLE IF NOT EXISTS player_season_stats (
+                dynastyId TEXT NOT NULL,
+                playerId TEXT NOT NULL,
+                seasonIndex INTEGER NOT NULL,
+                gamesPlayed INTEGER NOT NULL,
+                schoolDisplayName TEXT,
+                points INTEGER NOT NULL,
+                assists INTEGER NOT NULL,
+                rebounds INTEGER NOT NULL,
+                steals INTEGER NOT NULL,
+                blocks INTEGER NOT NULL,
+                turnovers INTEGER NOT NULL,
+                fieldGoalsMade INTEGER NOT NULL,
+                fieldGoalsAttempted INTEGER NOT NULL,
+                threePointsMade INTEGER NOT NULL,
+                threePointsAttempted INTEGER NOT NULL,
+                freeThrowsMade INTEGER NOT NULL,
+                freeThrowsAttempted INTEGER NOT NULL,
+                gameLogJson TEXT NOT NULL,
+                PRIMARY KEY(dynastyId, playerId, seasonIndex)
+            )
+            """.trimIndent(),
+        )
+        db.execSQL(
+            "CREATE INDEX IF NOT EXISTS index_player_season_stats_dynastyId ON player_season_stats(dynastyId)",
+        )
+    }
+}
+
+val MIGRATION_19_20 = object : Migration(19, 20) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            """
+            CREATE TABLE IF NOT EXISTS coach_career_season (
+                dynastyId TEXT NOT NULL,
+                seasonIndex INTEGER NOT NULL,
+                schoolDisplayName TEXT NOT NULL,
+                recordLabel TEXT NOT NULL,
+                conferenceRecordLabel TEXT NOT NULL,
+                postseasonSummary TEXT NOT NULL,
+                highlightLabelsWire TEXT NOT NULL,
+                scheduleSummaryLine TEXT NOT NULL,
+                tournamentPathLine TEXT NOT NULL,
+                newsTagLinesWire TEXT NOT NULL,
+                archivedAtEpochMillis INTEGER NOT NULL,
+                PRIMARY KEY(dynastyId, seasonIndex)
+            )
+            """.trimIndent(),
+        )
+        db.execSQL(
+            "CREATE INDEX IF NOT EXISTS index_coach_career_season_dynastyId ON coach_career_season(dynastyId)",
+        )
+    }
+}
+
+val MIGRATION_18_19 = object : Migration(18, 19) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            "ALTER TABLE dynasty_roster_player ADD COLUMN nilDealRaisedThisSeason INTEGER NOT NULL DEFAULT 0",
+        )
+    }
+}
+
+val MIGRATION_17_18 = object : Migration(17, 18) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            "ALTER TABLE dynasty_roster_player ADD COLUMN promiseHistoryWire TEXT NOT NULL DEFAULT ''",
+        )
+    }
+}
+
+val MIGRATION_16_17 = object : Migration(16, 17) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            "ALTER TABLE provisional_games ADD COLUMN possessionEngine INTEGER NOT NULL DEFAULT 0",
+        )
+        db.execSQL("ALTER TABLE provisional_games ADD COLUMN boxArchiveJson TEXT")
+    }
+}
+
+val MIGRATION_15_16 = object : Migration(15, 16) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE dynasty_roster_player ADD COLUMN skinToneId TEXT NOT NULL DEFAULT ''")
+        db.execSQL("ALTER TABLE dynasty_roster_player ADD COLUMN hairColorId TEXT NOT NULL DEFAULT ''")
+        db.execSQL("ALTER TABLE dynasty_roster_player ADD COLUMN hairStyleId TEXT NOT NULL DEFAULT ''")
+        db.execSQL("ALTER TABLE dynasty_roster_player ADD COLUMN avatarPresetId TEXT NOT NULL DEFAULT ''")
+    }
+}
+
 val MIGRATION_14_15 = object : Migration(14, 15) {
     override fun migrate(db: SupportSQLiteDatabase) {
         db.execSQL("ALTER TABLE dynasty_roster_player ADD COLUMN stamina INTEGER NOT NULL DEFAULT 100")
@@ -281,3 +388,32 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
         )
     }
 }
+
+/** Room user version after the latest migration in this chain. */
+const val DYNASTY_DB_VERSION: Int = 22
+
+/** Ordered migration chain registered on [DynastyDatabase]; used in CI migration tests. */
+val ALL_DYNASTY_MIGRATIONS: Array<Migration> =
+    arrayOf(
+        MIGRATION_1_2,
+        MIGRATION_2_3,
+        MIGRATION_3_4,
+        MIGRATION_4_5,
+        MIGRATION_5_6,
+        MIGRATION_6_7,
+        MIGRATION_7_8,
+        MIGRATION_8_9,
+        MIGRATION_9_10,
+        MIGRATION_10_11,
+        MIGRATION_11_12,
+        MIGRATION_12_13,
+        MIGRATION_13_14,
+        MIGRATION_14_15,
+        MIGRATION_15_16,
+        MIGRATION_16_17,
+        MIGRATION_17_18,
+        MIGRATION_18_19,
+        MIGRATION_19_20,
+        MIGRATION_20_21,
+        MIGRATION_21_22,
+    )

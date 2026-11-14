@@ -2,8 +2,12 @@ package dev.novux.dynasty.cbb.data.calendar
 
 import dev.novux.dynasty.cbb.core.calendar.CalendarPosition
 import dev.novux.dynasty.cbb.core.calendar.ConferenceTournamentCalendar
+import dev.novux.dynasty.cbb.core.calendar.EarlySeasonUserCalendarByes
+import dev.novux.dynasty.cbb.core.calendar.UserCalendarGameEnricher
+import dev.novux.dynasty.cbb.core.calendar.PostseasonUserCalendar
 import dev.novux.dynasty.cbb.core.calendar.UserCalendarTabBuilder
 import dev.novux.dynasty.cbb.core.calendar.UserCalendarWeekRow
+import dev.novux.dynasty.cbb.data.dashboard.DashboardLastGameRepository
 import dev.novux.dynasty.cbb.core.conference.ConferenceTournamentQualifier
 import dev.novux.dynasty.cbb.core.conference.ConferenceTournamentUserCalendar
 import dev.novux.dynasty.cbb.core.league.LeagueTeamRecord
@@ -16,26 +20,31 @@ class UserCalendarRepository(
     private val packRepository: PackRepository,
     private val leagueWeekBatchRepository: LeagueWeekBatchRepository,
     private val database: DynastyDatabase,
+    private val weekCheckpointRepository: dev.novux.dynasty.cbb.data.calendar.WeekCheckpointRepository,
+    private val dashboardLastGameRepository: DashboardLastGameRepository,
+    private val earlySeasonBracketRepository: dev.novux.dynasty.cbb.data.preseason.EarlySeasonBracketRepository,
 ) {
     suspend fun loadCalendarRows(
         dynastyId: String,
         seasonIndex: Int,
         activePosition: CalendarPosition,
     ): List<UserCalendarWeekRow> {
-        val plan = scheduleRepository.loadPlan(dynastyId, seasonIndex)
+        val plan = scheduleRepository.loadPlan(dynastyId, seasonIndex) ?: return emptyList()
         val exhibitionCount = scheduleRepository.loadExhibitionCount(dynastyId, seasonIndex)
         val coach = database.dynastyCoachDao().getByDynastyId(dynastyId)
         val session = packRepository.activeSession()
         val index = session.index
-        val confByeWeeks = if (coach != null) {
+        val (confByeWeeks, confDisplayName) = if (coach != null) {
             val team = index.team(coach.userTeamId)
             if (team != null) {
-                ConferenceTournamentCalendar.byeWeeksForConference(index.source, team.conferenceId)
+                val byes = ConferenceTournamentCalendar.byeWeeksForConference(index.source, team.conferenceId)
+                val name = index.conference(team.conferenceId)?.displayName
+                byes to name
             } else {
-                emptyList()
+                emptyList<Int>() to null
             }
         } else {
-            emptyList()
+            emptyList<Int>() to null
         }
         val standings = leagueWeekBatchRepository.loadStandings(dynastyId, seasonIndex)
         val confContext = if (coach != null) {
@@ -47,7 +56,20 @@ class UserCalendarRepository(
         } else {
             ConferenceCalendarContext()
         }
-        return UserCalendarTabBuilder.build(
+        val userTeamId = coach?.userTeamId
+        val eventEliminationByes = if (userTeamId != null) {
+            val bracketSeason = earlySeasonBracketRepository.load(dynastyId, seasonIndex)
+            EarlySeasonUserCalendarByes.eliminationByeWeekLabels(bracketSeason, userTeamId)
+        } else {
+            emptyMap()
+        }
+        val leagueMaxConfWeeks = ConferenceTournamentCalendar.leagueMaxConfTourneyWeeks(index.source)
+        val skipsOpeningRound = if (userTeamId != null) {
+            PostseasonUserCalendar.skipsNcbaOpeningRound(standings?.selectionSunday, userTeamId)
+        } else {
+            false
+        }
+        val built = UserCalendarTabBuilder.build(
             activePosition = activePosition,
             plan = plan,
             exhibitionCount = exhibitionCount,
@@ -55,6 +77,21 @@ class UserCalendarRepository(
             conferenceTourneyGamesByWeek = confContext.gamesByWeek,
             conferenceTourneyQualified = confContext.qualified,
             conferenceTourneySimmed = confContext.bracketSimmed,
+            eventEliminationByeWeeks = eventEliminationByes,
+            conferenceTourneyStructuralByeConferenceName = confDisplayName,
+            leagueMaxConfTourneyWeeks = leagueMaxConfWeeks,
+            userSkipsNcbaOpeningRound = skipsOpeningRound,
+        )
+        if (userTeamId == null) return built
+        val checkpoint = weekCheckpointRepository.loadCheckpoint(dynastyId)
+        val lastGame = dashboardLastGameRepository.load(dynastyId, seasonIndex)
+        return UserCalendarGameEnricher.enrichRows(
+            rows = built,
+            userTeamId = userTeamId,
+            activePosition = activePosition,
+            standings = standings,
+            provisionalGames = checkpoint?.provisionalGames.orEmpty(),
+            lastGame = lastGame,
         )
     }
 

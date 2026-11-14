@@ -9,7 +9,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import dev.novux.dynasty.cbb.core.dashboard.DashboardDeepLink
 import dev.novux.dynasty.cbb.core.notification.NotificationEventKind
 import dev.novux.dynasty.cbb.core.notification.NotificationFeedComposer
-import dev.novux.dynasty.cbb.core.notification.NotificationFeedEngine
+import dev.novux.dynasty.cbb.core.notification.NotificationFeedTierSortPolicy
 import dev.novux.dynasty.cbb.core.notification.NotificationFeedItem
 import dev.novux.dynasty.cbb.core.notification.NotificationPriority
 import dev.novux.dynasty.cbb.core.notification.NotificationSnapshotInput
@@ -22,7 +22,7 @@ private val Context.notificationFeedStore: DataStore<Preferences> by preferences
 class NotificationFeedRepository(private val context: Context) {
     suspend fun loadFeed(dynastyId: String): List<NotificationFeedItem> {
         val raw = context.notificationFeedStore.data.first()[feedKey(dynastyId)] ?: return emptyList()
-        return NotificationFeedEngine.sort(decode(raw))
+        return NotificationFeedTierSortPolicy.sort(decode(raw))
     }
 
     suspend fun refreshFromSnapshot(dynastyId: String, input: NotificationSnapshotInput): List<NotificationFeedItem> {
@@ -33,11 +33,18 @@ class NotificationFeedRepository(private val context: Context) {
         return merged
     }
 
-    suspend fun appendCommit(dynastyId: String, prospectName: String, atMs: Long = System.currentTimeMillis()) {
-        refreshFromSnapshot(
-            dynastyId,
-            NotificationSnapshotInput(asOfMs = atMs, userCommitsThisWeek = listOf(prospectName)),
-        )
+    suspend fun appendCommit(
+        dynastyId: String,
+        prospectName: String,
+        portal: Boolean = false,
+        atMs: Long = System.currentTimeMillis(),
+    ) {
+        val input = if (portal) {
+            NotificationSnapshotInput(asOfMs = atMs, userPortalCommitsThisWeek = listOf(prospectName))
+        } else {
+            NotificationSnapshotInput(asOfMs = atMs, userCommitsThisWeek = listOf(prospectName))
+        }
+        refreshFromSnapshot(dynastyId, input)
     }
 
     suspend fun appendMajorRecord(dynastyId: String, line: String, atMs: Long = System.currentTimeMillis()) {

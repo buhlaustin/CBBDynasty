@@ -1,5 +1,6 @@
 package dev.novux.dynasty.cbb.data.school
 
+import dev.novux.dynasty.cbb.core.academics.ProgramAcademicsGradeEngine
 import dev.novux.dynasty.cbb.core.balance.selectionTuning
 import dev.novux.dynasty.cbb.core.preseason.PreseasonTaskId
 import dev.novux.dynasty.cbb.core.resume.TeamResumeEngine
@@ -13,7 +14,10 @@ import dev.novux.dynasty.cbb.data.pack.PackRepository
 import dev.novux.dynasty.cbb.core.facilities.FacilityGradeEngine
 import dev.novux.dynasty.cbb.data.offseason.OffseasonWeekNineRepository
 import dev.novux.dynasty.cbb.data.preseason.PreseasonProgressRepository
+import dev.novux.dynasty.cbb.core.school.SchoolHubNilCycleSummaryPolicy
+import dev.novux.dynasty.cbb.data.nil.NilBudgetRepository
 import dev.novux.dynasty.cbb.database.DynastyDatabase
+import dev.novux.dynasty.cbb.database.roster.toDomain
 
 class SchoolHubRepository(
     private val database: DynastyDatabase,
@@ -22,6 +26,7 @@ class SchoolHubRepository(
     private val leagueWeekBatchRepository: LeagueWeekBatchRepository,
     private val balanceRulesetRepository: BalanceRulesetRepository,
     private val offseasonWeekNineRepository: OffseasonWeekNineRepository,
+    private val nilBudgetRepository: NilBudgetRepository,
 ) {
     suspend fun loadOverview(
         dynastyId: String,
@@ -39,9 +44,38 @@ class SchoolHubRepository(
         val netRankings = standings?.netRankByTeam?.takeIf { it.isNotEmpty() }
         val mediaPoll = standings?.mediaPollRankByTeam?.takeIf { it.isNotEmpty() }
         val coachesPoll = standings?.coachesPollRankByTeam?.takeIf { it.isNotEmpty() }
-        val facilitySummary = if (team.teamId == coach.userTeamId) {
-            val grades = offseasonWeekNineRepository.loadFacilityGrades(dynastyId, seasonIndex)
-            FacilityGradeEngine.summarize(grades)
+        val facilityGrades = if (team.teamId == coach.userTeamId) {
+            offseasonWeekNineRepository.loadFacilityGrades(dynastyId, seasonIndex)
+        } else {
+            null
+        }
+        val facilitySummary = facilityGrades?.let { FacilityGradeEngine.summarize(it) }
+        val programAcademics = if (team.teamId == coach.userTeamId && facilityGrades != null) {
+            val roster = database.dynastyRosterDao()
+                .listForDynasty(dynastyId)
+                .map { it.toDomain() }
+            ProgramAcademicsGradeEngine.snapshot(
+                ProgramAcademicsGradeEngine.inputsFromRoster(roster, facilityGrades),
+            )
+        } else {
+            null
+        }
+        val nilSummary = if (team.teamId == coach.userTeamId) {
+            val pool = nilBudgetRepository.frozenAnnualPoolUsd(dynastyId, seasonIndex)
+            if (pool != null) {
+                val rosterCommitted = database.dynastyRosterDao()
+                    .listForDynasty(dynastyId)
+                    .sumOf { it.nilUsdPerYear }
+                val ledger = nilBudgetRepository.loadLedger(
+                    dynastyId,
+                    seasonIndex,
+                    pool,
+                    rosterCommitted,
+                )
+                SchoolHubNilCycleSummaryPolicy.from(pool, ledger)
+            } else {
+                null
+            }
         } else {
             null
         }
@@ -56,7 +90,8 @@ class SchoolHubRepository(
             mediaPollRankings = mediaPoll,
             coachesPollRankings = coachesPoll,
             facilitySummary = facilitySummary,
-        )
+            programAcademics = programAcademics,
+        ).copy(nilCycleSummary = nilSummary)
     }
 
     private suspend fun resumeMetrics(

@@ -14,7 +14,85 @@
     "quickShot": [8, 14],
     "foulStoppage": [12, 18]
   },
-  "eventWeights": {},
+  "teamFoulRules": {
+    "bonusThreshold": 7,
+    "doubleBonusThreshold": 10,
+    "oneAndOneUntilDouble": true
+  },
+  "positionComfort": {
+    "eligibleInterchangePenalty": 1,
+    "ineligibleSlotPenalty": 3
+  },
+  "eventWeights": {
+    "tripBuckets": {
+      "quickTurnover": 0.34,
+      "quickShot": 0.33,
+      "foulStoppage": 0.33
+    },
+    "ratingGapMakeRate": {
+      "base": 0.42,
+      "perPointEdge": 0.004,
+      "min": 0.25,
+      "max": 0.65,
+      "kickLookBonus": 0.025
+    },
+    "ratingGapBlockOnMiss": {
+      "base": 0.08,
+      "perDefEdge": 0.002,
+      "min": 0.03,
+      "max": 0.18,
+      "foulOnBlock": 0.15
+    },
+    "offensiveReboundRate": 0.28,
+    "shootingFoul": {
+      "andOneRate": 0.045,
+      "missFoulRate": 0.062,
+      "lateClockMultiplier": 1.35
+    },
+    "turnoverSubPhase": {
+      "driveShare": 0.28,
+      "kickShare": 0.22
+    },
+    "periodEnd": {
+      "countMadeBasketAtPeriodEnd": true,
+      "countFreeThrowsAtPeriodEnd": true
+    },
+    "situation": {
+      "lateWindowSeconds": 240,
+      "closeMarginPoints": 3,
+      "trailingThreePointBoost": 0.10,
+      "trailingTurnoverBoost": 0.02,
+      "trailingMakeRatePenalty": 0.02,
+      "leadingThreePointPenalty": 0.08,
+      "leadingTurnoverReduction": 0.015,
+      "leadingPaceScale": 0.97,
+      "closeMakeRateBoost": 0.015,
+      "closeThreePointNudge": 0.03,
+      "trailingDefenseFoulNudge": 0.10
+    },
+    "clutchUsage": {
+      "lateWindowSeconds": 240,
+      "closeMarginPoints": 5,
+      "peakPlayerUsageMultiplier": 1.35
+    },
+    "denyPrimary": {
+      "assignedSlotTurnoverBoost": 0.018,
+      "denyFoulOnPrimaryTouchRate": 0.085,
+      "denyFoulOnTurnoverRate": 0.065
+    },
+    "foulEarly": {
+      "intentionalFoulTripRate": 0.40,
+      "hackaQuickFoulTripRate": 0.30,
+      "hackaTripMaxSeconds": 6
+    },
+    "protectLead": {
+      "paceTripScale": 1.12,
+      "avoidFoulStoppageRate": 0.65,
+      "threePointShootingFoulMultiplier": 0.42,
+      "twoPointShootingFoulMultiplier": 0.78,
+      "andOneFoulMultiplier": 0.70
+    }
+  },
   "homeNeutralModifiers": {
     "home": 1.0,
     "neutral": 1.0,

@@ -6,7 +6,6 @@ import dev.novux.dynasty.cbb.core.balance.BalanceRecruitingRecommended
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingActionSpend
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingPointAction
 import dev.novux.dynasty.cbb.core.recruiting.RecruitProspect
-import dev.novux.dynasty.cbb.core.recruiting.RecommendedRecruitList
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingPrestigePool
 import dev.novux.dynasty.cbb.core.recruiting.SchoolRecruitingContext
 
@@ -96,7 +95,7 @@ object AiRecruitingWeekRunner {
         recommended: BalanceRecruitingRecommended,
         actionCosts: BalanceRecruitingActions,
     ): AiRecruitingBoard {
-        val ordered = RecommendedRecruitList.build(pool, school, recommended)
+        val ordered = AiRecruitingInterestParityPolicy.rankedProspects(pool, school, recommended)
         val cap = AiRecruitingCapacity.coreTargetCap(economy, school.programPrestige)
         val targets = ordered.take(cap).map { it.prospect.prospectId }
         var remaining = weeklyPoints

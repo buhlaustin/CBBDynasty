@@ -21,10 +21,10 @@
 | MEGA-FRAME-001 | SHIP | Single dynasty shell all phases | Offseason, preseason, in-season, season review reuse `DynastyShellChrome` + four bottom tabs | `OffseasonScreen`, `PreseasonScreen`, `DynastyShellScreen`, `SeasonReviewScreen` |
 | MEGA-FRAME-002 | SHIP | Bottom nav order Roster → Calendar → Dashboard → News | Tab order matches game-frame | `DynastyShellChrome.kt` |
 | MEGA-FRAME-003 | SHIP | Dashboard default tab | Screens initialize `selectedTab = DynastyShellTab.Dashboard` | Shell screen `remember` state |
-| MEGA-FRAME-004 | PARTIAL | Header: hamburger + school + phase/week | Top bar shows school + `CalendarWeekLabel`; menu is dropdown not slide drawer | `DynastyShellChrome.kt` |
-| MEGA-FRAME-005 | GAP | No separate offseason/preseason app routes in career loop | Preseason still separate `AppRoute` composable without unified in-shell phase switch for all years | `DynastyApp.kt`, `DynastyLaunch.kt` |
+| MEGA-FRAME-004 | SHIP | Header: hamburger + school + phase/week | `ModalNavigationDrawer` hub sheet; school + phase/week in `TopAppBar` | `DynastyShellChrome.kt` |
+| MEGA-FRAME-005 | SHIP | No separate offseason/preseason app routes in career loop | `AppRoute.DynastyCareer` + `DynastyCareerHost` swaps body by phase; legacy routes alias same host | `DynastyCareerHost.kt`, `DynastyApp.kt`, `DynastyLaunch.kt` |
 | MEGA-FRAME-006 | SHIP | Coaching Carousel not “Week 0” | Carousel is `CoachingCarouselScreen` with title only — no week index in UI | `CoachingCarouselScreen.kt`, `carousel_title` |
-| MEGA-FRAME-007 | GAP | Carousel uses non-shell chrome | Carousel screen is full-screen route, not hamburger + bottom nav shell | `CoachingCarouselScreen.kt` vs `game-frame.md#entry--shell` |
+| MEGA-FRAME-007 | SHIP | Carousel uses non-shell chrome | Carousel in `DynastyShellChrome` with four tabs + hamburger | `CoachingCarouselScreen.kt`, `CoachingCarouselShellPathTest` |
 
 ---
 
@@ -39,11 +39,11 @@
 | MEGA-FRAME-012 | SHIP | Postseason weeks 1–7 | `Postseason Week N` | `CalendarWeekLabel.kt`, `time-system.md#national-postseason-weeks` |
 | MEGA-FRAME-013 | SHIP | End of Season label | `End of Season — {year}` | `CalendarWeekLabel.kt` |
 | MEGA-FRAME-014 | SHIP | Offseason week header 1–10 | `Offseason Week N` | `CalendarWeekLabel.kt` |
-| MEGA-FRAME-015 | PARTIAL | Offseason theme subtitles | Theme lines on dashboard (Players Leaving, etc.) — not duplicated in global header subtitle | `OffseasonWeekHeading`, `OffseasonScreen` |
-| MEGA-FRAME-016 | GAP | NCBA round names on calendar | Postseason rows do not show Opening Round / Super 16 labels per `ncba-branding` | `DynastyShellCalendarTab.kt` |
-| MEGA-FRAME-017 | PARTIAL | Calendar lists games by date | Rows are week-bucketed; game line has no calendar date field | `UserCalendarGameEntry`, `CalendarGameLine` |
+| MEGA-FRAME-015 | SHIP | Offseason theme subtitles | `OffseasonWeekHeading.themeLine` in `DynastyShellChrome` header subtitle | `DynastyShellChrome.kt`, `OffseasonScreen.kt` |
+| MEGA-FRAME-016 | SHIP | NCBA round names on calendar | Postseason week headers use `PostseasonCalendar.displayWeekHeader` (Opening Round / Super 16, …) | `CalendarWeekLabel.kt`, `PostseasonCalendarRoundLabelPathTest` |
+| MEGA-FRAME-017 | SHIP | Calendar lists games by date | `UserCalendarGameEntry.gameDateLabel` + dated game line in calendar tab | `CalendarWeekDisplayDate.kt`, `CalendarGameDateLinePathTest` |
 | MEGA-FRAME-018 | SHIP | Bye week chip | `UserCalendarRowKind.Bye` shows bye chip | `DynastyShellCalendarTab.kt` |
-| MEGA-FRAME-019 | GAP | Empty exhibition week advance UX | No dedicated “empty week” copy for exhibition slots with zero games | `time-system.md#exhibition-weeks` |
+| MEGA-FRAME-019 | SHIP | Empty exhibition week advance UX | `shell_calendar_exhibition_empty` on exhibition `OffWeek` rows | `DynastyShellCalendarTab.kt` |
 
 ---
 
@@ -54,17 +54,17 @@
 | MEGA-FRAME-020 | SHIP | Required tasks block advance | `DashboardAdvanceGate.blocksWeekAdvance` disables button | `DynastyShellScreen`, `OffseasonScreen` |
 | MEGA-FRAME-021 | SHIP | Optional tasks do not block | In-season optional panel + advance still enabled when required clear | `DashboardOptionalTasksPanel`, gate tests |
 | MEGA-FRAME-022 | SHIP | Sim-week confirmation dialog | `SimWeekAdvanceDialog` for fast-sim / recruiting / simple advance lines | `SimWeekAdvanceDialog.kt` |
-| MEGA-FRAME-023 | PARTIAL | Confirmation copy intent | Lines exist but may not name opponent for unplayed game | `SimWeekConfirmationLineKind`, strings.xml |
-| MEGA-FRAME-024 | GAP | Task cards Required vs Optional badge | Panels list tasks; no consistent Required/Optional chip per `game-frame.md#dashboard-task-gate` | `DashboardRequiredTasksPanel` |
+| MEGA-FRAME-023 | SHIP | Confirmation copy intent | Fast-sim line names opponent from `ScheduledGameStub` | `SimWeekAdvanceResolver.kt` |
+| MEGA-FRAME-024 | SHIP | Task cards Required vs Optional badge | `DashboardTaskKindChip` on required + optional task cards | `DashboardTaskKindChip.kt`, `DashboardTaskBadgePathTest` |
 | MEGA-FRAME-025 | SHIP | Preseason 8 required tasks | `PreseasonTaskId.entries` + `PreseasonStartGate` | `PreseasonScreen`, `dashboard-tasks.md#preseason` |
-| MEGA-FRAME-026 | GAP | Preseason task deep links | Checklist rows use generic `PreseasonRequired`; limited per-task navigation from card | `PreseasonRequiredDashboardTasks.kt` |
+| MEGA-FRAME-026 | SHIP | Preseason task deep links | `PreseasonTaskDeepLinks` + jump chips scroll/open hub per task | `PreseasonRequiredTaskChips.kt`, `PreseasonDeepLinkNavigation.kt` |
 | MEGA-FRAME-027 | SHIP | Preseason Start season gate | Button gated on all tasks complete (not “Advance week”) | `PreseasonScreen`, `preseason_start_season` |
-| MEGA-FRAME-028 | PARTIAL | Offseason required by week | Signing Day, roster lock, carousel cards wired in core — UI coverage uneven by week | `OffseasonScreen`, `dashboard-tasks.md#offseason` |
-| MEGA-FRAME-029 | GAP | Offseason Week 1 not on dashboard-only | Players Leaving is week panel — spec also allows dashboard task pattern for declare flows | `PlayersLeavingPanel` |
-| MEGA-FRAME-030 | GAP | Coaching Carousel dashboard tasks | Offer/assistant cards on carousel screen — not dashboard checklist cards | `CoachingCarouselScreen` |
+| MEGA-FRAME-028 | SHIP | Offseason required by week | `OffseasonRequiredDashboardTasks` + required panels weeks 1, 6, 8, 10; advance gate unified | `OffseasonScreen.kt`, `OffseasonRequiredDashboardTasks.kt` |
+| MEGA-FRAME-029 | SHIP | Offseason Week 1 dashboard tasks | `OffseasonWeekOneRequiredDashboardTasks` + required panel → `PlayersLeavingPanel` deep links | `OffseasonScreen.kt` |
+| MEGA-FRAME-030 | SHIP | Coaching Carousel dashboard tasks | `CarouselDashboardTasks` + `DashboardRequiredTasksPanel` on carousel dashboard tab | `CarouselDashboardTasks.kt`, `CoachingCarouselScreen.kt` |
 | MEGA-FRAME-031 | SHIP | In-season play/sim optional task | `DashboardTaskGate.inSeason` optional game tasks | `DynastyShellScreen` |
-| MEGA-FRAME-032 | PARTIAL | Discipline required task | Panel hooks exist; end-to-end sheet flow depends on discipline route | `DashboardRequiredTasksPanel` |
-| MEGA-FRAME-033 | GAP | End of Season required acknowledge | Season review advance — verify single required task UX vs season-review spec | `SeasonReviewScreen` |
+| MEGA-FRAME-032 | SHIP | Discipline required task | Required card → `DisciplineDecisionBottomSheet`; dedicated pending load + refresh on resolve | `DynastyShellScreen.kt`, `DisciplineDecisionBottomSheet.kt` |
+| MEGA-FRAME-033 | SHIP | End of Season required acknowledge | `SeasonReviewRequiredDashboardTasks` + recap acknowledge gate on Enter offseason | `SeasonReviewScreen.kt` |
 
 ---
 
@@ -72,16 +72,16 @@
 
 | ID | Status | Spec / topic | Finding | Code / notes |
 |----|--------|--------------|---------|--------------|
-| MEGA-FRAME-034 | GAP | Team overview card | No W–L, NET #, conf rank, T25, SOS on dashboard | `game-frame.md#team-overview` |
-| MEGA-FRAME-035 | GAP | NCBA NET tap → Rankings | Dashboard lacks NET row / deep link | Rankings hub exists but not on dashboard |
-| MEGA-FRAME-036 | GAP | Postseason seed row on dashboard | No `{NCBA\|NCI\|HC} #{seed}` when invited | `game-frame.md#postseason-row-dashboard` |
-| MEGA-FRAME-037 | PARTIAL | Notifications feed | `DashboardNotificationFeedPanel` on in-season shell | Offseason/preseason use placeholder news, feed not always shown |
-| MEGA-FRAME-038 | GAP | Last game summary | No opponent/score/W–L + box score / postgame actions on dashboard | `game-frame.md#last-game` |
-| MEGA-FRAME-039 | PARTIAL | Next game card | `NextGameCard` with preview + opponent school — missing date/location line | `DynastyShellScreen.kt` `NextGameCard` |
+| MEGA-FRAME-034 | SHIP | Team overview card | `DashboardTeamOverviewCard` — W–L, SOS, conf standing, T25 chips | `DynastyShellScreen.kt` |
+| MEGA-FRAME-035 | SHIP | NCBA NET tap → Rankings | NET row + poll line tap → `onOpenRankings` | `DashboardTeamOverviewCard.kt` |
+| MEGA-FRAME-036 | SHIP | Postseason seed row on dashboard | `DashboardPostseasonSeedResolver` when Selection Sunday set | `DynastyShellScreen.kt` |
+| MEGA-FRAME-037 | SHIP | Notifications feed | `DashboardNotificationFeedPanel` on in-season, offseason, preseason when `showNotificationFeed` | `DashboardNotificationSnapshotLoader`, phase shells |
+| MEGA-FRAME-038 | SHIP | Last game summary | `DashboardLastGameCard` — W/L line, box score sheet, stats links, postgame report | `DashboardLastUserGameResolver`, `DynastyShellScreen.kt` |
+| MEGA-FRAME-039 | SHIP | Next game card | Date + location line via `FirstPlayableGame.gameDateLabel` | `DynastyShellScreen.kt` `NextGameCard` |
 | MEGA-FRAME-040 | SHIP | Game preview from next game | Opens `GamePreviewScreen` with win %, score, pregame article | `GamePreviewScreen.kt` |
-| MEGA-FRAME-041 | PARTIAL | Game preview sections | Win %, predicted score, pregame report — team side-by-side / matchup history thin | `HeadToHeadHistory.summarize(emptyList())` in shell |
-| MEGA-FRAME-042 | GAP | Primary CTA lineup/gameplan from preview | Strategy button on preview — verify prominent “set lineup” path | `GamePreviewScreen` tail |
-| MEGA-FRAME-043 | GAP | Dashboard roster teaser vs spec | Shows 6-player preview cards, not team overview metrics | `DynastyShellScreen` roster preview block |
+| MEGA-FRAME-041 | SHIP | Game preview sections | Team scouting table + dynasty H2H from standings | `GamePreviewScoutingBuilder.kt`, `HeadToHeadHistoryResolver.kt`, `GamePreviewScreen.kt` |
+| MEGA-FRAME-042 | SHIP | Primary CTA lineup/gameplan from preview | Filled Strategy CTA above H2H; Play game secondary | `GamePreviewScreen.kt` |
+| MEGA-FRAME-043 | SHIP | Dashboard roster teaser vs spec | Removed 6-player preview strip; roster tab hint only | `DynastyShellScreen.kt` |
 
 ---
 
@@ -89,14 +89,14 @@
 
 | ID | Status | Spec / topic | Finding | Code / notes |
 |----|--------|--------------|---------|--------------|
-| MEGA-FRAME-044 | GAP | Roster starters / reserves / bench | Flat sort by `depthOrder` — no section headers | `DynastyShellRosterTab.kt` |
-| MEGA-FRAME-045 | PARTIAL | Roster tap → player card | In-season opens sheet; offseason/preseason `onPlayerClick = { }` | `OffseasonScreen`, `PreseasonScreen` |
-| MEGA-FRAME-046 | PARTIAL | Calendar your games only | Week cards from `UserCalendarRepository` — scope OK | `DynastyShellCalendarTab.kt` |
-| MEGA-FRAME-047 | GAP | Calendar conf vs non-conf distinction | Kind shown inline only — no section headers / badges per row | `gameKindLabel` chip text only |
-| MEGA-FRAME-048 | GAP | Calendar tap → preview / box score | Game lines are non-clickable `Text` | `CalendarGameLine` |
-| MEGA-FRAME-049 | PARTIAL | News tab shallow headlines | In-season `DynastyShellNewsTab` with headlines | Offseason/preseason: `DynastyShellNewsTabPlaceholder` |
-| MEGA-FRAME-050 | GAP | News top N truncate policy | No explicit top-N cap vs News hub | `NewsFeedRepository` usage in shell |
-| MEGA-FRAME-051 | GAP | News headline tap → detail / hub | Cards not clickable | `DynastyShellNewsTab` |
+| MEGA-FRAME-044 | SHIP | Roster starters / reserves / bench | `ShellRosterSectionPartition` + section headers on shell roster tab | `DynastyShellTabContent.kt`, `ShellRosterSectionPartition.kt` |
+| MEGA-FRAME-045 | SHIP | Roster tap → player card | Preview sheet + full card from shell roster tab (in-season, OS, preseason, carousel) | `OffseasonScreen.kt`, `PreseasonScreen.kt`, `CoachingCarouselScreen.kt` |
+| MEGA-FRAME-046 | SHIP | Calendar your games only | User `PreseasonSchedulePlan` via `UserCalendarRepository`; header copy; plan-order rows | `UserCalendarSchedulePolicy.kt`, `DynastyShellCalendarTab.kt` |
+| MEGA-FRAME-047 | SHIP | Calendar conf vs non-conf distinction | Kind `AssistChip` per row; section headers when week has multiple games | `DynastyShellCalendarTab.kt` |
+| MEGA-FRAME-048 | SHIP | Calendar tap → preview / box score | Tappable lines; upcoming → preview; played → box sheet + scores | `DynastyShellCalendarTab.kt`, `UserCalendarGameEnricher.kt`, `GamePreviewFromCalendar.kt` |
+| MEGA-FRAME-049 | SHIP | News tab shallow headlines | `rememberShellNewsHeadlines` + `DynastyShellNewsTab` in OS/preseason/carousel | `ShellShallowNewsFeed.kt`, phase shell screens |
+| MEGA-FRAME-050 | SHIP | News top N truncate policy | `ShallowNewsFeedSnapshot` + cap copy + “more in hub” / open hub CTA | `ShallowNewsFeed.kt`, `DynastyShellNewsTab` |
+| MEGA-FRAME-051 | SHIP | News headline tap → detail / hub | Clickable cards → mini-article sheet; hub CTA on recruiting/awards/bracketology | `NewsHeadlineArticleBuilder`, `DynastyShellNewsTab` |
 
 ---
 
@@ -105,10 +105,10 @@
 | ID | Status | Spec / topic | Finding | Code / notes |
 |----|--------|--------------|---------|--------------|
 | MEGA-FRAME-052 | SHIP | Core hub menu items | School, Recruiting, Strategy, Statistics, Rankings, News, History, Awards | `buildDynastyHubMenu` |
-| MEGA-FRAME-053 | PARTIAL | March Mayhem visibility | Menu when `Postseason` phase — spec: after Selection Sunday only | `DynastyHubMenuPolicy.marchMayhemMenuVisible` |
+| MEGA-FRAME-053 | SHIP | March Mayhem visibility | Hub item when `Postseason` and `selectionSunday` published on standings | `DynastyHubMenuPolicy`, `DynastyShellScreen` |
 | MEGA-FRAME-054 | SHIP | Conf tournament menu in phase | Extra item in conf tournament phase | `DynastyHubMenuPolicy` |
-| MEGA-FRAME-055 | PARTIAL | Rankings hub 365 + polls | `RankingsHubScreen` tabs when `published` | Placeholder when unpublished |
-| MEGA-FRAME-056 | GAP | Dashboard default after load | Launch routing splits Offseason / Preseason / Shell routes | `DynastyLaunch.kt` |
+| MEGA-FRAME-055 | SHIP | Rankings hub 365 + polls | Full NET/Media/Coaches/Conf tabs when published; placeholder + preseason preview slice before | `RankingsHubPublishPolicy`, `RankingsHubScreen` |
+| MEGA-FRAME-056 | SHIP | Dashboard default after load | `DynastyLaunch` navigates `DynastyCareer` for offseason/preseason/in-season | `DynastyLaunch.kt`, `DynastyCareerPhaseResolver.kt` |
 
 ---
 
@@ -118,16 +118,16 @@
 |----|--------|--------------|---------|--------------|
 | MEGA-FRAME-057 | SHIP | Season 1 skip Week 10 | Policy in core + launch | `offseason.md#season-1-vs-later-seasons` |
 | MEGA-FRAME-058 | SHIP | Week 1 Players Leaving panel | `PlayersLeavingPanel` on week 1 dashboard | `OffseasonScreen` |
-| MEGA-FRAME-059 | PARTIAL | Week 1 Roster / Transfer tabs | Dedicated screen vs transfer-portal spec — audit transfer tab parity separately | `PlayersLeavingScreen.kt` |
+| MEGA-FRAME-059 | SHIP | Week 1 Roster / Transfer tabs | `PortalWeekOnePartition` + tab counts, mutual-exclusion copy, empty states in `PlayersLeavingPanel` | `WeekOneLeavingTabPolicy`, `PlayersLeavingScreen.kt` |
 | MEGA-FRAME-060 | SHIP | Week 2 draft results panel | `DraftResultsWeekTwoPanel` | `OffseasonScreen` week 2 |
-| MEGA-FRAME-061 | PARTIAL | Weeks 2–5 portal optional tasks | `OffseasonOptionalDashboardTasks` + recruiting deep links | UI density on dashboard |
+| MEGA-FRAME-061 | SHIP | Weeks 2–5 portal optional tasks | Portal optional panel + pipeline entrant nudge, shared build helper, portal deep links | `OffseasonPortalOptionalNudgeResolver`, `OffseasonScreen` |
 | MEGA-FRAME-062 | SHIP | Week 6 Signing Day required tasks | `SigningDayRequiredDashboardTasks` + signing screen route | `SigningDayScreen` |
-| MEGA-FRAME-063 | PARTIAL | Week 7 summer workouts optional report | Core constants + repository; sheet UX thin on dashboard | `SummerWorkoutConstants` |
+| MEGA-FRAME-063 | SHIP | Week 7 summer workouts optional report | Optional review card + bottom sheet full report on Week 7 dashboard | `OffseasonWeekSevenOptionalDashboardTasks`, `SummerWorkoutReportPanel` |
 | MEGA-FRAME-064 | SHIP | Week 8 roster ≤15 gate | `RosterCutsWeekEightPanel` + advance gate | `OffseasonScreen` |
-| MEGA-FRAME-065 | PARTIAL | Week 9 fundraising / upgrades | `FundraisingWeekNinePanel` | Optional tasks tuning |
+| MEGA-FRAME-065 | SHIP | Week 9 fundraising / upgrades | Optional cards per event / naming / upgrades + fundraising bottom sheet | `OffseasonWeekNineOptionalDashboardTasks`, `FundraisingWeekNinePanel` |
 | MEGA-FRAME-066 | SHIP | Week 10 conference offers Season 2+ | `ConferenceOffersWeekTenPanel` + advance block | `OffseasonScreen` |
-| MEGA-FRAME-067 | PARTIAL | Advance to preseason CTA | Week 9→10→preseason transition via `SaveSlotRepository` — label “Advance to preseason” on final week | strings.xml |
-| MEGA-FRAME-068 | GAP | Offseason sim-week on optional portal spend | Offseason advance confirmation wiring lighter than in-season | compare `OffseasonScreen` vs `DynastyShellScreen` |
+| MEGA-FRAME-067 | SHIP | Advance to preseason CTA | `OffseasonWeekAdvancePolicy.showsAdvanceToPreseasonCta` — week 9 (S1) or week 10 (S2+) | `OffseasonScreen`, `OffseasonWeekAdvancePolicy` |
+| MEGA-FRAME-068 | SHIP | Offseason sim-week on optional portal spend | `OffseasonAdvanceOptionalTaskAggregator` + portal nudge/auto-spend confirm lines in `SimWeekAdvanceResolver` | `OffseasonPortalSimWeekPolicy`, `OffseasonScreen` |
 
 ---
 
@@ -137,13 +137,13 @@
 |----|--------|--------------|---------|--------------|
 | MEGA-FRAME-069 | SHIP | Single week Preseason label | Header `Preseason` | `CalendarWeekLabel` |
 | MEGA-FRAME-070 | SHIP | Tasks 7–8 locked until invites | `preseason_task_locked_invites` + progress gate | `PreseasonScreen` |
-| MEGA-FRAME-071 | PARTIAL | Task 1 Incoming class seed UX | Repository + progress; UI may be button-only vs “Run seed” progress | `IncomingClassSeedRepository` |
-| MEGA-FRAME-072 | PARTIAL | Task 4 NET + polls review sheet | Rankings sheet — confirm Continue dismiss | preseason rankings flow |
+| MEGA-FRAME-071 | SHIP | Task 1 Incoming class seed UX | Stepped HS/JUCO/rank/headline/save progress + determinate bar on `IncomingClassSeedPanel` | `IncomingClassSeedRunProgress`, `IncomingClassSeedRepository` |
+| MEGA-FRAME-072 | SHIP | Task 4 NET + polls review sheet | `PreseasonRankingsReviewBottomSheet` — NET preview, program poll chips, Continue publishes + dismisses; hub route also pops on Continue | `PreseasonRankingsReviewUxPolicy` |
 | MEGA-FRAME-073 | SHIP | Task 5 preseason report article | `PreseasonReportPanel` + `ReportArticleView` pattern | `preseason.md#view-preseason-report` |
-| MEGA-FRAME-074 | PARTIAL | Task 6 tournament invites prestige tiers | `TournamentInvitesState` — UI cards for multi-invite | `PreseasonScreen` |
-| MEGA-FRAME-075 | PARTIAL | Task 7 exhibitions 0–3 / skip | Strings + schedule repo | Builder UX |
-| MEGA-FRAME-076 | PARTIAL | Task 8 RS schedule builder | Solver + validation in core; UI shows summary / build | `PreseasonScheduleSolver` |
-| MEGA-FRAME-077 | GAP | Preseason shell News tab live feed | Placeholder only — Top 60 headline should surface post seed | `PreseasonScreen` News tab |
+| MEGA-FRAME-074 | SHIP | Task 6 tournament invites prestige tiers | Live prestige → `TournamentInvitesPrestigePolicy` tiers; elevated multi-invite cards + decline-all | `TournamentInvitesPanel`, `PreseasonScreen` |
+| MEGA-FRAME-075 | SHIP | Task 7 exhibitions 0–3 / skip | Opponent search sheet, H/A, exhibition week slots; persisted drafts feed solver | `ExhibitionSchedulePanel`, `ExhibitionScheduleUxPolicy` |
+| MEGA-FRAME-076 | SHIP | Task 8 RS schedule builder | Slot budget breakdown, validation errors, week-by-week review sheet before lock | `RegularSeasonScheduleBuilderUxPolicy`, `RegularSeasonSchedulePanel` |
+| MEGA-FRAME-077 | SHIP | Preseason shell News tab live feed | Top 60 spotlight after seed; refresh on task complete + preseason empty hint | `PreseasonNewsFeedPolicy`, `NewsFeedRepository` |
 | MEGA-FRAME-078 | SHIP | Start season → first playable focus | `PreseasonSeasonStartPolicy` + exhibition vs RS | `SaveSlotRepository.completePreseason` |
 
 ---
@@ -153,11 +153,11 @@
 | ID | Status | Spec / topic | Finding | Code / notes |
 |----|--------|--------------|---------|--------------|
 | MEGA-FRAME-079 | SHIP | Bye week advance allowed | `ByeWeekPolicy.canAdvanceWeek` always true in-season | core tests |
-| MEGA-FRAME-080 | PARTIAL | Injury weeks tick on bye advance | Confirmation line `InjuryWeeksTick` | `SimWeekAdvanceDialog` |
-| MEGA-FRAME-081 | GAP | Early-event bye weeks on calendar | Calendar may not mark eliminated-team event bye weeks distinctly | `time-system.md#byes-after-elimination` |
-| MEGA-FRAME-082 | GAP | Conf tourney shorter-bracket bye | Cross-conference bye weeks not called out in UI | `time-system.md#conference-tournaments` |
-| MEGA-FRAME-083 | PARTIAL | Week advance league batch sim | Repository advances checkpoint — full league batch visibility N/A in UI | `SaveSlotRepository.advanceDynastyWeek` |
-| MEGA-FRAME-084 | GAP | Season review week no bottom-tab games | Season review screen — confirm calendar empty / copy | `SeasonReviewScreen` |
+| MEGA-FRAME-080 | SHIP | Injury weeks tick on bye advance | `InjuryByeAdvanceConfirmPolicy` — bye copy + simple advance tail; `userOnByeWeek` in repository | `InjuryByeAdvanceConfirmPolicy`, `SimWeekAdvanceDialog` |
+| MEGA-FRAME-081 | SHIP | Early-event bye weeks on calendar | `EarlySeasonUserCalendarByes` + `UserCalendarRowKind.EventEliminationBye` in shell calendar tab | `UserCalendarRepository`, `DynastyShellCalendarTab.kt` |
+| MEGA-FRAME-082 | SHIP | Conf tourney shorter-bracket bye | `ConfTournamentStructuralBye` chip + conference detail on calendar tab | `UserCalendarTabBuilder`, `DynastyShellCalendarTab.kt` |
+| MEGA-FRAME-083 | SHIP | Week advance league batch sim | RS advance confirm line `LeagueWeekBatch` from `simulatesLeagueWeekBatch` in repository input | `SimWeekAdvanceResolver`, `SaveSlotRepository`, `SimWeekAdvanceDialog` |
+| MEGA-FRAME-084 | SHIP | Season review week no bottom-tab games | Calendar tab banner `season_review_calendar_banner` — no games this week | `SeasonReviewScreen` |
 
 ---
 
@@ -165,16 +165,16 @@
 
 | ID | Status | Spec / topic | Finding | Code / notes |
 |----|--------|--------------|---------|--------------|
-| MEGA-FRAME-085 | GAP | **Bug: tasks disappear (preseason)** | `PreseasonRequiredDashboardTasks` omits completed tasks from the required panel — checklist **shrinks** as user progresses instead of showing done + remaining | `PreseasonRequiredDashboardTasks.kt`, `DashboardRequiredTasksPanel` |
-| MEGA-FRAME-086 | GAP | **Bug: tasks disappear (preseason load)** | `PreseasonScreen` **`return`s composable** while `progress == null` — entire shell blank until DataStore load; looks like tasks vanished | `PreseasonScreen.kt` `val taskProgress = progress ?: return` |
-| MEGA-FRAME-087 | GAP | **Bug: tasks disappear (dual list)** | Same incomplete preseason tasks render in **both** `DashboardRequiredTasksPanel` and `LazyColumn`; completing one surface removes required cards but lazy rows remain — inconsistent | `PreseasonScreen.kt` |
-| MEGA-FRAME-088 | GAP | **Bug: tasks disappear (spurious complete)** | Generic **Complete** on preseason rows calls `completeTask` without opening rankings / coach tree / workouts — task vanishes from required set with no wired action | `PreseasonScreen.kt` `OutlinedButton` + `PreseasonProgressRepository` |
-| MEGA-FRAME-089 | GAP | **Bug: recruiting UI after Signing Day** | Offseason **Weeks 7–10** still show **Open Recruiting hub** CTA when `hubAccessible` (week ≥ 2); spec Week 6 **closes cycle** — administration weeks feel like portal crunch | `OffseasonScreen.kt`, `RecruitingCyclePolicy.hubAccessible` |
-| MEGA-FRAME-090 | GAP | **Bug: recruiting between signing & preseason** | Hamburger **Recruiting** not gated on `RecruitingCycleLedger.cycleClosed`; user routed to hub/placeholder between hard sign and preseason | `buildDynastyHubMenu`, `DynastyHubMenuCallbacks` |
-| MEGA-FRAME-091 | GAP | **Bug: sim week lag** | **Advance week** launches `advanceDynastyWeek` with **no loading state** — button stays active, UI frozen while league batch + AI recruiting run | `DynastyShellScreen.kt`, `OffseasonScreen.kt` |
-| MEGA-FRAME-092 | GAP | **Bug: sim week lag (confirm path)** | `SimWeekAdvanceDialog` **onConfirm** does not disable confirm or show spinner during suspend advance | `SimWeekAdvanceDialog.kt` |
-| MEGA-FRAME-093 | GAP | **Bug: sim week lag (pre-dialog)** | `buildSimWeekAdvanceConfirmation` loads ledger + builds AI estimate **synchronously** on first tap — perceived lag **before** dialog appears | `SaveSlotRepository.buildSimWeekAdvanceInputSuspended` |
-| MEGA-FRAME-094 | GAP | **Bug: tasks disappear (portal weeks)** | Offseason optional portal/recruiting cards only render for **`PORTAL_RECRUITING_WEEKS`** — advancing to Week 6+ **removes entire optional block** abruptly | `OffseasonScreen.kt` weeks 2–5 only |
+| MEGA-FRAME-085 | PASS | **Bug: tasks disappear (preseason)** | Preseason dashboard uses single **LazyColumn** checklist (done + remaining); advance gate still uses incomplete-only required tasks | `PreseasonScreen.kt` |
+| MEGA-FRAME-086 | PASS | Preseason progress loading UX | Dashboard shows skeleton while `PreseasonTaskProgress` loads; shell chrome remains visible | `PreseasonScreen.kt` |
+| MEGA-FRAME-087 | PASS | **Bug: tasks disappear (dual list)** | Removed duplicate `DashboardRequiredTasksPanel` on preseason dashboard — one checklist surface | `PreseasonScreen.kt` |
+| MEGA-FRAME-088 | PASS | **Bug: tasks disappear (spurious complete)** | Workouts/coach/rankings rows use feature panels; generic Complete removed; rankings publish via hub Continue | `PreseasonScreen.kt`, `PreseasonFeatureTaskPanels.kt`, `RankingsHubRepository.publishPreseasonRankings` |
+| MEGA-FRAME-089 | PASS | **Bug: recruiting UI after Signing Day** | `effectiveCycleClosed` treats OS W7–10 as closed; dashboard shows closed copy not Open hub CTA; ledger persists closed on advance | `RecruitingCyclePolicy.kt`, `OffseasonScreen.kt` |
+| MEGA-FRAME-090 | PASS | **Bug: recruiting between signing & preseason** | Hamburger **Recruiting** gated on `cycleClosed` — closed label + toast or `RecruitingCycleClosedBody` on route | `buildDynastyHubMenu`, `RecruitingCyclePolicy.hubNavigable` |
+| MEGA-FRAME-091 | PASS | Sim week advance loading UX | Advance button and confirm dialog show spinner + disable while suspend advance runs | `DynastyShellScreen.kt`, `OffseasonScreen.kt` |
+| MEGA-FRAME-092 | PASS | Sim week confirm loading UX | Dialog confirm shows spinner; dismiss blocked while advancing | `SimWeekAdvanceDialog.kt` |
+| MEGA-FRAME-093 | PASS | **Bug: sim week lag (pre-dialog)** | Confirmation path sets `preDialogOnly` — `loadPool` (no seed) and skips `buildFastSimBundle` until confirm ([MEGA-QA-008]) | `SaveSlotRepository`, `SimWeekAdvancePreDialogPath` |
+| MEGA-FRAME-094 | SHIP | **Bug: tasks disappear (portal weeks)** | After portal window closes, dashboard shows closed heading/body instead of removing optional block | `OffseasonScreen.kt`, `PortalCyclePolicy.portalWindowClosed` |
 
 ---
 
@@ -182,18 +182,18 @@
 
 | ID | Status | Spec / topic | Finding | Code / notes |
 |----|--------|--------------|---------|--------------|
-| MEGA-FRAME-095 | GAP | In-season recruiting optional tasks | `DashboardTaskGate.inSeason` never emits `SpendRecruitingPoints` / watchlist nudges — year-long optional recruiting missing on shell dashboard | `DashboardTaskGate.kt`, `InSeasonOptionalDashboardTasks.kt` |
-| MEGA-FRAME-096 | GAP | Shell recruiting ledger | `DynastyShellScreen` does not load `RecruitingEconomyRepository` for task counts or sim-week unresolved recruiting line | `DynastyShellScreen.kt` |
-| MEGA-FRAME-097 | GAP | Required / Optional chips | Task cards lack visible **Required** vs **Optional** labels per `game-frame.md#dashboard-task-gate` (extends MEGA-FRAME-024) | `DashboardRequiredTasksPanel`, `DashboardOptionalTasksPanel` |
-| MEGA-FRAME-098 | GAP | Preseason required deep link dead | `DashboardRequiredTasksPanel.onOpenSigningDay` **no-op** on `PreseasonScreen` — **Open** button does not scroll/focus lazy task row | `PreseasonScreen.kt` `onOpenSigningDay = { }` |
-| MEGA-FRAME-099 | GAP | `PreseasonChecklist` deep link | All eight preseason tasks share `DashboardTaskId.PreseasonRequired` — cannot distinguish cards in analytics or dismiss sets | `PreseasonRequiredDashboardTasks.kt` |
-| MEGA-FRAME-100 | PARTIAL | Optional dismiss scope | `dismissedIds` keyed by `DashboardTaskId` only — multiple injury weeks / portal rows share ids | `DashboardOptionalTasksPanel`, `DynastyShellScreen` |
-| MEGA-FRAME-101 | GAP | Offseason dismiss persistence | `dismissedTasks` is `remember` only — not saved; week advance does not reset but **process death** resurrects nags user dismissed | `OffseasonScreen.kt` |
-| MEGA-FRAME-102 | GAP | Week 1 required dashboard pattern | Declare / pro-day flows live on **Players Leaving** screen — no mirrored **required** dashboard cards per `dashboard-tasks.md#offseason` | `PlayersLeavingPanel` vs dashboard |
+| MEGA-FRAME-095 | PASS | In-season recruiting optional tasks | `InSeasonRecruitingOptionalDashboardTasks` + shell `InSeasonRecruitingDashboardContext` emit spend + watchlist nudges when cycle open | `DashboardTaskGate.kt`, `DynastyShellScreen.kt` |
+| MEGA-FRAME-096 | SHIP | Shell recruiting ledger | Single effect loads ledger + `InSeasonRecruitingDashboardContext` for optional tasks and sim-week confirm | `DynastyShellScreen.kt`, `RecruitingDashboardFirstPaint` |
+| MEGA-FRAME-097 | SHIP | Required / Optional chips | `DashboardTaskKindChip` on both panels (same as MEGA-FRAME-024) | `DashboardTaskKindChip.kt` |
+| MEGA-FRAME-098 | SHIP | Preseason required deep link | Jump chips + `navigatePreseasonDashboardTask` scroll/hub — no duplicate full task card panel | `PreseasonScreen.kt` |
+| MEGA-FRAME-099 | SHIP | `PreseasonChecklist` deep link | Each task has unique `DashboardDeepLink` + `preseasonTaskId` on `DashboardTask` | `PreseasonTaskDeepLinks.kt` |
+| MEGA-FRAME-100 | SHIP | Optional dismiss scope | Scoped dismiss keys `${phase}:${week}:${taskId}` via `DashboardTaskDismissal` on shell + offseason panels | `DashboardOptionalTasksPanel`, `DashboardTaskDismissal.kt` |
+| MEGA-FRAME-101 | SHIP | Offseason dismiss persistence | Scoped optional dismiss keys persisted via `DashboardOptionalDismissRepository` (DataStore) | `OffseasonScreen.kt` |
+| MEGA-FRAME-102 | SHIP | Week 1 required dashboard pattern | Required cards for pro day + transfer retention mirror panel actions | `OffseasonWeekOneRequiredDashboardTasks.kt` |
 | MEGA-FRAME-103 | SHIP | Required blocks advance core | `DashboardAdvanceGate.blocksWeekAdvance` used on shell, offseason, preseason | `DashboardAdvanceGate.kt` |
-| MEGA-FRAME-104 | GAP | Discipline task visibility | Pending discipline blocks advance in repository but task panel depends on `DisciplineRequiredDashboardTasks` wiring from load | `SaveSlotRepository.advanceDynastyWeek` early return |
-| MEGA-FRAME-105 | GAP | Signing Day panel null race | Week 6 required panel gated on `signingProgress?.let` — null progress hides **all** signing tasks until `LaunchedEffect` finishes | `OffseasonScreen.kt` |
-| MEGA-FRAME-106 | PARTIAL | In-season optional game task | Only **first** scheduled game becomes optional task when multiple user games same week | `InSeasonOptionalDashboardTasks.build` |
+| MEGA-FRAME-104 | SHIP | Discipline task visibility | Pending discipline loaded in shell dashboard hydration effect + dedicated refresh effect | `DynastyShellScreen.kt`, `DisciplineRequiredDashboardTasks` |
+| MEGA-FRAME-105 | PASS | Signing Day panel null race | Week 6 shows `SigningDayRequiredTasksSkeleton` until `signingProgress` loads ([MEGA-QA-094]) | `OffseasonScreen.kt` |
+| MEGA-FRAME-106 | SHIP | In-season optional game task | One optional play task per scheduled user game; `dismissScopeKey` = opponent team id | `InSeasonOptionalDashboardTasks` |
 
 ---
 
@@ -201,16 +201,16 @@
 
 | ID | Status | Spec / topic | Finding | Code / notes |
 |----|--------|--------------|---------|--------------|
-| MEGA-FRAME-107 | PARTIAL | Unplayed game copy | `UnplayedGameFastSim` confirmation string is generic — **opponent name** not passed from `ScheduledGameStub` | `SimWeekAdvanceDialog.kt`, `SimWeekConfirmationLineKind` |
-| MEGA-FRAME-108 | GAP | Offseason lightweight confirm | Offseason advance often skips dialog when `unresolvedOptionalTaskCount == 0` even crossing **Signing Day** / roster lock — no “Advance to Offseason Week N?” | `OffseasonScreen.kt`, `SimWeekAdvanceResolver` |
-| MEGA-FRAME-109 | PARTIAL | Portal line on advance | `PortalRecruitingWeek` confirmation line when portal window open — OK; **absent** after Week 5 | `SimWeekAdvanceResolver.kt` |
-| MEGA-FRAME-110 | GAP | Manual recruiting spend param | UI always calls `advanceDynastyWeek(slot)` with default **`userManualRecruitingSpent = 0`** — no hook from Recruiting hub | `DynastyShellScreen.kt`, `OffseasonScreen.kt` |
-| MEGA-FRAME-111 | GAP | Advance failure UX | Failed `DynastyLoadResult` paths use `else -> Unit` — user gets **no toast** on discipline block or load failure | Shell/offseason advance handlers |
-| MEGA-FRAME-112 | PARTIAL | Injury tick on bye | `InjuryWeeksTick` line emitted in resolver — calendar bye weeks may not explain tick in UI | `SimWeekAdvanceDialog`, `ByeWeekPolicy` |
-| MEGA-FRAME-113 | GAP | Double-tap advance | No **debounce** / `enabled = false` while `scope.launch` advance in flight — duplicate week commits risk | `DynastyShellScreen` advance `Button` |
-| MEGA-FRAME-114 | GAP | Advance work ordering | `advanceDynastyWeek` chains checkpoint, **AI recruiting**, league batch, injuries, fatigue, chemistry, coach Sunday — all on confirm path (lag source) | `SaveSlotRepository.advanceDynastyWeek` |
-| MEGA-FRAME-115 | PARTIAL | Simple advance line | Short “Advance to {label}?” exists when no optional work — in-season still may skip if `needsDialog` false | `SimWeekAdvanceResolver.buildConfirmation` |
-| MEGA-FRAME-116 | GAP | Sim-week vs Start season | Preseason uses **Start season** CTA only — no sim-week dialog (correct) but shares heavy `startSeason` repository path without progress UI | `PreseasonSeasonStartRepository` |
+| MEGA-FRAME-107 | SHIP | Unplayed game copy | Opponent in `advance_confirm_line_fast_sim` via `stringFormatArgs` | `SimWeekAdvanceDialog.kt` |
+| MEGA-FRAME-108 | SHIP | Offseason lightweight confirm | `OffseasonAdvanceConfirmPolicy` forces `SimpleAdvance` dialog on milestone offseason weeks | `SimWeekAdvanceResolver`, `SaveSlotRepository` |
+| MEGA-FRAME-109 | SHIP | Portal line on advance | `PortalRecruitingWindowClosed` confirm line when portal window closed (week 6+) | `SimWeekAdvanceResolver.kt`, `SimWeekAdvanceDialog.kt` |
+| MEGA-FRAME-110 | SHIP | Manual recruiting spend param | Hub spends recorded in `RecruitingManualWeekSpendRepository`; confirm/advance pass total to sim-week input | `RecruitingEconomyRepository`, `SaveSlotRepository` |
+| MEGA-FRAME-111 | SHIP | Advance failure UX | `WeekAdvanceBlocked` + `Unreadable` snackbars; null confirm shows `advance_confirm_unavailable` | `DynastyWeekAdvanceFeedback.kt` |
+| MEGA-FRAME-112 | SHIP | Injury tick on bye | `InjuryWeeksTickByeWeek` explains no-game week; wired via `ByeWeekPolicy` + `userOnByeWeek` | `InjuryByeAdvanceConfirmPolicy`, `ByeWeekPolicy` |
+| MEGA-FRAME-113 | SHIP | Double-tap advance | Advance `Button` ignores clicks while in-flight (`weekAdvanceInProgress` / `dialogAdvanceInProgress`) before launching coroutine | `DynastyShellScreen.kt`, `OffseasonScreen.kt` |
+| MEGA-FRAME-114 | SHIP | Advance work ordering | Post-confirm pipeline documented in `DynastyWeekAdvancePipelineStages`; pre-dialog lag split to [MEGA-QA-008] / [MEGA-FRAME-093] | `SaveSlotRepository.advanceDynastyWeek`, `DynastyWeekAdvancePipelineStages` |
+| MEGA-FRAME-115 | SHIP | Simple advance line | `InSeasonAdvanceConfirmPolicy` forces destination `SimpleAdvance` dialog in exhibition/RS/postseason | `SimWeekAdvanceResolver`, `SaveSlotRepository` |
+| MEGA-FRAME-116 | SHIP | Sim-week vs Start season | Preseason **Start season** CTA shows in-progress indicator and blocks double-tap while `startSeason` runs | `PreseasonScreen.kt`, `PreseasonSeasonStartRepository` |
 
 ---
 
@@ -218,17 +218,17 @@
 
 | ID | Status | Spec / topic | Finding | Code / notes |
 |----|--------|--------------|---------|--------------|
-| MEGA-FRAME-117 | GAP | Weeks 3–5 dashboard body | Only optional task panel + placeholder hint — no week theme recap / draft crunch copy on dashboard | `offseason_shell_placeholder`, `OffseasonWeekHeading` |
-| MEGA-FRAME-118 | PARTIAL | Theme line placement | `OffseasonWeekHeading.themeLine` on dashboard column — **not** in global `DynastyShellChrome` subtitle (extends MEGA-FRAME-015) | `OffseasonScreen.kt` |
-| MEGA-FRAME-119 | GAP | Week 7 workout optional task | Summer workouts auto-run in core; **optional “review report”** dashboard card not surfaced (spec `offseason.md` Week 7) | `SummerWorkoutReportPanel` only on week 7 body |
-| MEGA-FRAME-120 | PARTIAL | Week 8 scholarship gate | Advance enabled when `rosterPlayerCount <= 15` — may not match **scholarship** subset vs walk-ons | `OffseasonScreen` `SCHOLARSHIP_LIMIT` |
-| MEGA-FRAME-121 | PARTIAL | Week 9 fundraising tasks | `FundraisingWeekNinePanel` on dashboard — optional fundraising **dashboard task cards** thin vs spec table | `dashboard-tasks.md#offseason` |
-| MEGA-FRAME-122 | GAP | Week 10 → preseason CTA | Final week button label / routing via `SaveSlotRepository` — verify copy “Advance to preseason” after Week 9 (S1) vs Week 10 | `OffseasonWeekAdvancePolicy`, strings |
-| MEGA-FRAME-123 | GAP | Offseason calendar tab | `DynastyShellCalendarTab` during offseason likely **empty** — no “no games this phase” copy | `UserCalendarRepository` + shell tabs |
-| MEGA-FRAME-124 | GAP | Week 2 draft results + tasks | `DraftResultsWeekTwoPanel` present — optional **open scholarships** / portal tasks depend on context flags from `LaunchedEffect` | `OffseasonScreen` context builder |
-| MEGA-FRAME-125 | GAP | Signing Day screen vs dashboard | Full **SigningDayScreen** route separate from shell — required tasks duplicated between screen and Week 6 panel | `SigningDayScreen.kt`, `AppRoute` |
-| MEGA-FRAME-126 | PARTIAL | Recruiting hub offseason W1 | Policy blocks hub Week 1 — **correct** for portal; shared points economy still inaccessible Week 1 via hub | `RecruitingCyclePolicy` week >= 2 |
-| MEGA-FRAME-127 | GAP | Close cycle UX after hard sign | `closeCycleAfterHardSign` runs on screen — hub CTA on Weeks 7+ should hide or show “administration only” | `SigningDayScreen`, `OffseasonScreen` |
+| MEGA-FRAME-117 | SHIP | Weeks 3–5 dashboard body | Week-specific portal recap copy (`offseason_dashboard_week3_body` … `_week5_body`) on dashboard | `OffseasonScreen.kt` |
+| MEGA-FRAME-118 | SHIP | Theme line placement | `OffseasonWeekHeading.themeLine` via `DynastyShellChrome.headerSubtitle` only (no duplicate dashboard title) | `OffseasonScreen.kt`, `DynastyShellChrome.kt` |
+| MEGA-FRAME-119 | SHIP | Week 7 workout optional task | Optional review dashboard card opens full report sheet (see MEGA-FRAME-063) | `OffseasonWeekSevenOptionalDashboardTasks` |
+| MEGA-FRAME-120 | SHIP | Week 8 scholarship gate | Week 8 advance + open slots use `RosterLockPolicy.scholarshipCount` (walk-ons excluded) | `OffseasonScreen`, `RosterLockPolicy` |
+| MEGA-FRAME-121 | SHIP | Week 9 fundraising tasks | Optional fundraising dashboard cards per `dashboard-tasks.md` week 9 table | `OffseasonWeekNineOptionalDashboardTasks` |
+| MEGA-FRAME-122 | SHIP | Week 10 → preseason CTA | Final-week CTA + helper copy tied to season 1 week 9 skip vs week 10 conf | `OffseasonWeekAdvancePolicy`, `OffseasonScreen` |
+| MEGA-FRAME-123 | SHIP | Offseason calendar tab | Empty offseason calendar shows `shell_calendar_offseason_no_games` instead of preseason placeholder | `DynastyShellCalendarTab.kt` |
+| MEGA-FRAME-124 | SHIP | Week 2 draft results + tasks | Optional portal / open-scholarship tasks use scholarship-based `openScholarshipSlots` from roster `LaunchedEffect` | `OffseasonScreen`, `OffseasonOptionalDashboardTasks` |
+| MEGA-FRAME-125 | SHIP | Signing Day screen vs dashboard | Week 6 shell shows one **Signing Day launcher** task into full screen — steps live on `SigningDayScreen` only | `SigningDayShellDashboardTasks`, `OffseasonScreen` |
+| MEGA-FRAME-126 | SHIP | Recruiting hub offseason W1 | Week 1 retention copy when hub closed; chasing opens Week 2 per spec | `OffseasonScreen`, `SigningDayPreseasonRecruitingTransition` |
+| MEGA-FRAME-127 | SHIP | Close cycle UX after hard sign | Hub button hidden when `!hubNavigable`; closed cycle shows **Administration only** + body copy Weeks 7+ | `OffseasonScreen`, `RecruitingCyclePolicy` |
 
 ---
 
@@ -236,15 +236,15 @@
 
 | ID | Status | Spec / topic | Finding | Code / notes |
 |----|--------|--------------|---------|--------------|
-| MEGA-FRAME-128 | GAP | Top 60 → News tab | Task 1 publishes seed — **News tab** remains `DynastyShellNewsTabPlaceholder` — Top 60 headline not on shallow feed | `PreseasonScreen` News tab |
+| MEGA-FRAME-128 | SHIP | Top 60 → News tab | `isSeeded` spotlight publish on load + after seed task; live `DynastyShellNewsTab` feed | `PreseasonScreen`, `NewsFeedRepository` |
 | MEGA-FRAME-129 | SHIP | Tasks 7–8 invite gate | Locked copy + `schedulingUnlocked()` matches `preseason.md` dependency on task 6 | `PreseasonScreen.kt` |
-| MEGA-FRAME-130 | GAP | Start season navigation | `onSeasonStarted()` pops NavHost — **not** in-place phase swap inside one shell route | `DynastyApp.kt`, `DynastyLaunch.kt` |
-| MEGA-FRAME-131 | PARTIAL | Task order UX | Spec allows tasks 1–5 in any order — UI lists fixed enum order only | `PreseasonTaskId.entries` |
-| MEGA-FRAME-132 | GAP | Coach upgrades wiring | Task 3 completable via generic button — **skill tree** screen not required path | `PreseasonScreen` vs `game-design` coach upgrades |
-| MEGA-FRAME-133 | PARTIAL | Rankings review task | NET/Media/Coaches sheet exists in flow — completion not tied to **Continue** on rankings slice only | `RankingsHubScreen` / preseason |
-| MEGA-FRAME-134 | PARTIAL | Exhibition / RS builders | Dedicated panels for tasks 7–8 when unlocked — good; validation errors stay in builder not on task card | `ExhibitionSchedulePanel`, `RegularSeasonSchedulePanel` |
-| MEGA-FRAME-135 | GAP | Preseason header hint | Header shows **Preseason** label only — no “complete all tasks to start season” in chrome | `CalendarWeekLabel`, `DynastyShellChrome` |
-| MEGA-FRAME-136 | GAP | Redshirt in task 2 | Optional redshirt during workouts — not surfaced on generic workout complete row | `preseason.md` redshirt note |
+| MEGA-FRAME-130 | SHIP | Start season navigation | `PreseasonScreen.onSeasonStarted` no-op; `ActiveDynastySession` listener recomposition inside `DynastyCareerHost` | `DynastyCareerHost.kt` |
+| MEGA-FRAME-131 | SHIP | Task order UX | `preseason_task_order_hint` + `PreseasonTaskOrderPolicy` documents flexible tasks 1–5 | `PreseasonScreen.kt` |
+| MEGA-FRAME-132 | SHIP | Coach upgrades wiring | Task 3 **Mark done** gated until Strategy opened once | `PreseasonCoachUpgradesPanel` |
+| MEGA-FRAME-133 | SHIP | Rankings review task | Rankings hub route view-only; task completes via review sheet **Continue** (`publishPreseasonRankings`) | `PreseasonRankingsReviewBottomSheet` |
+| MEGA-FRAME-134 | SHIP | Exhibition / RS builders | `ExhibitionDraftIssue` + builder status banner and task rows surface validation | `ExhibitionScheduleUxPolicy`, `PreseasonScreen` |
+| MEGA-FRAME-135 | SHIP | Preseason header hint | `preseason_shell_header_hint` on `DynastyShellChrome.headerSubtitle` | `PreseasonScreen.kt` |
+| MEGA-FRAME-136 | SHIP | Redshirt in task 2 | Workouts panel calls out optional medical redshirt via roster tab | `PreseasonWorkoutsPanel` |
 | MEGA-FRAME-137 | SHIP | Eight-task gate to start | `PreseasonStartGate.canStartSeason` + `DashboardAdvanceGate` on start button | `PreseasonScreen.kt` |
 
 ---
@@ -253,14 +253,14 @@
 
 | ID | Status | Spec / topic | Finding | Code / notes |
 |----|--------|--------------|---------|--------------|
-| MEGA-FRAME-138 | GAP | Multi-route career loop | `DynastyLaunch` maps phase → **distinct** `AppRoute` composables — not unified shell with `calendarPhase` swap only | `DynastyLaunch.kt` (extends MEGA-FRAME-005) |
-| MEGA-FRAME-139 | GAP | Hub back stack / tab reset | Returning from Recruiting/SigningDay hubs does not force **Dashboard** tab restore | NavHost patterns in `DynastyApp.kt` |
-| MEGA-FRAME-140 | PARTIAL | Season review chrome | `SeasonReviewScreen` separate from four-tab shell — partial spec compliance for review week | `SeasonReviewScreen.kt` |
-| MEGA-FRAME-141 | GAP | Players Leaving routing | Week 1 retention may be full-screen route vs in-shell panel — breaks “one chrome” mental model | `PlayersLeavingScreen.kt` |
-| MEGA-FRAME-142 | GAP | Recruiting hub during preseason | `hubAccessible(Preseason) == true` — placeholder HS/Portal tabs during setup week (user confusion with signing) | `RecruitingCyclePolicy`, `RecruitingHubScreen` |
-| MEGA-FRAME-143 | PARTIAL | Carousel → Week 1 handoff | Carousel exit navigates to Offseason route — shell tabs present but carousel itself non-shell | `CoachingCarouselScreen.kt` |
-| MEGA-FRAME-144 | GAP | Job center unemployed | Unemployed coaches land **JobCenter** — outside dynasty shell until employed | `DynastyLaunch.kt` |
-| MEGA-FRAME-145 | PARTIAL | Awards hub shell access | Menu includes Awards — opens hub overlay; bottom nav persists (implementation choice OK) | `buildDynastyHubMenu` |
+| MEGA-FRAME-138 | SHIP | Multi-route career loop | Single launch target `dynasty_career`; phase → body via `DynastyCareerPhaseResolver` | `DynastyCareerUnifiedRoutePathTest` |
+| MEGA-FRAME-139 | SHIP | Hub back stack / tab reset | `popBackToInShellDashboard` bumps tab-restore nonce; shell uses `rememberDynastyShellSelectedTab` | `DynastyNavigation`, `ActiveDynastySession` |
+| MEGA-FRAME-140 | SHIP | Season review chrome | Four-tab `DynastyShellChrome` + `season_review_shell_header_hint` on season review week | `SeasonReviewScreen.kt` |
+| MEGA-FRAME-141 | SHIP | Players Leaving routing | Week 1 retention via in-shell `PlayersLeavingPanel` on `OffseasonScreen` (no separate route) | `WeekOneLeavingInShellPathTest` |
+| MEGA-FRAME-142 | SHIP | Recruiting hub during preseason | Preseason setup banner on hub explains checklist vs live chasing | `RecruitingHubScreen.kt` |
+| MEGA-FRAME-143 | SHIP | Carousel → Week 1 handoff | Carousel shell → offseason shell; shared bottom nav through handoff | `CoachingCarouselScreen.kt`, `DynastyLaunch.kt` |
+| MEGA-FRAME-144 | SHIP | Job center unemployed | Unemployed flow uses `DynastyCareer` + `UnemployedCoachCareerScreen` in `DynastyShellChrome` | `UnemployedCoachShellPolicy`, `DynastyCareerHost.kt` |
+| MEGA-FRAME-145 | SHIP | Awards hub shell access | Shell menu → `AwardsHub` route with back + `awards_hub_shell_access_hint` | `DynastyHubMenu.kt`, `AwardsHubScreen.kt` |
 
 ---
 
@@ -268,14 +268,14 @@
 
 | ID | Status | Spec / topic | Finding | Code / notes |
 |----|--------|--------------|---------|--------------|
-| MEGA-FRAME-146 | GAP | Conf tournament week N in header | `CalendarWeekLabel` has conf tournament strings — verify **N** tracks pack max rounds in live save | `CalendarWeekLabel.kt`, `time-system.md#conference-tournaments` |
-| MEGA-FRAME-147 | GAP | Postseason round labels | Dashboard calendar rows lack **Opening Round / Super 16** copy (extends MEGA-FRAME-016) | `DynastyShellCalendarTab.kt`, `ncba-branding.md` |
-| MEGA-FRAME-148 | GAP | Exhibition empty week copy | No dedicated empty-slot message when 0 exhibitions in a window | `time-system.md#exhibition-weeks` |
-| MEGA-FRAME-149 | GAP | Event bye after elimination | Eliminated early-event teams’ bye weeks not visually distinct from generic empty week | `time-system.md#byes-after-elimination` |
-| MEGA-FRAME-150 | PARTIAL | Preseason single-week label | `CalendarWeekLabel` → “Preseason” — does not echo “setup week” in calendar tab | `CalendarWeekLabel.kt` |
-| MEGA-FRAME-151 | GAP | End of Season vs review | Label **End of Season — {year}** exists — season review screen phase copy alignment check | `SeasonReviewGate`, `CalendarWeekLabel` |
-| MEGA-FRAME-152 | PARTIAL | RS week 1–32 batching | UI week index matches save checkpoint — league-wide batch invisible (expected) | `WeekCheckpointRepository.advanceWeek` |
-| MEGA-FRAME-153 | GAP | NCBA top-52 bye week 1 | Postseason week 1 bye for auto-bids not annotated on user calendar | `time-system.md#national-postseason-weeks` |
+| MEGA-FRAME-146 | SHIP | Conf tournament week N in header | Shell + calendar rows use **Week N of M** from `ConferenceTournamentCalendar.leagueMaxConfTourneyWeeks` | `CalendarWeekLabel.kt`, `DynastyShellScreen.kt` |
+| MEGA-FRAME-147 | SHIP | Postseason round labels | Same as MEGA-FRAME-016 — round name in week header on calendar tab | `CalendarWeekLabel.kt` |
+| MEGA-FRAME-148 | SHIP | Exhibition empty week copy | Zero exhibitions selection shows `preseason_exhibitions_zero_week_copy` | `ExhibitionSchedulePanel.kt` |
+| MEGA-FRAME-149 | SHIP | Event bye after elimination | Shared with 081 — Event bye chip + event detail copy on calendar | `DynastyShellCalendarTab.kt` |
+| MEGA-FRAME-150 | SHIP | Preseason single-week label | Header displays **Preseason — setup week** | `CalendarWeekLabel.kt` |
+| MEGA-FRAME-151 | SHIP | End of Season vs review | Dashboard headline matches shell `CalendarWeekLabel` (**End of Season — {year}**) | `SeasonReviewScreen.kt` |
+| MEGA-FRAME-152 | SHIP | RS week 1–32 batching | Shell week header = checkpoint; RS batch gated by `RegularSeasonWeekBatchPolicy` on confirm only | `RegularSeasonWeekBatchPolicy`, `SaveSlotRepository` |
+| MEGA-FRAME-153 | SHIP | NCBA top-52 bye week 1 | `NcbaOpeningRoundBye` row + copy when user bid skips Opening Round | `PostseasonUserCalendar.kt`, `UserCalendarRepository.kt` |
 
 ---
 
@@ -283,11 +283,11 @@
 
 | ID | Status | Spec / topic | Finding | Code / notes |
 |----|--------|--------------|---------|--------------|
-| MEGA-FRAME-154 | GAP | Offseason/preseason notification feed | `DashboardNotificationFeedPanel` **in-season only** — offseason/preseason miss in-app injury/commit nudges on home tab | `DynastyShellScreen.kt` vs phase routes |
-| MEGA-FRAME-155 | PARTIAL | Session refresh after advance | `ActiveDynastySession.set` on success — child tabs may stale until manual recomposition triggers | Shell `loaded` state |
-| MEGA-FRAME-156 | GAP | Hub Recruiting when cycle closed | Menu item still listed — should gray out or explain **Signing Day administration** | `DynastyHubMenuPolicy`, economy `cycleClosed` |
+| MEGA-FRAME-154 | SHIP | Offseason/preseason notification feed | Same feed panel + snapshot loader on `OffseasonScreen` / `PreseasonScreen` | `MEGA-FRAME-037` |
+| MEGA-FRAME-155 | SHIP | Session refresh after advance | Shell screens listen to `ActiveDynastySession` and refresh local `loaded` | `PreseasonScreen`, `OffseasonScreen`, `DynastyShellScreen` |
+| MEGA-FRAME-156 | PASS | Hub Recruiting when cycle closed | Menu shows **Recruiting (cycle closed)** with explanation toast when ledger `cycleClosed` | `buildDynastyHubMenu`, `notifyRecruitingCycleClosed` |
 | MEGA-FRAME-157 | SHIP | No Advance day control | Reconfirmed — no day-advance UI anywhere in shell/offseason/preseason | repo grep |
-| MEGA-FRAME-158 | GAP | Checkpoint transparency | Week advance commits save — **no** “Week saved” / sync indicator after long advance | UX gap tied to MEGA-FRAME-091 |
+| MEGA-FRAME-158 | SHIP | Checkpoint transparency | Successful advance shows `advance_week_saved` snackbar via `applyWeekAdvanceResult` | `DynastyWeekAdvanceFeedback.kt` |
 
 ---
 

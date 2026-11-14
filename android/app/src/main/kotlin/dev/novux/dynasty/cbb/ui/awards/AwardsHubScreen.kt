@@ -34,6 +34,8 @@ import dev.novux.dynasty.cbb.R
 import dev.novux.dynasty.cbb.core.awards.AwardHonorLine
 import dev.novux.dynasty.cbb.core.awards.AwardsDemoCatalog
 import dev.novux.dynasty.cbb.core.awards.AwardsHubPolicy
+import dev.novux.dynasty.cbb.core.awards.AwardsWeeklyCadencePolicy
+import dev.novux.dynasty.cbb.core.awards.ConferenceWeeklyAwardsPolicy
 import dev.novux.dynasty.cbb.core.awards.YearlyAwardsSeasonArchive
 import dev.novux.dynasty.cbb.core.calendar.CalendarPosition
 import dev.novux.dynasty.cbb.core.calendar.SeasonMembershipYear
@@ -98,6 +100,11 @@ private fun AwardsLanding(onBack: () -> Unit, onYearly: () -> Unit, onWeekly: ()
                 .padding(24.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
+            Text(
+                text = stringResource(R.string.awards_hub_shell_access_hint),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
             Button(onClick = onYearly, modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.awards_hub_yearly_button))
             }
@@ -282,9 +289,11 @@ private fun AwardsWeeklyScreen(
 ) {
     val maxWeek = position.weekIndex.coerceIn(1, 32)
     var week by remember(position) { mutableIntStateOf(maxWeek) }
-    val live = AwardsHubPolicy.weeklyAwardsLive(position.phase)
+    val live = AwardsWeeklyCadencePolicy.weeklyAwardsLive(position.phase)
 
     Column(modifier = Modifier.fillMaxSize()) {
+        @Suppress("unused")
+        val qaCadence = AwardsWeeklyCadencePolicy.MEGA_ID
         TopAppBar(title = { Text(stringResource(R.string.awards_weekly_title)) })
         OutlinedButton(onClick = onBack, modifier = Modifier.padding(horizontal = 16.dp)) {
             Text(stringResource(R.string.awards_hub_back_landing))
@@ -296,6 +305,20 @@ private fun AwardsWeeklyScreen(
                 style = MaterialTheme.typography.bodyMedium,
             )
         } else {
+            Text(
+                stringResource(R.string.awards_weekly_cadence_hint),
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            if (ConferenceWeeklyAwardsPolicy.honorsDuringConferencePlay(position.phase, position.weekIndex)) {
+                Text(
+                    stringResource(R.string.awards_weekly_conference_hint, userConferenceName),
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
             ScrollableTabRow(selectedTabIndex = (week - 1).coerceAtLeast(0)) {
                 (1..maxWeek.coerceAtMost(32)).forEach { w ->
                     Tab(

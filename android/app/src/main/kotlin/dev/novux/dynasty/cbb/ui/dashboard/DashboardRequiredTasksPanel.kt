@@ -2,6 +2,7 @@ package dev.novux.dynasty.cbb.ui.dashboard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -24,6 +25,7 @@ fun DashboardRequiredTasksPanel(
     tasks: List<DashboardTask>,
     onOpenSigningDay: (DashboardDeepLink) -> Unit,
     onOpenDiscipline: () -> Unit = {},
+    onOpenSeasonReviewRecap: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     if (tasks.isEmpty()) return
@@ -42,13 +44,16 @@ fun DashboardRequiredTasksPanel(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        DashboardTaskKindChip(task.kind)
+                    }
                     Text(text = requiredTaskMessage(task), style = MaterialTheme.typography.bodyLarge)
                     OutlinedButton(
                         onClick = {
-                            if (task.deepLink == DashboardDeepLink.DisciplineSheet) {
-                                onOpenDiscipline()
-                            } else {
-                                onOpenSigningDay(task.deepLink)
+                            when (task.deepLink) {
+                                DashboardDeepLink.DisciplineSheet -> onOpenDiscipline()
+                                DashboardDeepLink.SeasonReviewRecap -> onOpenSeasonReviewRecap()
+                                else -> onOpenSigningDay(task.deepLink)
                             }
                         },
                         modifier = Modifier.fillMaxWidth(),
@@ -63,6 +68,7 @@ fun DashboardRequiredTasksPanel(
 
 @Composable
 private fun requiredTaskMessage(task: DashboardTask): String = when (task.id) {
+    DashboardTaskId.SigningDayShellLauncher -> stringResource(R.string.dashboard_task_signing_day_shell_launcher)
     DashboardTaskId.SigningDayViewRankings -> stringResource(R.string.dashboard_task_signing_rankings)
     DashboardTaskId.SigningDayEditPositions -> stringResource(R.string.dashboard_task_signing_positions)
     DashboardTaskId.SigningDayHardSign -> stringResource(R.string.dashboard_task_signing_hard_sign)
@@ -71,6 +77,28 @@ private fun requiredTaskMessage(task: DashboardTask): String = when (task.id) {
         task.stringFormatArgs.firstOrNull().orEmpty(),
     )
     DashboardTaskId.PreseasonRequired -> preseasonDashboardTitle(task.stringFormatArgs.firstOrNull())
+    DashboardTaskId.CarouselLeagueSim -> stringResource(R.string.carousel_background_hint)
+    DashboardTaskId.CarouselUserApproval -> task.stringFormatArgs.getOrNull(1)
+        ?: stringResource(R.string.dashboard_task_carousel_approval)
+    DashboardTaskId.WeekOneProDay -> stringResource(
+        R.string.dashboard_task_week_one_pro_day,
+        task.stringFormatArgs.firstOrNull().orEmpty(),
+    )
+    DashboardTaskId.WeekOneTransferRetention -> stringResource(
+        R.string.dashboard_task_week_one_transfer,
+        task.stringFormatArgs.firstOrNull().orEmpty(),
+    )
+    DashboardTaskId.SeasonReviewAcknowledge ->
+        stringResource(R.string.dashboard_task_season_review_acknowledge)
+    DashboardTaskId.OffseasonRosterLock -> stringResource(
+        R.string.dashboard_task_offseason_roster_lock,
+        task.stringFormatArgs.getOrNull(0).orEmpty(),
+        task.stringFormatArgs.getOrNull(1).orEmpty(),
+    )
+    DashboardTaskId.OffseasonConferenceOffer -> stringResource(
+        R.string.dashboard_task_offseason_conference_offer,
+        task.stringFormatArgs.firstOrNull().orEmpty(),
+    )
     else -> task.id.name
 }
 

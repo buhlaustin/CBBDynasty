@@ -25,6 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.novux.dynasty.cbb.R
 import dev.novux.dynasty.cbb.core.offseason.weekten.ConferenceOfferDecision
+import dev.novux.dynasty.cbb.core.offseason.weekten.OffseasonConferenceOffersPolicy
+import dev.novux.dynasty.cbb.core.qa.ConferenceOffersShellPath
 import dev.novux.dynasty.cbb.data.offseason.ConferenceOffersWeekState
 import dev.novux.dynasty.cbb.data.offseason.OffseasonWeekTenRepository
 import kotlinx.coroutines.launch
@@ -62,6 +64,21 @@ fun ConferenceOffersWeekTenPanel(
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+        if (OffseasonConferenceOffersPolicy.skipConferenceOffersWeek(seasonIndex)) {
+            Text(
+                text = stringResource(R.string.conference_offers_season_one_skip),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.primary,
+            )
+        } else {
+            @Suppress("unused")
+            val qaRealignment = ConferenceOffersShellPath.MEGA_ID
+            Text(
+                text = stringResource(R.string.conference_offers_shell_hint),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
         if (offersState.offers.isEmpty()) {
             Text(
                 text = stringResource(R.string.conference_offers_empty),

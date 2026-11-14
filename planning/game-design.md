@@ -313,11 +313,12 @@ Dynasty still supports a **0-game redshirt season** for development (exhibitions
 | **Coaching Carousel** | Before Week 1, **Season 2+** only (not “Week 0” in UI) |
 | **Week 1** | Players Leaving — grads, **≥1** user transfer intent, retention, **pro days** |
 | **Weeks 2–5** | Recruiting + **Transfer Portal**; **Week 2** = **pro draft results** |
-| **Week 6** | Summer workouts (auto) |
-| **Week 7** | Cuts & roster lock (≤15); walk-on tryouts |
-| **Week 8** | Fundraising & upgrades |
-| **Week 9** | Conference offers (**skip Season 1**) |
-| → | **Preseason** ([`preseason.md`](preseason.md)) — single week, 7 tasks |
+| **Week 6** | **Signing Day** (hard sign, rankings, positions) |
+| **Week 7** | Summer workouts (auto) |
+| **Week 8** | Cuts & roster lock (≤15); walk-on tryouts (≤2) |
+| **Week 9** | Fundraising & upgrades |
+| **Week 10** | Conference offers (**skip Season 1**) → **Preseason** |
+| → | **Preseason** ([`preseason.md`](preseason.md)) — single setup week ([`offseason.md`](offseason.md)) |
 
 **Pro days:** Week 1 for seniors + draft-declared undergrads; **draft results** Week 2. Early entrants who stay through retention remain eligible; drafted / undrafted exit per draft model at results posting.
 

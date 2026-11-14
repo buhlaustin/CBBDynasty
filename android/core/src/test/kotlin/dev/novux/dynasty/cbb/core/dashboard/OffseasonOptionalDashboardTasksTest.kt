@@ -34,4 +34,22 @@ class OffseasonOptionalDashboardTasksTest {
         assertFalse(DashboardAdvanceGate.blocksWeekAdvance(tasks))
         assertTrue(tasks.all { it.kind == DashboardTaskKind.Optional })
     }
+
+    @Test
+    fun week3_includesPipelineEntrantWhenSpotlightSet() {
+        val tasks = OffseasonOptionalDashboardTasks.build(
+            OffseasonDashboardContext(
+                offseasonWeekIndex = 3,
+                recruitingPointsAvailable = 0,
+                portalTop40Locked = false,
+                openScholarshipSlots = 0,
+                signingCrunchActive = true,
+                pipelineSpotlight = PipelineEntrantSpotlight(
+                    entrantDisplayName = "Portal — Test U",
+                    priorSchoolDisplayName = "Test U",
+                ),
+            ),
+        )
+        assertTrue(tasks.any { it.id == DashboardTaskId.PortalPipelineEntrant })
+    }
 }
