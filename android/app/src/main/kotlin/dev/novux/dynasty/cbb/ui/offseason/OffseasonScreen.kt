@@ -138,6 +138,7 @@ fun OffseasonScreen(
     onOpenSigningDay: (DashboardDeepLink) -> Unit = {},
     userCalendarRepository: UserCalendarRepository,
     showNotificationFeed: Boolean = true,
+    mutedNotificationCategories: Set<dev.novux.dynasty.cbb.core.notification.NotificationFeedCategory> = emptySet(),
 ) {
     var loaded by remember(initial) { mutableStateOf(initial) }
     var ledger by remember { mutableStateOf<RecruitingCycleLedger?>(null) }
@@ -421,12 +422,18 @@ fun OffseasonScreen(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         if (showNotificationFeed) {
+            val visibleNotificationFeed = remember(notificationFeed, mutedNotificationCategories) {
+                dev.novux.dynasty.cbb.core.notification.NotificationCategoryMutePolicy.filterVisible(
+                    notificationFeed,
+                    mutedNotificationCategories,
+                )
+            }
             DashboardNotificationFeedPanel(
-                feed = notificationFeed,
+                feed = visibleNotificationFeed,
                 onDeepLink = onOpenRecruiting,
                 onStrategyOpen = hubMenuCallbacks.onOpenStrategy,
                 onCoachCardOpen = hubMenuCallbacks.onOpenSchool,
-                onSigningDayOpen = { onOpenSigningDay(DashboardDeepLink.SigningDayRankings) },
+                onSigningDayOpen = onOpenSigningDay,
                 onMarchMayhemOpen = hubMenuCallbacks.onOpenMarchMayhem,
                 onFundraisingOpen = { fundraisingSheetOpen = true },
                 onRankingsOpen = hubMenuCallbacks.onOpenRankings,

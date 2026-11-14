@@ -181,11 +181,11 @@
 | MEGA-SHELL-111 | SHIP | Medical redshirt feed row | `NotificationFeedMedicalRedshirtFeedPolicy` + `MedicalRedshirtEligible` composer rows | `NotificationFeedMedicalRedshirtFeedPolicy.kt` |
 | MEGA-SHELL-112 | SHIP | Story drill-in | `NewsStoryDrillInPolicy` + `NewsHeadlineStoryDetailSheet` (shell + hub) | `NewsStoryDrillInPolicy.kt`, `NewsHeadlineStoryDetailSheet.kt` |
 | MEGA-SHELL-113 | SHIP | Portal story footer | `NewsPortalStoryFooterPolicy` + View in Portal CTA | `NewsPortalStoryFooterPolicy.kt`, `NewsHeadlineStoryDetailSheet.kt` |
-| MEGA-SHELL-114 | PARTIAL | Commit feed → Recruiting Recommended | Works for HS commits; portal sub-tab not distinguished | `NotificationFeedComposer`, `DashboardNotificationFeedPanel.toHubTab` |
-| MEGA-SHELL-115 | GAP | Major national record → History / player card | Composer uses `DashboardDeepLink.Strategy` | `NotificationFeedComposer.kt`, `history-hub.md` |
+| MEGA-SHELL-114 | SHIP | Commit feed → Recruiting Recommended / Portal | `NotificationFeedCommitRowPolicy` + portal commit list | `NotificationFeedComposer.kt` |
+| MEGA-SHELL-115 | SHIP | Major national record → History hub | `NotificationFeedMajorRecordRowPolicy` | `NotificationFeedComposer.kt` |
 | MEGA-SHELL-116 | SHIP | Fired / eliminated modal + Coach deep link | `requiresBlockingModal` + `CoachCard` link | `CareerBlockNotificationDialog`, shell |
-| MEGA-SHELL-117 | PARTIAL | Signing Day deep links | Rankings vs Positions tabs wired from feed | `SigningDayInitialTab` mapping in `DynastyApp.kt` |
-| MEGA-SHELL-118 | GAP | News hub Back preserves dashboard tab | `onBack` pop only — does not restore prior bottom-tab selection | `NewsHubScreen.kt` |
+| MEGA-SHELL-117 | SHIP | Signing Day deep links | Feed passes `row.deepLink` → `SigningDayInitialTab` | `NotificationFeedSigningDayFeedPolicy`, `DashboardNotificationFeedPanel.kt` |
+| MEGA-SHELL-118 | SHIP | News hub Back preserves dashboard tab | `popBackToInShellDashboard` on News hub | `NewsHubBackNavigationPolicy`, `DynastyApp.kt` |
 
 ---
 
@@ -195,13 +195,13 @@
 |----|--------|--------------|---------|--------------|
 | MEGA-SHELL-119 | SHIP | In-app only — no FCM channel | No `NotificationChannel` / tray implementation | `AndroidManifest.xml`, `notifications.md#design-locks` |
 | MEGA-SHELL-120 | SHIP | Master toggle: show dashboard feed | `AppSettings.showDashboardNotificationFeed` + Settings UI | `SettingsScreen.kt` |
-| MEGA-SHELL-121 | GAP | Per-category mute (settings) | Spec allows future per-category — only global toggle ships | `notifications.md#defaults--settings` |
+| MEGA-SHELL-121 | SHIP | Per-category mute (settings) | `NotificationCategoryMutePolicy` + Settings toggles | `SettingsScreen.kt`, `AppSettings.kt` |
 | MEGA-SHELL-122 | SHIP | Priority tiers High / Medium / Low in model | `NotificationPriority` on each `NotificationFeedItem` | `NotificationFeedItem.kt` |
-| MEGA-SHELL-123 | PARTIAL | Sort newest-first within tier | Repository refresh merges snapshot — tier sort not audited in UI list | `NotificationFeedRepository.kt` |
+| MEGA-SHELL-123 | SHIP | Sort newest-first within tier | `NotificationFeedTierSortPolicy` in repository/engine | `NotificationFeedRepository.kt` |
 | MEGA-SHELL-124 | SHIP | `FundraisingComplete` kind unused | Composer emits on week-nine completed fundraisers / naming | `NotificationFeedItem.kt` vs `notifications.md` low tier |
-| MEGA-SHELL-125 | GAP | Carousel offer / extension feed rows | Not in `NotificationFeedComposer` | `notifications.md` high tier |
-| MEGA-SHELL-126 | GAP | Medical redshirt notification | Missing kind + composer branch | `notifications.md` medium |
-| MEGA-SHELL-127 | GAP | Discipline opened → high feed row | No discipline event in composer | `in-season-systems.md`, `notifications.md` |
+| MEGA-SHELL-125 | SHIP | Carousel offer / extension feed rows | `NotificationFeedCarouselComposerPolicy` + sidecar bodies | `NotificationFeedComposer.kt` |
+| MEGA-SHELL-126 | SHIP | Medical redshirt notification | `NotificationFeedMedicalRedshirtComposerPolicy` | `NotificationFeedComposer.kt` |
+| MEGA-SHELL-127 | SHIP | Discipline opened → high feed row | `NotificationFeedDisciplineComposerPolicy` | `NotificationFeedComposer.kt` |
 | MEGA-SHELL-128 | PARTIAL | Week-advance batch rows | In-season snapshot on shell load only — **no** post-advance append for commits/decommits/rankings | `DynastyShellScreen.kt` `LaunchedEffect` |
 | MEGA-SHELL-129 | SHIP | Stories never duplicated as notifications | League week → `NewsFeedRepository` only | architecture split |
 | MEGA-SHELL-130 | GAP | Offseason portal commit feed rows | Portal offseason-only in spec — composer has no portal-specific kinds | `notifications.md#portal-lock` |

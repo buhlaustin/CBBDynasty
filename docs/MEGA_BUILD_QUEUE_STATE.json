@@ -442,7 +442,16 @@
     "MEGA-SHELL-110",
     "MEGA-SHELL-111",
     "MEGA-SHELL-112",
-    "MEGA-SHELL-113"
+    "MEGA-SHELL-113",
+    "MEGA-SHELL-114",
+    "MEGA-SHELL-115",
+    "MEGA-SHELL-117",
+    "MEGA-SHELL-118",
+    "MEGA-SHELL-121",
+    "MEGA-SHELL-123",
+    "MEGA-SHELL-125",
+    "MEGA-SHELL-126",
+    "MEGA-SHELL-127"
   ],
   "subscriptionName": "mega-build-queue",
   "integrationBranch": "cursor/mega-build-executor-cb09",
@@ -450,9 +459,9 @@
   "pullRequestNumber": 30,
   "pullRequestUrl": "https://github.com/Novux-Games/CBBDynasty/pull/30",
   "queueMetrics": {
-    "openImplementation": 333,
-    "remaining": 288,
-    "shardPassShipDone": 961,
-    "completedIdsRecorded": 433
+    "openImplementation": 316,
+    "remaining": 271,
+    "shardPassShipDone": 978,
+    "completedIdsRecorded": 450
   }
 }

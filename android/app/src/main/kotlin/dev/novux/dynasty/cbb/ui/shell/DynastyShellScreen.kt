@@ -57,6 +57,7 @@ import dev.novux.dynasty.cbb.core.dashboard.InSeasonWeekGames
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingCyclePolicy
 import dev.novux.dynasty.cbb.core.recruiting.SchoolRecruitingContext
 import dev.novux.dynasty.cbb.core.signingday.NationalRecruitingRankings
+import dev.novux.dynasty.cbb.core.notification.NotificationCategoryMutePolicy
 import dev.novux.dynasty.cbb.core.notification.NotificationFeedItem
 import dev.novux.dynasty.cbb.data.notification.DashboardNotificationSnapshotLoader
 import dev.novux.dynasty.cbb.data.notification.DashboardNotificationSnapshotSidecarLoader
@@ -189,6 +190,7 @@ fun DynastyShellScreen(
     coachEmploymentRepository: CoachEmploymentRepository,
     dynastyAutomationRepository: dev.novux.dynasty.cbb.data.settings.DynastyAutomationRepository,
     showNotificationFeed: Boolean = true,
+    mutedNotificationCategories: Set<dev.novux.dynasty.cbb.core.notification.NotificationFeedCategory> = emptySet(),
     hubMenuCallbacks: DynastyHubMenuCallbacks,
     onOpenDiscipline: (PendingDisciplineIncident) -> Unit,
     onOpenGamePreview: () -> Unit = {},
@@ -1047,12 +1049,18 @@ fun DynastyShellScreen(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 if (showNotificationFeed) {
+                    val visibleNotificationFeed = remember(notificationFeed, mutedNotificationCategories) {
+                        NotificationCategoryMutePolicy.filterVisible(
+                            notificationFeed,
+                            mutedNotificationCategories,
+                        )
+                    }
                     DashboardNotificationFeedPanel(
-                        feed = notificationFeed,
+                        feed = visibleNotificationFeed,
                         onDeepLink = onOpenRecruitingTab,
                         onStrategyOpen = hubMenuCallbacks.onOpenStrategy,
                         onCoachCardOpen = { staffRoster?.headCoach?.let { openHeadCoachPreview(it) } },
-                        onSigningDayOpen = { onOpenSigningDay(DashboardDeepLink.SigningDayRankings) },
+                        onSigningDayOpen = onOpenSigningDay,
                         onGamePreviewOpen = {
                             val school = userSchool
                             if (school != null) {

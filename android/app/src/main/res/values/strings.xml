@@ -619,6 +619,17 @@
     <string name="settings_section_notifications">Notifications</string>
     <string name="settings_dashboard_notification_feed">Show dashboard notification feed</string>
     <string name="settings_dashboard_notification_feed_summary">In-app alerts on your dynasty dashboard (no phone push).</string>
+    <string name="settings_notification_mute_hint">Hide feed rows by category while keeping the feed enabled.</string>
+    <string name="settings_mute_feed_recruiting">Mute recruiting rows</string>
+    <string name="settings_mute_feed_recruiting_summary">Commits, decommits, and Signing Day reminders.</string>
+    <string name="settings_mute_feed_roster_health">Mute injury &amp; medical rows</string>
+    <string name="settings_mute_feed_roster_health_summary">Injury reports and medical redshirt eligibility.</string>
+    <string name="settings_mute_feed_coach_career">Mute coach &amp; carousel rows</string>
+    <string name="settings_mute_feed_coach_career_summary">Skill points, job security, and carousel approvals.</string>
+    <string name="settings_mute_feed_game_week">Mute game-week rows</string>
+    <string name="settings_mute_feed_game_week_summary">Upcoming games, Selection Sunday, and discipline.</string>
+    <string name="settings_mute_feed_league">Mute league update rows</string>
+    <string name="settings_mute_feed_league_summary">Records, rankings moves, and fundraising.</string>
     <string name="settings_section_automation_defaults">Automation defaults (new dynasties)</string>
     <string name="settings_default_recruiting_auto">Auto-maintain recruiting on sim week</string>
     <string name="settings_default_recruiting_auto_summary">When advancing a week without manual recruiting, AI spends your weekly pool on Recommended targets.</string>

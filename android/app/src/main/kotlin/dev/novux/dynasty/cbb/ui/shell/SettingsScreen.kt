@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.novux.dynasty.cbb.R
+import dev.novux.dynasty.cbb.core.notification.NotificationFeedCategory
 import dev.novux.dynasty.cbb.data.settings.AppSettingsRepository
 import kotlinx.coroutines.launch
 
@@ -85,6 +86,62 @@ fun SettingsScreen(
             checked = settings.showDashboardNotificationFeed,
             onCheckedChange = { enabled ->
                 scope.launch { settingsRepository.setShowDashboardNotificationFeed(enabled) }
+            },
+        )
+        Text(
+            text = stringResource(R.string.settings_notification_mute_hint),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = 8.dp),
+        )
+        NotificationFeedCategoryMuteRow(
+            label = stringResource(R.string.settings_mute_feed_recruiting),
+            description = stringResource(R.string.settings_mute_feed_recruiting_summary),
+            muted = NotificationFeedCategory.Recruiting in settings.mutedNotificationFeedCategories,
+            onMutedChange = { muted ->
+                scope.launch {
+                    settingsRepository.setNotificationCategoryMuted(NotificationFeedCategory.Recruiting, muted)
+                }
+            },
+        )
+        NotificationFeedCategoryMuteRow(
+            label = stringResource(R.string.settings_mute_feed_roster_health),
+            description = stringResource(R.string.settings_mute_feed_roster_health_summary),
+            muted = NotificationFeedCategory.RosterHealth in settings.mutedNotificationFeedCategories,
+            onMutedChange = { muted ->
+                scope.launch {
+                    settingsRepository.setNotificationCategoryMuted(NotificationFeedCategory.RosterHealth, muted)
+                }
+            },
+        )
+        NotificationFeedCategoryMuteRow(
+            label = stringResource(R.string.settings_mute_feed_coach_career),
+            description = stringResource(R.string.settings_mute_feed_coach_career_summary),
+            muted = NotificationFeedCategory.CoachCareer in settings.mutedNotificationFeedCategories,
+            onMutedChange = { muted ->
+                scope.launch {
+                    settingsRepository.setNotificationCategoryMuted(NotificationFeedCategory.CoachCareer, muted)
+                }
+            },
+        )
+        NotificationFeedCategoryMuteRow(
+            label = stringResource(R.string.settings_mute_feed_game_week),
+            description = stringResource(R.string.settings_mute_feed_game_week_summary),
+            muted = NotificationFeedCategory.GameWeek in settings.mutedNotificationFeedCategories,
+            onMutedChange = { muted ->
+                scope.launch {
+                    settingsRepository.setNotificationCategoryMuted(NotificationFeedCategory.GameWeek, muted)
+                }
+            },
+        )
+        NotificationFeedCategoryMuteRow(
+            label = stringResource(R.string.settings_mute_feed_league),
+            description = stringResource(R.string.settings_mute_feed_league_summary),
+            muted = NotificationFeedCategory.LeagueUpdates in settings.mutedNotificationFeedCategories,
+            onMutedChange = { muted ->
+                scope.launch {
+                    settingsRepository.setNotificationCategoryMuted(NotificationFeedCategory.LeagueUpdates, muted)
+                }
             },
         )
 
@@ -211,6 +268,21 @@ fun SettingsScreen(
             Text(stringResource(R.string.settings_back))
         }
     }
+}
+
+@Composable
+private fun NotificationFeedCategoryMuteRow(
+    label: String,
+    description: String,
+    muted: Boolean,
+    onMutedChange: (Boolean) -> Unit,
+) {
+    SettingToggleRow(
+        label = label,
+        description = description,
+        checked = muted,
+        onCheckedChange = onMutedChange,
+    )
 }
 
 @Composable

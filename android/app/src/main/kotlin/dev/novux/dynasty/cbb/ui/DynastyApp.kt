@@ -301,6 +301,7 @@ fun DynastyApp(
                     postgameInjuryRefreshKey = postgameInjuryRefreshKey,
                     disciplineDashboardRefreshKey = disciplineDashboardRefreshKey,
                     showNotificationFeed = appSettings.showDashboardNotificationFeed,
+                    mutedNotificationCategories = appSettings.mutedNotificationFeedCategories,
                     onOpenRecruitingTab = { tab ->
                         recruitingLaunchTab = tab
                         navController.navigateToRecruitingHub()
@@ -313,7 +314,7 @@ fun DynastyApp(
                         }
                         navController.navigate(AppRoute.SigningDay.route)
                     },
-                    onOpenSigningDayFromShell = { navController.navigate(AppRoute.SigningDay.route) },
+                    onOpenSigningDayFromShell = { navController.navigate(AppRoute.SigningDay.route) }, // legacy stub
                     onOpenAutomation = { navController.navigate(AppRoute.DynastyAutomation.route) },
                     onOpenDiscipline = { incident ->
                         disciplineIncident = incident

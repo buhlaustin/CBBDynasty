@@ -6,7 +6,9 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import dev.novux.dynasty.cbb.core.notification.NotificationFeedCategory
 import dev.novux.dynasty.cbb.core.settings.AppSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -35,6 +37,16 @@ class AppSettingsRepository(
             prefs[Keys.SHOW_DASHBOARD_NOTIFICATION_FEED] = updated.showDashboardNotificationFeed
             prefs[Keys.DEFAULT_RECRUITING_AUTO_MAINTAIN] = updated.defaultRecruitingAutoMaintain
             prefs[Keys.DEFAULT_COACH_AUTO_SPEND] = updated.defaultCoachAutoSpend
+            prefs[Keys.MUTED_NOTIFICATION_FEED_CATEGORIES] =
+                updated.mutedNotificationFeedCategories.joinToString(",") { it.name }
+        }
+    }
+
+    suspend fun setNotificationCategoryMuted(category: NotificationFeedCategory, muted: Boolean) {
+        update { current ->
+            val next = current.mutedNotificationFeedCategories.toMutableSet()
+            if (muted) next.add(category) else next.remove(category)
+            current.copy(mutedNotificationFeedCategories = next)
         }
     }
 
@@ -76,7 +88,19 @@ class AppSettingsRepository(
             showDashboardNotificationFeed = this[Keys.SHOW_DASHBOARD_NOTIFICATION_FEED] ?: true,
             defaultRecruitingAutoMaintain = this[Keys.DEFAULT_RECRUITING_AUTO_MAINTAIN] ?: true,
             defaultCoachAutoSpend = this[Keys.DEFAULT_COACH_AUTO_SPEND] ?: false,
+            mutedNotificationFeedCategories = parseMutedCategories(
+                this[Keys.MUTED_NOTIFICATION_FEED_CATEGORIES],
+            ),
         )
+
+    private fun parseMutedCategories(raw: String?): Set<NotificationFeedCategory> {
+        if (raw.isNullOrBlank()) return emptySet()
+        return raw.split(',')
+            .mapNotNull { token ->
+                runCatching { NotificationFeedCategory.valueOf(token.trim()) }.getOrNull()
+            }
+            .toSet()
+    }
 
     private object Keys {
         val SKIP_STUDIO_INTRO = booleanPreferencesKey("skip_studio_intro")
@@ -86,5 +110,6 @@ class AppSettingsRepository(
         val SHOW_DASHBOARD_NOTIFICATION_FEED = booleanPreferencesKey("show_dashboard_notification_feed")
         val DEFAULT_RECRUITING_AUTO_MAINTAIN = booleanPreferencesKey("default_recruiting_auto_maintain")
         val DEFAULT_COACH_AUTO_SPEND = booleanPreferencesKey("default_coach_auto_spend")
+        val MUTED_NOTIFICATION_FEED_CATEGORIES = stringPreferencesKey("muted_notification_feed_categories")
     }
 }

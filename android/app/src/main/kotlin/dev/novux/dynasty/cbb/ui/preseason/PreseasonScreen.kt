@@ -103,7 +103,9 @@ fun PreseasonScreen(
     rosterRepository: DynastyRosterRepository,
     userCalendarRepository: UserCalendarRepository,
     showNotificationFeed: Boolean = true,
+    mutedNotificationCategories: Set<dev.novux.dynasty.cbb.core.notification.NotificationFeedCategory> = emptySet(),
     onOpenRecruitingTab: (RecruitingHubTab) -> Unit = {},
+    onOpenSigningDay: (dev.novux.dynasty.cbb.core.dashboard.DashboardDeepLink) -> Unit = {},
 ) {
     var loaded by remember(initial) { mutableStateOf(initial) }
     var progress by remember { mutableStateOf<PreseasonTaskProgress?>(null) }
@@ -370,12 +372,18 @@ fun PreseasonScreen(
             regularSeasonValidation = regularSeasonValidation,
         )
         if (showNotificationFeed) {
+            val visibleNotificationFeed = remember(notificationFeed, mutedNotificationCategories) {
+                dev.novux.dynasty.cbb.core.notification.NotificationCategoryMutePolicy.filterVisible(
+                    notificationFeed,
+                    mutedNotificationCategories,
+                )
+            }
             DashboardNotificationFeedPanel(
-                feed = notificationFeed,
+                feed = visibleNotificationFeed,
                 onDeepLink = onOpenRecruitingTab,
                 onStrategyOpen = hubMenuCallbacks.onOpenStrategy,
                 onCoachCardOpen = hubMenuCallbacks.onOpenSchool,
-                onSigningDayOpen = hubMenuCallbacks.onOpenRecruiting,
+                onSigningDayOpen = onOpenSigningDay,
                 onMarchMayhemOpen = hubMenuCallbacks.onOpenMarchMayhem,
                 onRankingsOpen = hubMenuCallbacks.onOpenRankings,
                 onHistoryOpen = hubMenuCallbacks.onOpenHistory,

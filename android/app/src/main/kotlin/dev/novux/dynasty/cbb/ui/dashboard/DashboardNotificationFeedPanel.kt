@@ -18,6 +18,7 @@ import dev.novux.dynasty.cbb.core.dashboard.DashboardDeepLink
 import dev.novux.dynasty.cbb.core.notification.NotificationFeedItem
 import dev.novux.dynasty.cbb.core.notification.NotificationFeedGameWeekRowPolicy
 import dev.novux.dynasty.cbb.core.notification.NotificationFeedPlayWeekDeepLinkPolicy
+import dev.novux.dynasty.cbb.core.notification.NotificationFeedSigningDayFeedPolicy
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingHubTab
 
 @Composable
@@ -26,7 +27,7 @@ fun DashboardNotificationFeedPanel(
     onDeepLink: (RecruitingHubTab) -> Unit,
     onStrategyOpen: () -> Unit,
     onCoachCardOpen: () -> Unit,
-    onSigningDayOpen: () -> Unit = {},
+    onSigningDayOpen: (DashboardDeepLink) -> Unit = {},
     onGamePreviewOpen: () -> Unit = onStrategyOpen,
     onDisciplineOpen: () -> Unit = {},
     onMarchMayhemOpen: () -> Unit = {},
@@ -67,7 +68,12 @@ fun DashboardNotificationFeedPanel(
                             DashboardDeepLink.FundraisingWeekNine -> onFundraisingOpen()
                             DashboardDeepLink.SigningDayRankings,
                             DashboardDeepLink.SigningDayPositions,
-                            -> onSigningDayOpen()
+                            -> {
+                                check(NotificationFeedSigningDayFeedPolicy.isSigningDayDeepLink(row.deepLink)) {
+                                    "Signing Day feed rows must use catalogued deep links"
+                                }
+                                onSigningDayOpen(row.deepLink)
+                            }
                             else -> onDeepLink(row.deepLink.toHubTab())
                         }
                     },

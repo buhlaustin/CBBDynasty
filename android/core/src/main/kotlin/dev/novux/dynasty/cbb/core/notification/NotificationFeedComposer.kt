@@ -13,7 +13,9 @@ data class NotificationSnapshotInput(
     val careerFired: Boolean = false,
     val postseasonEliminated: Boolean = false,
     val userCommitsThisWeek: List<String> = emptyList(),
+    val userPortalCommitsThisWeek: List<String> = emptyList(),
     val userDecommitsThisWeek: List<String> = emptyList(),
+    val userPortalDecommitsThisWeek: List<String> = emptyList(),
     val majorRecordLines: List<String> = emptyList(),
     val rankingsMoveLine: String? = null,
     val disciplineHeadline: String? = null,
@@ -32,7 +34,7 @@ object NotificationFeedComposer {
                     NotificationFeedItem(
                         id = id(),
                         eventKey = "discipline:${headline.hashCode()}",
-                        kind = NotificationEventKind.DisciplinePending,
+                        kind = NotificationFeedDisciplineComposerPolicy.eventKind,
                         priority = NotificationPriority.High,
                         deepLink = NotificationFeedDisciplineRowPolicy.deepLink,
                         title = NotificationFeedDisciplineRowPolicy.TITLE,
@@ -46,9 +48,9 @@ object NotificationFeedComposer {
                     NotificationFeedItem(
                         id = id(),
                         eventKey = "carousel:${body.hashCode()}",
-                        kind = NotificationEventKind.CarouselApproval,
+                        kind = NotificationFeedCarouselComposerPolicy.eventKind,
                         priority = NotificationPriority.High,
-                        deepLink = NotificationFeedCarouselRowPolicy.deepLink,
+                        deepLink = NotificationFeedCarouselComposerPolicy.deepLink,
                         title = NotificationFeedCarouselRowPolicy.TITLE,
                         body = body,
                         createdAtMs = input.asOfMs,
@@ -90,9 +92,23 @@ object NotificationFeedComposer {
                         eventKey = "commit:$name",
                         kind = NotificationEventKind.UserCommit,
                         priority = NotificationPriority.High,
-                        deepLink = DashboardDeepLink.RecruitingRecommended,
+                        deepLink = NotificationFeedCommitRowPolicy.hsCommitDeepLink,
                         title = "New commit",
                         body = "$name signed with your program.",
+                        createdAtMs = input.asOfMs,
+                    ),
+                )
+            }
+            input.userPortalCommitsThisWeek.forEach { name ->
+                add(
+                    NotificationFeedItem(
+                        id = id(),
+                        eventKey = "portal_commit:$name",
+                        kind = NotificationEventKind.UserCommit,
+                        priority = NotificationPriority.High,
+                        deepLink = NotificationFeedCommitRowPolicy.portalCommitDeepLink,
+                        title = "Portal addition",
+                        body = "$name joined your roster via the transfer portal.",
                         createdAtMs = input.asOfMs,
                     ),
                 )
@@ -104,9 +120,23 @@ object NotificationFeedComposer {
                         eventKey = "decommit:$name",
                         kind = NotificationEventKind.UserDecommit,
                         priority = NotificationPriority.High,
-                        deepLink = DashboardDeepLink.RecruitingRecommended,
+                        deepLink = NotificationFeedCommitRowPolicy.hsDecommitDeepLink,
                         title = "Decommit",
                         body = "$name reopened recruitment.",
+                        createdAtMs = input.asOfMs,
+                    ),
+                )
+            }
+            input.userPortalDecommitsThisWeek.forEach { name ->
+                add(
+                    NotificationFeedItem(
+                        id = id(),
+                        eventKey = "portal_decommit:$name",
+                        kind = NotificationEventKind.UserDecommit,
+                        priority = NotificationPriority.High,
+                        deepLink = NotificationFeedCommitRowPolicy.portalDecommitDeepLink,
+                        title = "Portal departure",
+                        body = "$name entered the transfer portal.",
                         createdAtMs = input.asOfMs,
                     ),
                 )
@@ -146,7 +176,7 @@ object NotificationFeedComposer {
                     NotificationFeedItem(
                         id = id(),
                         eventKey = "medical_rs:${body.hashCode()}",
-                        kind = NotificationEventKind.MedicalRedshirtEligible,
+                        kind = NotificationFeedMedicalRedshirtComposerPolicy.eventKind,
                         priority = NotificationPriority.Medium,
                         deepLink = NotificationFeedMedicalRedshirtRowPolicy.deepLink,
                         title = NotificationFeedMedicalRedshirtRowPolicy.TITLE,
@@ -190,7 +220,7 @@ object NotificationFeedComposer {
                         eventKey = "signing:unsigned",
                         kind = NotificationEventKind.SigningDayPending,
                         priority = NotificationPriority.Medium,
-                        deepLink = DashboardDeepLink.SigningDayPositions,
+                        deepLink = NotificationFeedSigningDayFeedPolicy.positionsDeepLink,
                         title = "Signing Day",
                         body = "${input.signingDayUnsignedCount} prospects still need to sign.",
                         createdAtMs = input.asOfMs,
@@ -218,7 +248,7 @@ object NotificationFeedComposer {
                         eventKey = "record:${line.hashCode()}",
                         kind = NotificationEventKind.MajorNationalRecord,
                         priority = NotificationPriority.Low,
-                        deepLink = DashboardDeepLink.Strategy,
+                        deepLink = NotificationFeedMajorRecordRowPolicy.deepLink,
                         title = "National record",
                         body = line,
                         createdAtMs = input.asOfMs,

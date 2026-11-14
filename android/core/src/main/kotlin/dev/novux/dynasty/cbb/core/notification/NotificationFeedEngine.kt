@@ -21,7 +21,7 @@ object NotificationFeedEngine {
                 val ack = ackByKey[row.eventKey] == true
                 row.copy(modalAcknowledged = ack || row.modalAcknowledged)
             }
-        return sort(merged).take(MAX_ROWS)
+        return NotificationFeedTierSortPolicy.sort(merged).take(MAX_ROWS)
     }
 
     const val MAX_ROWS = 48

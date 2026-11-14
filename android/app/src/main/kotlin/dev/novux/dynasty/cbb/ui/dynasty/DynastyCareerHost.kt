@@ -12,6 +12,7 @@ import dev.novux.dynasty.cbb.core.coach.employment.CoachEmploymentStatus
 import dev.novux.dynasty.cbb.core.dashboard.DashboardDeepLink
 import dev.novux.dynasty.cbb.core.discipline.PendingDisciplineIncident
 import dev.novux.dynasty.cbb.core.navigation.DynastyCareerPhaseResolver
+import dev.novux.dynasty.cbb.core.notification.NotificationFeedCategory
 import dev.novux.dynasty.cbb.core.save.DynastyLoadResult
 import dev.novux.dynasty.cbb.core.save.LoadedDynasty
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingHubTab
@@ -72,6 +73,7 @@ fun DynastyCareerHost(
     postgameInjuryRefreshKey: Int,
     disciplineDashboardRefreshKey: Int,
     showNotificationFeed: Boolean,
+    mutedNotificationCategories: Set<NotificationFeedCategory> = emptySet(),
     onOpenRecruitingTab: (RecruitingHubTab) -> Unit,
     onOpenSigningDayFromOffseason: (DashboardDeepLink) -> Unit,
     onOpenSigningDayFromShell: () -> Unit,
@@ -149,6 +151,7 @@ fun DynastyCareerHost(
                 onOpenSigningDay = onOpenSigningDayFromOffseason,
                 userCalendarRepository = app.userCalendarRepository,
                 showNotificationFeed = showNotificationFeed,
+                mutedNotificationCategories = mutedNotificationCategories,
             )
         }
         DynastyCareerPhaseResolver.CareerBody.Preseason -> {
@@ -166,7 +169,9 @@ fun DynastyCareerHost(
                 onSeasonStarted = {},
                 hubMenuCallbacks = hubMenuCallbacks,
                 showNotificationFeed = showNotificationFeed,
+                mutedNotificationCategories = mutedNotificationCategories,
                 onOpenRecruitingTab = onOpenRecruitingTab,
+                onOpenSigningDay = onOpenSigningDayFromOffseason,
             )
         }
         DynastyCareerPhaseResolver.CareerBody.InSeason -> {
@@ -188,7 +193,8 @@ fun DynastyCareerHost(
                 dynastyAutomationRepository = app.dynastyAutomationRepository,
                 showNotificationFeed = showNotificationFeed,
                 hubMenuCallbacks = hubMenuCallbacks,
-                onOpenSigningDay = { onOpenSigningDayFromShell() },
+                onOpenSigningDay = onOpenSigningDayFromOffseason,
+                mutedNotificationCategories = mutedNotificationCategories,
                 onOpenRecruitingTab = onOpenRecruitingTab,
                 onOpenAutomation = onOpenAutomation,
                 onOpenDiscipline = onOpenDiscipline,
