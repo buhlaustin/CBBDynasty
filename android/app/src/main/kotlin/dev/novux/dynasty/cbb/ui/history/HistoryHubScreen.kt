@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import dev.novux.dynasty.cbb.R
 import dev.novux.dynasty.cbb.core.calendar.SeasonMembershipYear
 import dev.novux.dynasty.cbb.core.history.HistoryHubSnapshot
+import dev.novux.dynasty.cbb.core.history.HistoryHubDepthPolicy
 import dev.novux.dynasty.cbb.core.history.HistoryHubSurfacePolicy
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -135,7 +136,7 @@ fun HistoryHubScreen(
                     }
                 }
                 2 -> {
-                    val lines = HistoryHubSurfacePolicy.recordBookLines(snapshot)
+                    val lines = HistoryHubDepthPolicy.majorRecordFeedLines(snapshot)
                     if (lines.isEmpty()) {
                         Text(
                             stringResource(R.string.history_records_empty),

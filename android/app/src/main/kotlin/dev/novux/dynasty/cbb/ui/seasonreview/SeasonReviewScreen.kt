@@ -25,7 +25,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.novux.dynasty.cbb.R
+import dev.novux.dynasty.cbb.core.calendar.CalendarPhase
 import dev.novux.dynasty.cbb.core.calendar.CalendarWeekLabel
+import dev.novux.dynasty.cbb.core.recruiting.RecruitingCycleLedger
+import dev.novux.dynasty.cbb.core.recruiting.RecruitingCyclePolicy
+import dev.novux.dynasty.cbb.core.seasonreview.SeasonReviewMenuPolicy
 import dev.novux.dynasty.cbb.core.calendar.OffseasonEntryKind
 import dev.novux.dynasty.cbb.core.calendar.OffseasonEntryRouter
 import dev.novux.dynasty.cbb.core.calendar.SeasonReviewGate
@@ -39,8 +43,12 @@ import dev.novux.dynasty.cbb.data.calendar.UserCalendarRepository
 import dev.novux.dynasty.cbb.data.save.ActiveDynastySession
 import dev.novux.dynasty.cbb.data.save.SaveSlotRepository
 import dev.novux.dynasty.cbb.data.seasonreview.SeasonReviewProgressRepository
+import dev.novux.dynasty.cbb.data.recruiting.RecruitingEconomyRepository
 import dev.novux.dynasty.cbb.data.seasonreview.SeasonReviewRepository
 import dev.novux.dynasty.cbb.ui.dashboard.DashboardRequiredTasksPanel
+import dev.novux.dynasty.cbb.ui.hubs.DynastyHubMenuCallbacks
+import dev.novux.dynasty.cbb.ui.hubs.buildDynastyHubMenu
+import dev.novux.dynasty.cbb.ui.hubs.notifyRecruitingCycleClosed
 import dev.novux.dynasty.cbb.ui.dynasty.DynastyShellCalendarTab
 import dev.novux.dynasty.cbb.ui.dynasty.DynastyShellChrome
 import dev.novux.dynasty.cbb.ui.dynasty.DynastyShellMenuAction
@@ -57,6 +65,8 @@ fun SeasonReviewScreen(
     saveSlotRepository: SaveSlotRepository,
     seasonReviewRepository: SeasonReviewRepository,
     seasonReviewProgressRepository: SeasonReviewProgressRepository,
+    hubMenuCallbacks: DynastyHubMenuCallbacks,
+    recruitingEconomyRepository: RecruitingEconomyRepository,
     onReturnedHome: () -> Unit,
     onEnteredOffseason: (LoadedDynasty) -> Unit = { onReturnedHome() },
     userCalendarRepository: UserCalendarRepository,
@@ -74,7 +84,27 @@ fun SeasonReviewScreen(
     val weekHeader = CalendarWeekLabel.display(loaded.weekCheckpoint.activePosition)
     var selectedTab by remember { mutableStateOf(DynastyShellTab.Dashboard) }
     val schoolName = loaded.summary.schoolDisplayName.orEmpty()
-    val menu = listOf(DynastyShellMenuAction(R.string.shell_menu_exit_home, onReturnedHome))
+    val position = loaded.weekCheckpoint.activePosition
+    var recruitingLedger by remember { mutableStateOf<RecruitingCycleLedger?>(null) }
+    LaunchedEffect(loaded.dynastyId, loaded.metadata.seasonIndex) {
+        recruitingLedger = recruitingEconomyRepository.loadOrOpenCycle(loaded)
+    }
+    val offseasonWeek = position.weekIndex.takeIf { position.phase == CalendarPhase.Offseason }
+    val recruitingCycleClosed = RecruitingCyclePolicy.recruitingMenuTreatsCycleClosed(
+        position.phase,
+        offseasonWeek,
+        recruitingLedger,
+    )
+    val menu = if (SeasonReviewMenuPolicy.usesFullDynastyHubMenu(position)) {
+        buildDynastyHubMenu(
+            position = position,
+            callbacks = hubMenuCallbacks.copy(onExitHome = onReturnedHome),
+            recruitingCycleClosed = recruitingCycleClosed,
+            onRecruitingCycleClosed = { notifyRecruitingCycleClosed(context) },
+        )
+    } else {
+        listOf(DynastyShellMenuAction(R.string.shell_menu_exit_home, onReturnedHome))
+    }
     var snapshot by remember { mutableStateOf<SeasonReviewSnapshot?>(null) }
     var loading by remember { mutableStateOf(true) }
     var reviewProgress by remember { mutableStateOf(SeasonReviewProgress()) }

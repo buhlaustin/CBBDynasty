@@ -1145,6 +1145,8 @@
     <string name="news_hub_portal_filter_four_plus">4★+</string>
     <string name="news_hub_portal_filter_five">5★</string>
     <string name="news_hub_portal_add_to_board">Add to board — open Transfer Portal recruiting</string>
+    <string name="news_hub_portal_prior_program">Prior school</string>
+    <string name="recruiting_hub_focus_from_news">Focused from News: %1$s</string>
     <string name="news_hub_recruits_heading">National Top 60</string>
     <string name="news_hub_recruits_scope">Player class ranks from your seeded pool — not team NET or poll standings.</string>
     <string name="news_hub_draft_empty">Draft results publish in offseason week 2 after the pro day.</string>

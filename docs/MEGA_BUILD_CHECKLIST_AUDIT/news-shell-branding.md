@@ -153,18 +153,18 @@
 | MEGA-SHELL-090 | SHIP | March Mayhem item phase-gated | Visible only `CalendarPhase.Postseason` | `DynastyHubMenuPolicy.kt` |
 | MEGA-SHELL-091 | SHIP | Exit to Home menu | `shell_menu_exit_home` callback pops to home | `DynastyHubMenu.kt` |
 | MEGA-SHELL-092 | SHIP | Strategy only via hamburger (not bottom nav) | Dedicated menu item; bottom bar is Roster/Calendar/Dashboard/News | `DynastyShellChrome.kt` |
-| MEGA-SHELL-093 | PARTIAL | In-season menu extras: Staff + Automation | `leadingExtras` on in-season shell only — offseason/preseason omit | `DynastyShellScreen.kt` |
+| MEGA-SHELL-093 | SHIP | In-season menu extras: Staff + Automation | `InSeasonShellMenuExtrasPolicy` gates Staff + Automation `leadingExtras` on live in-season shell | `InSeasonShellMenuExtrasPolicy.kt`, `DynastyShellScreen.kt` |
 | MEGA-SHELL-094 | SHIP | Offseason/preseason reuse same hub builder | `buildDynastyHubMenu(position, hubMenuCallbacks)` on all shell phases | `OffseasonScreen.kt`, `PreseasonScreen.kt` |
 | MEGA-SHELL-095 | SHIP | News hub route from menu all phases | `AppRoute.NewsHub` via `onOpenNewsHub` | `DynastyApp.kt` |
-| MEGA-SHELL-096 | GAP | Statistics hub product vs menu promise | Menu opens hub; body is **placeholder** only | `statistics_hub_placeholder`, `HubScaffoldScreen` |
+| MEGA-SHELL-096 | SHIP | Statistics hub product vs menu promise | `StatisticsHubRouteScreen` + live leaderboards via `StatisticsHubLiveContentPolicy` | `StatisticsHubLiveContentPolicy.kt`, `StatisticsHubScreen.kt` |
 | MEGA-SHELL-097 | SHIP | Rankings hub route (NET / Media / Coaches) | `AppRoute.RankingsHub` from menu | `DynastyApp.kt`, `RankingsHubScreen.kt` |
-| MEGA-SHELL-098 | PARTIAL | History hub vs design depth | Route + GOAT tabs exist; record book / major-record feed thin vs `history-hub.md` | `HistoryHubScreen.kt` |
-| MEGA-SHELL-099 | PARTIAL | Hamburger UI pattern | `DropdownMenu` under icon — not navigation drawer | `DynastyShellChrome.kt` vs `game-frame.md` |
-| MEGA-SHELL-100 | GAP | Hub routes lose shell bottom tabs | Full-screen hub composables — back returns to shell but no persistent chrome on hub | `NewsHubScreen.kt`, hub routes in `DynastyApp.kt` |
+| MEGA-SHELL-098 | SHIP | History hub vs design depth | `HistoryHubDepthPolicy.majorRecordFeedLines` merges records, champions, GOAT anchors | `HistoryHubDepthPolicy.kt`, `HistoryHubScreen.kt` |
+| MEGA-SHELL-099 | SHIP | Hamburger UI pattern | `ModalNavigationDrawer` via `ShellHamburgerDrawerPolicy` | `ShellHamburgerDrawerPolicy.kt`, `DynastyShellChrome.kt` |
+| MEGA-SHELL-100 | SHIP | Hub routes lose shell bottom tabs | Overlay hubs `popBackToInShellDashboard` restores dashboard tab (`HubRouteShellRetentionPolicy`) | `HubRouteShellRetentionPolicy.kt`, `DynastyApp.kt` |
 | MEGA-SHELL-101 | SHIP | Awards hub from menu | `AppRoute.AwardsHub` wired | `DynastyApp.kt` |
-| MEGA-SHELL-102 | GAP | Recruiting hub no focused-player deep link param | Navigation opens hub default tab — no `playerId` focus from News/portal | `news-hub.md#drill-in--deep-links` |
+| MEGA-SHELL-102 | SHIP | Recruiting hub no focused-player deep link param | News portal row + `recruitingFocusProspectId` → Transfer Portal tab + highlight | `RecruitingHubFocusPolicy.kt`, `NewsHubScreen.kt`, `DynastyApp.kt` |
 | MEGA-SHELL-103 | SHIP | School hub from menu | `onOpenSchool` → school overview route | `DynastyHubMenuCallbacks` |
-| MEGA-SHELL-104 | GAP | Season Review phase menu parity | Season review shell uses placeholder News — menu not audited for review-only entries | `SeasonReviewScreen.kt` |
+| MEGA-SHELL-104 | SHIP | Season Review phase menu parity | `SeasonReviewMenuPolicy` + full `buildDynastyHubMenu` on season review shell | `SeasonReviewMenuPolicy.kt`, `SeasonReviewScreen.kt` |
 | MEGA-SHELL-105 | SHIP | Menu strings in `strings.xml` | All `shell_menu_*` labels centralized | `strings.xml`, `branding.md#ui-copy` |
 
 ---

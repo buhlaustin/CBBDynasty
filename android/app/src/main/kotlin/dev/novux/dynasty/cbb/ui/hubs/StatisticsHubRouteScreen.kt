@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import dev.novux.dynasty.cbb.core.statistics.StatisticsHubLiveContentPolicy
 import dev.novux.dynasty.cbb.core.statistics.StatisticsHubSnapshot
 import dev.novux.dynasty.cbb.data.statistics.StatisticsHubRepository
 import dev.novux.dynasty.cbb.ui.statistics.StatisticsHubScreen
@@ -30,6 +31,8 @@ fun StatisticsHubRouteScreen(
         null -> Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
         }
-        else -> StatisticsHubScreen(snapshot = data, onBack = onBack)
+        else -> check(StatisticsHubLiveContentPolicy.isLiveHubRoute()) {
+            StatisticsHubScreen(snapshot = data, onBack = onBack)
+        }
     }
 }

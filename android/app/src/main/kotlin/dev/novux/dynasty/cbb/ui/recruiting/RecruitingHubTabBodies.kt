@@ -222,6 +222,7 @@ fun PortalRecruitingTabBody(
 @Composable
 fun PortalTop40Section(
     entrants: List<PortalEntrant>,
+    highlightEntrantId: String? = null,
     modifier: Modifier = Modifier,
 ) {
     val ranked = PortalRecruitingHub.rankedEntrants(entrants)
@@ -241,6 +242,7 @@ fun PortalTop40Section(
             fontWeight = FontWeight.SemiBold,
         )
         ranked.forEach { entrant ->
+            val highlighted = entrant.entrantId == highlightEntrantId
             Text(
                 stringResource(
                     R.string.recruiting_portal_entrant_row,
@@ -250,7 +252,12 @@ fun PortalTop40Section(
                     entrant.priorProgramId,
                 ),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = if (highlighted) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                },
+                fontWeight = if (highlighted) FontWeight.SemiBold else FontWeight.Normal,
             )
         }
     }

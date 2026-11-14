@@ -55,6 +55,7 @@ import dev.novux.dynasty.cbb.core.recruiting.HsJucoRecruitBoard
 import dev.novux.dynasty.cbb.core.recruiting.RecruitProspect
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingCycleLedger
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingCyclePolicy
+import dev.novux.dynasty.cbb.core.recruiting.RecruitingHubFocusPolicy
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingHubDefaults
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingHubTab
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingHubTabPolicy
@@ -98,12 +99,14 @@ fun RecruitingHubScreen(
     incomingClassSeedRepository: IncomingClassSeedRepository,
     portalCycleRepository: PortalCycleRepository,
     initialTab: RecruitingHubTab = RecruitingHubDefaults.defaultTab,
+    initialFocusProspectId: String? = null,
     onBack: () -> Unit,
 ) {
     BackHandler(onBack = onBack)
     var tabIndex by remember(initialTab) {
         mutableIntStateOf(RecruitingHubDefaults.tabs.indexOf(initialTab))
     }
+    var focusedProspectId by remember(initialFocusProspectId) { mutableStateOf(initialFocusProspectId) }
     var ledger by remember { mutableStateOf<RecruitingCycleLedger?>(null) }
     var nilLedger by remember { mutableStateOf<NilBudgetLedger?>(null) }
     var nilDrillDown by remember { mutableStateOf<NilBudgetDrillDown?>(null) }
@@ -240,6 +243,13 @@ fun RecruitingHubScreen(
     }
 
     val fullPool = recruitingPool.orEmpty()
+
+    LaunchedEffect(initialFocusProspectId) {
+        if (RecruitingHubFocusPolicy.isValidFocusProspectId(initialFocusProspectId)) {
+            tabIndex = RecruitingHubDefaults.tabs.indexOf(RecruitingHubFocusPolicy.portalDeepLinkTab)
+            focusedProspectId = initialFocusProspectId
+        }
+    }
     val toggleBoard: (String) -> Unit = { prospectId ->
         scope.launch {
             val season = loaded.metadata.seasonIndex
@@ -454,6 +464,17 @@ fun RecruitingHubScreen(
                 color = MaterialTheme.colorScheme.primary,
             )
         }
+        focusedProspectId?.let { focusId ->
+            if (RecruitingHubFocusPolicy.isValidFocusProspectId(focusId)) {
+                val focusLabel = fullPool.find { it.prospectId == focusId }?.displayName ?: focusId
+                Text(
+                    text = stringResource(R.string.recruiting_hub_focus_from_news, focusLabel),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.SemiBold,
+                )
+            }
+        }
         ScrollableTabRow(selectedTabIndex = tabIndex) {
             RecruitingHubDefaults.tabs.forEachIndexed { index, tab ->
                 Tab(
@@ -614,7 +635,10 @@ fun RecruitingHubScreen(
                     windowOpen = portalWindowOpen,
                     modifier = Modifier.weight(1f),
                     top40Content = {
-                        PortalTop40Section(entrants = portalEntrants)
+                        PortalTop40Section(
+                            entrants = portalEntrants,
+                            highlightEntrantId = focusedProspectId,
+                        )
                     },
                     recommendedContent = {
                         if (portalRecommendedRows.isEmpty()) {

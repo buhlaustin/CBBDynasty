@@ -39,6 +39,7 @@ data class DynastyShellMenuAction(
     val onClick: () -> Unit,
 )
 
+/** Shell chrome drawer ([ShellHamburgerDrawerPolicy], [MEGA-SHELL-099]). */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DynastyShellChrome(

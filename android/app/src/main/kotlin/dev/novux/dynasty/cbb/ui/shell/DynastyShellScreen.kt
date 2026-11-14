@@ -143,6 +143,7 @@ import dev.novux.dynasty.cbb.ui.dynasty.DynastyShellMenuAction
 import dev.novux.dynasty.cbb.ui.dynasty.DynastyShellTab
 import dev.novux.dynasty.cbb.ui.dynasty.rememberDynastyShellSelectedTab
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingCycleLedger
+import dev.novux.dynasty.cbb.core.shell.InSeasonShellMenuExtrasPolicy
 import dev.novux.dynasty.cbb.ui.hubs.DynastyHubMenuCallbacks
 import dev.novux.dynasty.cbb.ui.hubs.buildDynastyHubMenu
 import dev.novux.dynasty.cbb.ui.hubs.notifyRecruitingCycleClosed
@@ -947,10 +948,14 @@ fun DynastyShellScreen(
         selectionSundayPublished = selectionSundayPublished,
         recruitingCycleClosed = recruitingCycleClosed,
         onRecruitingCycleClosed = { notifyRecruitingCycleClosed(context) },
-        leadingExtras = listOf(
-            DynastyShellMenuAction(R.string.staff_open_tab) { coachView = ShellCoachView.Staff },
-            DynastyShellMenuAction(R.string.shell_menu_automation, onOpenAutomation),
-        ),
+        leadingExtras = if (InSeasonShellMenuExtrasPolicy.includeStaffAndAutomation(position.phase)) {
+            listOf(
+                DynastyShellMenuAction(R.string.staff_open_tab) { coachView = ShellCoachView.Staff },
+                DynastyShellMenuAction(R.string.shell_menu_automation, onOpenAutomation),
+            )
+        } else {
+            emptyList()
+        },
     )
 
     Box(modifier = Modifier.fillMaxSize()) {

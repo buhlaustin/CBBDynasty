@@ -163,6 +163,7 @@ fun DynastyApp(
             var recruitingLaunchTab by remember {
                 mutableStateOf(RecruitingHubDefaults.defaultTab)
             }
+            var recruitingFocusProspectId by remember { mutableStateOf<String?>(null) }
             var signingDayInitialTab by remember { mutableStateOf(SigningDayInitialTab.Rankings) }
             var disciplineIncident by remember {
                 mutableStateOf<dev.novux.dynasty.cbb.core.discipline.PendingDisciplineIncident?>(null)
@@ -211,6 +212,7 @@ fun DynastyApp(
             val hubMenuCallbacks = DynastyHubMenuCallbacks(
                 onOpenSchool = { navController.navigate(AppRoute.SchoolHub.route) },
                 onOpenRecruiting = {
+                    recruitingFocusProspectId = null
                     recruitingLaunchTab = RecruitingHubTab.Recommended
                     navController.navigateToRecruitingHub()
                 },
@@ -412,6 +414,9 @@ fun DynastyApp(
                             seasonReviewRepository = LocalContext.current.requireDynastyApplication().seasonReviewRepository,
                             seasonReviewProgressRepository =
                                 LocalContext.current.requireDynastyApplication().seasonReviewProgressRepository,
+                            hubMenuCallbacks = hubMenuCallbacks,
+                            recruitingEconomyRepository =
+                                LocalContext.current.requireDynastyApplication().recruitingEconomyRepository,
                             onReturnedHome = {
                                 navController.popBackStack(AppRoute.Home.route, inclusive = false)
                             },
@@ -548,7 +553,7 @@ fun DynastyApp(
                             homeTeamLabel = session.summary.schoolDisplayName.orEmpty().ifBlank { "Home" },
                             awayTeamLabel = stringResource(R.string.game_watch_opponent_scrimmage),
                             onWatchScrimmage = { navController.navigate(AppRoute.GameWatch.route) },
-                            onBack = { navController.popBackStack() },
+                            onBack = { navController.popBackToInShellDashboard() },
                         )
                     } else {
                         LaunchedEffect(Unit) {
@@ -795,6 +800,7 @@ fun DynastyApp(
                             incomingClassSeedRepository = incomingClassSeedRepository,
                             portalCycleRepository = portalCycleRepository,
                             initialTab = recruitingLaunchTab,
+                            initialFocusProspectId = recruitingFocusProspectId,
                             onBack = { navController.popBackToInShellDashboard() },
                         )
                     } else {
@@ -875,13 +881,20 @@ fun DynastyApp(
                             portalCycleRepository = portalCycleRepository,
                             offseasonWeekTwoRepository = offseasonWeekTwoRepository,
                             packRepository = app.packRepository,
-                            onBack = { navController.popBackStack() },
+                            onBack = { navController.popBackToInShellDashboard() },
                             onOpenRecruitingPortal = {
+                                recruitingFocusProspectId = null
                                 recruitingLaunchTab = NewsHubPortalAddToBoardPolicy.recruitingHubTab
                                 navController.navigateToRecruitingHub()
                             },
                             onOpenPriorProgram = {
+                                recruitingFocusProspectId = null
                                 recruitingLaunchTab = NewsHubPortalAddToBoardPolicy.recruitingHubTab
+                                navController.navigateToRecruitingHub()
+                            },
+                            onOpenPortalEntrantFocus = { entrantId ->
+                                recruitingFocusProspectId = entrantId
+                                recruitingLaunchTab = dev.novux.dynasty.cbb.core.recruiting.RecruitingHubFocusPolicy.portalDeepLinkTab
                                 navController.navigateToRecruitingHub()
                             },
                         )
@@ -900,7 +913,7 @@ fun DynastyApp(
                             seasonIndex = session.metadata.seasonIndex,
                             schoolHubRepository = schoolHubRepository,
                             chemistryRepository = app.chemistryRepository,
-                            onBack = { navController.popBackStack() },
+                            onBack = { navController.popBackToInShellDashboard() },
                         )
                     } else {
                         LaunchedEffect(Unit) {
@@ -916,7 +929,7 @@ fun DynastyApp(
                             dynastyId = session.dynastyId,
                             seasonIndex = session.metadata.seasonIndex,
                             repository = app.statisticsHubRepository,
-                            onBack = { navController.popBackStack() },
+                            onBack = { navController.popBackToInShellDashboard() },
                         )
                     } else {
                         LaunchedEffect(Unit) {
@@ -932,7 +945,7 @@ fun DynastyApp(
                             dynastyId = session.dynastyId,
                             seasonIndex = session.metadata.seasonIndex,
                             rankingsHubRepository = app.rankingsHubRepository,
-                            onBack = { navController.popBackStack() },
+                            onBack = { navController.popBackToInShellDashboard() },
                         )
                     } else {
                         LaunchedEffect(Unit) {
@@ -948,7 +961,7 @@ fun DynastyApp(
                             dynastyId = session.dynastyId,
                             seasonIndex = session.metadata.seasonIndex,
                             historyRepository = app.historyRepository,
-                            onBack = { navController.popBackStack() },
+                            onBack = { navController.popBackToInShellDashboard() },
                         )
                     } else {
                         LaunchedEffect(Unit) {
@@ -964,7 +977,7 @@ fun DynastyApp(
                             dynastyId = session.dynastyId,
                             seasonIndex = session.metadata.seasonIndex,
                             repository = app.conferenceTournamentHubRepository,
-                            onBack = { navController.popBackStack() },
+                            onBack = { navController.popBackToInShellDashboard() },
                         )
                     } else {
                         LaunchedEffect(Unit) {
@@ -980,7 +993,7 @@ fun DynastyApp(
                             dynastyId = session.dynastyId,
                             seasonIndex = session.metadata.seasonIndex,
                             repository = app.marchMayhemHubRepository,
-                            onBack = { navController.popBackStack() },
+                            onBack = { navController.popBackToInShellDashboard() },
                         )
                     } else {
                         LaunchedEffect(Unit) {
@@ -1027,7 +1040,7 @@ fun DynastyApp(
                             userConferenceName = userConferenceName,
                             conferences = conferences,
                             currentSeasonArchive = awardsArchive,
-                            onBack = { navController.popBackStack() },
+                            onBack = { navController.popBackToInShellDashboard() },
                         )
                     } else {
                         LaunchedEffect(Unit) {

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -68,6 +69,7 @@ fun NewsHubScreen(
     onBack: () -> Unit,
     onOpenRecruitingPortal: () -> Unit,
     onOpenPriorProgram: (String) -> Unit,
+    onOpenPortalEntrantFocus: (String) -> Unit,
 ) {
     var selectedTab by remember { mutableIntStateOf(0) }
     var stories by remember { mutableStateOf<List<NewsHeadline>>(emptyList()) }
@@ -134,6 +136,7 @@ fun NewsHubScreen(
                     packIndex = packIndex,
                     onOpenRecruitingPortal = onOpenRecruitingPortal,
                     onOpenPriorProgram = onOpenPriorProgram,
+                    onOpenPortalEntrantFocus = onOpenPortalEntrantFocus,
                 )
                 NewsHubTab.Recruits -> RecruitsTab(recruits)
                 NewsHubTab.Draft -> DraftTab(draftLines)
@@ -173,6 +176,7 @@ private fun PortalTab(
     packIndex: IdentityPackIndex?,
     onOpenRecruitingPortal: () -> Unit,
     onOpenPriorProgram: (String) -> Unit,
+    onOpenPortalEntrantFocus: (String) -> Unit,
 ) {
     val index = packIndex ?: return
     val portal = portalState ?: return
@@ -212,6 +216,7 @@ private fun PortalTab(
             entrant = entrant,
             packIndex = index,
             onOpenPriorProgram = onOpenPriorProgram,
+            onOpenPortalEntrantFocus = onOpenPortalEntrantFocus,
         )
     }
     if (recent.isNotEmpty()) {
@@ -226,6 +231,7 @@ private fun PortalTab(
                 entrant = entrant,
                 packIndex = index,
                 onOpenPriorProgram = onOpenPriorProgram,
+                onOpenPortalEntrantFocus = onOpenPortalEntrantFocus,
             )
         }
     }
@@ -244,28 +250,44 @@ private fun PortalEntrantRow(
     entrant: dev.novux.dynasty.cbb.core.portal.PortalEntrant,
     packIndex: IdentityPackIndex,
     onOpenPriorProgram: (String) -> Unit,
+    onOpenPortalEntrantFocus: (String) -> Unit,
 ) {
     val labels = NewsHubPortalHumanRowPolicy.rowLabels(entrant, packIndex)
     val rank = entrant.nationalTop40Rank ?: 0
-    Text(
-        text = stringResource(
-            R.string.news_hub_portal_row,
-            rank,
-            labels.playerDisplayName,
-            labels.priorSchoolDisplayName,
-            labels.stars,
-            labels.positionLabel,
-        ),
-        style = MaterialTheme.typography.bodyMedium,
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable {
+            .padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Text(
+            text = stringResource(
+                R.string.news_hub_portal_row,
+                rank,
+                labels.playerDisplayName,
+                labels.priorSchoolDisplayName,
+                labels.stars,
+                labels.positionLabel,
+            ),
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier
+                .weight(1f)
+                .clickable {
+                    onOpenPortalEntrantFocus(
+                        NewsHubPortalRowNavigationPolicy.focusProspectIdForRecruiting(entrant),
+                    )
+                },
+        )
+        OutlinedButton(
+            onClick = {
                 onOpenPriorProgram(
                     NewsHubPortalRowNavigationPolicy.priorProgramIdForNavigation(entrant),
                 )
-            }
-            .padding(vertical = 4.dp),
-    )
+            },
+        ) {
+            Text(stringResource(R.string.news_hub_portal_prior_program))
+        }
+    }
 }
 
 @Composable

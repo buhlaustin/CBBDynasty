@@ -7,4 +7,6 @@ object NewsHubPortalRowNavigationPolicy {
     const val MEGA_ID: String = "MEGA-SHELL-034"
 
     fun priorProgramIdForNavigation(entrant: PortalEntrant): String = entrant.priorProgramId
+
+    fun focusProspectIdForRecruiting(entrant: PortalEntrant): String = entrant.entrantId
 }
