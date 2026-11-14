@@ -5,6 +5,7 @@ import dev.novux.dynasty.cbb.core.coach.CoachArchetype
 import dev.novux.dynasty.cbb.core.coach.employment.CoachEmploymentStatus
 import dev.novux.dynasty.cbb.core.dashboard.InSeasonWeekGames
 import dev.novux.dynasty.cbb.core.notification.NotificationSnapshotInput
+import dev.novux.dynasty.cbb.core.notification.NotificationSnapshotSidecar
 import dev.novux.dynasty.cbb.core.save.LoadedDynasty
 import dev.novux.dynasty.cbb.core.signingday.SigningDayConstants
 import dev.novux.dynasty.cbb.data.coach.CoachEmploymentRepository
@@ -23,6 +24,7 @@ object DashboardNotificationSnapshotLoader {
         scheduleRepository: PreseasonScheduleRepository,
         signingDayRepository: SigningDayRepository,
         headCoachArchetype: CoachArchetype = CoachArchetype.Balanced,
+        sidecar: NotificationSnapshotSidecar = NotificationSnapshotSidecar(),
     ): NotificationSnapshotInput {
         val players = rosterRepository.listPlayers(loaded.dynastyId)
         val injuryLines = players.filter { it.injuryActive }.map { player ->
@@ -63,6 +65,11 @@ object DashboardNotificationSnapshotLoader {
             coachSkillPointsBank = skillState.unspentBank,
             signingDayUnsignedCount = signingUnsigned,
             careerFired = employment.status == CoachEmploymentStatus.Unemployed,
+            disciplineHeadline = sidecar.disciplineHeadline,
+            carouselApprovalBodies = sidecar.carouselApprovalBodies,
+            selectionSundayBody = sidecar.selectionSundayBody,
+            medicalRedshirtBodies = sidecar.medicalRedshirtBodies,
+            fundraisingCompleteBodies = sidecar.fundraisingCompleteBodies,
         )
     }
 }

@@ -81,13 +81,13 @@
 | MEGA-SHELL-046 | SHIP | User commits / decommits → high | Repository helpers + composer kinds | `NotificationFeedRepository`, composer |
 | MEGA-SHELL-047 | SHIP | Fired / postseason eliminated blocking modal | `requiresBlockingModal` + `CareerBlockNotificationDialog` | `DynastyShellScreen` |
 | MEGA-SHELL-048 | PARTIAL | Week advance snapshot breadth | Shell snapshot wires injury, game week, coach points, fired — **not** decommit, signing recap, rankings, postseason invite on advance | `DynastyShellScreen` LaunchedEffect |
-| MEGA-SHELL-049 | GAP | Discipline sheet opened → feed row | Spec high-priority row; composer has no discipline kind | `notifications.md#event-catalog` |
-| MEGA-SHELL-050 | GAP | Carousel offer / must-sign extension feed rows | Not in composer catalog | `notifications.md` high tier |
-| MEGA-SHELL-051 | GAP | Selection Sunday feed row | Not composed | `notifications.md` |
-| MEGA-SHELL-052 | GAP | Medical redshirt eligible feed row | Not composed | `notifications.md` medium |
-| MEGA-SHELL-053 | GAP | Fundraising / facility complete (low) | Not composed | `notifications.md` |
+| MEGA-SHELL-049 | SHIP | Discipline sheet opened → feed row | `NotificationFeedDisciplineRowPolicy` + sidecar discipline headline | `notifications.md#event-catalog` |
+| MEGA-SHELL-050 | SHIP | Carousel offer / must-sign extension feed rows | Carousel pending cards in composer | `notifications.md` high tier |
+| MEGA-SHELL-051 | SHIP | Selection Sunday feed row | In-field seed row → March Mayhem hub | `notifications.md` |
+| MEGA-SHELL-052 | SHIP | Medical redshirt eligible feed row | `MedicalRedshirtPolicy` bodies in composer | `notifications.md` medium |
+| MEGA-SHELL-053 | SHIP | Fundraising / facility complete (low) | `FundraisingComplete` rows from week-nine economy | `notifications.md` |
 | MEGA-SHELL-054 | SHIP | Stories not duplicated in notification feed | League churn goes to News archive, not notification kinds for league-only events | architecture split |
-| MEGA-SHELL-055 | PARTIAL | Feed deep links | Panel routes Strategy, Coach, Signing Day, Recruiting tabs — `PlayWeekGame` opens Strategy not preview | `DashboardNotificationFeedPanel.kt` |
+| MEGA-SHELL-055 | SHIP | Feed deep links | `PlayWeekGame` → `ShellWeekGamePreviewLauncher`; discipline / carousel / fundraising routes wired | `DashboardNotificationFeedPanel.kt` |
 | MEGA-SHELL-056 | GAP | Notification feed on offseason dashboard | Feed load gated to in-season shell path only | compare `OffseasonScreen` |
 
 ---
@@ -198,7 +198,7 @@
 | MEGA-SHELL-121 | GAP | Per-category mute (settings) | Spec allows future per-category — only global toggle ships | `notifications.md#defaults--settings` |
 | MEGA-SHELL-122 | SHIP | Priority tiers High / Medium / Low in model | `NotificationPriority` on each `NotificationFeedItem` | `NotificationFeedItem.kt` |
 | MEGA-SHELL-123 | PARTIAL | Sort newest-first within tier | Repository refresh merges snapshot — tier sort not audited in UI list | `NotificationFeedRepository.kt` |
-| MEGA-SHELL-124 | GAP | `FundraisingComplete` kind unused | Enum value exists; composer never emits | `NotificationFeedItem.kt` vs `notifications.md` low tier |
+| MEGA-SHELL-124 | SHIP | `FundraisingComplete` kind unused | Composer emits on week-nine completed fundraisers / naming | `NotificationFeedItem.kt` vs `notifications.md` low tier |
 | MEGA-SHELL-125 | GAP | Carousel offer / extension feed rows | Not in `NotificationFeedComposer` | `notifications.md` high tier |
 | MEGA-SHELL-126 | GAP | Medical redshirt notification | Missing kind + composer branch | `notifications.md` medium |
 | MEGA-SHELL-127 | GAP | Discipline opened → high feed row | No discipline event in composer | `in-season-systems.md`, `notifications.md` |

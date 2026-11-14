@@ -37,6 +37,7 @@ enum class DashboardDeepLink {
     OffseasonConferenceOffers,
     SummerWorkoutReport,
     FundraisingWeekNine,
+    MarchMayhemHub,
 }
 
 enum class DashboardTaskId {

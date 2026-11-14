@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import dev.novux.dynasty.cbb.R
 import dev.novux.dynasty.cbb.core.dashboard.DashboardDeepLink
 import dev.novux.dynasty.cbb.core.notification.NotificationFeedItem
+import dev.novux.dynasty.cbb.core.notification.NotificationFeedPlayWeekDeepLinkPolicy
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingHubTab
 
 @Composable
@@ -25,6 +26,10 @@ fun DashboardNotificationFeedPanel(
     onStrategyOpen: () -> Unit,
     onCoachCardOpen: () -> Unit,
     onSigningDayOpen: () -> Unit = {},
+    onGamePreviewOpen: () -> Unit = onStrategyOpen,
+    onDisciplineOpen: () -> Unit = {},
+    onMarchMayhemOpen: () -> Unit = {},
+    onFundraisingOpen: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     if (feed.isEmpty()) return
@@ -43,10 +48,18 @@ fun DashboardNotificationFeedPanel(
                     .fillMaxWidth()
                     .clickable {
                         when (row.deepLink) {
-                            DashboardDeepLink.Strategy,
-                            DashboardDeepLink.PlayWeekGame,
-                            -> onStrategyOpen()
+                            DashboardDeepLink.Strategy -> onStrategyOpen()
+                            DashboardDeepLink.PlayWeekGame -> {
+                                if (NotificationFeedPlayWeekDeepLinkPolicy.routesToGamePreview(row.deepLink)) {
+                                    onGamePreviewOpen()
+                                } else {
+                                    onStrategyOpen()
+                                }
+                            }
                             DashboardDeepLink.CoachCard -> onCoachCardOpen()
+                            DashboardDeepLink.DisciplineSheet -> onDisciplineOpen()
+                            DashboardDeepLink.MarchMayhemHub -> onMarchMayhemOpen()
+                            DashboardDeepLink.FundraisingWeekNine -> onFundraisingOpen()
                             DashboardDeepLink.SigningDayRankings,
                             DashboardDeepLink.SigningDayPositions,
                             -> onSigningDayOpen()

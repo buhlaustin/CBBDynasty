@@ -59,6 +59,7 @@ import dev.novux.dynasty.cbb.core.recruiting.SchoolRecruitingContext
 import dev.novux.dynasty.cbb.core.signingday.NationalRecruitingRankings
 import dev.novux.dynasty.cbb.core.notification.NotificationFeedItem
 import dev.novux.dynasty.cbb.data.notification.DashboardNotificationSnapshotLoader
+import dev.novux.dynasty.cbb.data.notification.DashboardNotificationSnapshotSidecarLoader
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingHubTab
 import dev.novux.dynasty.cbb.core.save.DynastyLoadResult
 import dev.novux.dynasty.cbb.data.save.ActiveDynastySession
@@ -484,14 +485,32 @@ fun DynastyShellScreen(
         if (showNotificationFeed) {
             val archetype = staffRoster?.headCoach?.archetype
                 ?: dev.novux.dynasty.cbb.core.coach.CoachArchetype.Balanced
+            val dynastyApp = context.requireDynastyApplication()
+            val sidecar = DashboardNotificationSnapshotSidecarLoader.load(
+                loaded = loaded,
+                rosterRepository = rosterRepository,
+                disciplineRepository = disciplineRepository,
+                coachingCarouselRepository = dynastyApp.coachingCarouselRepository,
+                weekNineRepository = dynastyApp.offseasonWeekNineRepository,
+                userTeamId = userSchool?.teamId,
+                selectionSundayPublished = selectionSundayPublished,
+                loadStandingsSelection = {
+                    dynastyApp.leagueWeekBatchRepository.loadStandings(
+                        loaded.dynastyId,
+                        loaded.metadata.seasonIndex,
+                    )?.selectionSunday
+                },
+                medicalRules = medicalRules,
+            )
             val snapshot = DashboardNotificationSnapshotLoader.snapshotFor(
                 loaded = loaded,
                 rosterRepository = rosterRepository,
                 coachEmploymentRepository = coachEmploymentRepository,
                 coachSkillPointRepository = coachSkillPointRepository,
                 scheduleRepository = scheduleRepository,
-                signingDayRepository = context.requireDynastyApplication().signingDayRepository,
+                signingDayRepository = dynastyApp.signingDayRepository,
                 headCoachArchetype = archetype,
+                sidecar = sidecar,
             )
             notificationFeed = notificationFeedRepository.refreshFromSnapshot(loaded.dynastyId, snapshot)
             careerModal = notificationFeedRepository.pendingCareerModal(loaded.dynastyId)
@@ -1028,6 +1047,25 @@ fun DynastyShellScreen(
                         onStrategyOpen = hubMenuCallbacks.onOpenStrategy,
                         onCoachCardOpen = { staffRoster?.headCoach?.let { openHeadCoachPreview(it) } },
                         onSigningDayOpen = { onOpenSigningDay(DashboardDeepLink.SigningDayRankings) },
+                        onGamePreviewOpen = {
+                            val school = userSchool
+                            if (school != null) {
+                                scope.launch {
+                                    ShellWeekGamePreviewLauncher.launchCurrentWeek(
+                                        context = context,
+                                        loaded = loaded,
+                                        userSchool = school,
+                                        schedulePlan = schedulePlan,
+                                        exhibitionCount = exhibitionCount,
+                                        onOpenGamePreview = onOpenGamePreview,
+                                    )
+                                }
+                            }
+                        },
+                        onDisciplineOpen = {
+                            disciplinePending?.let { disciplineSheetTarget = it }
+                        },
+                        onMarchMayhemOpen = hubMenuCallbacks.onOpenMarchMayhem,
                     )
                 }
                 DashboardRequiredTasksPanel(

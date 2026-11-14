@@ -82,6 +82,7 @@ import dev.novux.dynasty.cbb.ui.dashboard.CareerBlockNotificationDialog
 import dev.novux.dynasty.cbb.core.notification.NotificationFeedItem
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingHubTab
 import dev.novux.dynasty.cbb.data.notification.DashboardNotificationSnapshotLoader
+import dev.novux.dynasty.cbb.data.notification.DashboardNotificationSnapshotSidecarLoader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -206,6 +207,24 @@ fun PreseasonScreen(
         showNotificationFeed,
     ) {
         if (showNotificationFeed) {
+            val userSchool = app.schoolHubRepository.loadUserSchoolOverview(
+                loaded.dynastyId,
+                loaded.metadata.seasonIndex,
+            )
+            val standings = app.leagueWeekBatchRepository.loadStandings(
+                loaded.dynastyId,
+                loaded.metadata.seasonIndex,
+            )
+            val sidecar = DashboardNotificationSnapshotSidecarLoader.load(
+                loaded = loaded,
+                rosterRepository = rosterRepository,
+                disciplineRepository = app.disciplineRepository,
+                coachingCarouselRepository = app.coachingCarouselRepository,
+                weekNineRepository = app.offseasonWeekNineRepository,
+                userTeamId = userSchool?.teamId,
+                selectionSundayPublished = standings?.selectionSunday != null,
+                loadStandingsSelection = { standings?.selectionSunday },
+            )
             val snapshot = DashboardNotificationSnapshotLoader.snapshotFor(
                 loaded = loaded,
                 rosterRepository = rosterRepository,
@@ -213,6 +232,7 @@ fun PreseasonScreen(
                 coachSkillPointRepository = coachSkillPointRepository,
                 scheduleRepository = scheduleRepository,
                 signingDayRepository = signingDayRepository,
+                sidecar = sidecar,
             )
             notificationFeed = notificationFeedRepository.refreshFromSnapshot(loaded.dynastyId, snapshot)
             careerModal = notificationFeedRepository.pendingCareerModal(loaded.dynastyId)
@@ -355,6 +375,7 @@ fun PreseasonScreen(
                 onStrategyOpen = hubMenuCallbacks.onOpenStrategy,
                 onCoachCardOpen = hubMenuCallbacks.onOpenSchool,
                 onSigningDayOpen = hubMenuCallbacks.onOpenRecruiting,
+                onMarchMayhemOpen = hubMenuCallbacks.onOpenMarchMayhem,
             )
         }
         PreseasonRequiredTaskChips(

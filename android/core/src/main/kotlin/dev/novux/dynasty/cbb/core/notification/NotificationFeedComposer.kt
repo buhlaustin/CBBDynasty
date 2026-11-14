@@ -16,12 +16,59 @@ data class NotificationSnapshotInput(
     val userDecommitsThisWeek: List<String> = emptyList(),
     val majorRecordLines: List<String> = emptyList(),
     val rankingsMoveLine: String? = null,
+    val disciplineHeadline: String? = null,
+    val carouselApprovalBodies: List<String> = emptyList(),
+    val selectionSundayBody: String? = null,
+    val medicalRedshirtBodies: List<String> = emptyList(),
+    val fundraisingCompleteBodies: List<String> = emptyList(),
 )
 
 object NotificationFeedComposer {
     fun compose(input: NotificationSnapshotInput): List<NotificationFeedItem> {
         val id = { UUID.randomUUID().toString() }
         return buildList {
+            input.disciplineHeadline?.let { headline ->
+                add(
+                    NotificationFeedItem(
+                        id = id(),
+                        eventKey = "discipline:${headline.hashCode()}",
+                        kind = NotificationEventKind.DisciplinePending,
+                        priority = NotificationPriority.High,
+                        deepLink = NotificationFeedDisciplineRowPolicy.deepLink,
+                        title = NotificationFeedDisciplineRowPolicy.TITLE,
+                        body = headline,
+                        createdAtMs = input.asOfMs,
+                    ),
+                )
+            }
+            input.carouselApprovalBodies.forEach { body ->
+                add(
+                    NotificationFeedItem(
+                        id = id(),
+                        eventKey = "carousel:${body.hashCode()}",
+                        kind = NotificationEventKind.CarouselApproval,
+                        priority = NotificationPriority.High,
+                        deepLink = NotificationFeedCarouselRowPolicy.deepLink,
+                        title = NotificationFeedCarouselRowPolicy.TITLE,
+                        body = body,
+                        createdAtMs = input.asOfMs,
+                    ),
+                )
+            }
+            input.selectionSundayBody?.let { body ->
+                add(
+                    NotificationFeedItem(
+                        id = id(),
+                        eventKey = "selection_sunday",
+                        kind = NotificationEventKind.SelectionSunday,
+                        priority = NotificationPriority.High,
+                        deepLink = NotificationFeedSelectionSundayRowPolicy.deepLink,
+                        title = NotificationFeedSelectionSundayRowPolicy.TITLE,
+                        body = body,
+                        createdAtMs = input.asOfMs,
+                    ),
+                )
+            }
             input.newInjurySummaries.forEach { summary ->
                 add(
                     NotificationFeedItem(
@@ -94,6 +141,20 @@ object NotificationFeedComposer {
                     ),
                 )
             }
+            input.medicalRedshirtBodies.forEach { body ->
+                add(
+                    NotificationFeedItem(
+                        id = id(),
+                        eventKey = "medical_rs:${body.hashCode()}",
+                        kind = NotificationEventKind.MedicalRedshirtEligible,
+                        priority = NotificationPriority.Medium,
+                        deepLink = NotificationFeedMedicalRedshirtRowPolicy.deepLink,
+                        title = NotificationFeedMedicalRedshirtRowPolicy.TITLE,
+                        body = body,
+                        createdAtMs = input.asOfMs,
+                    ),
+                )
+            }
             input.gameThisWeekLabel?.let { label ->
                 add(
                     NotificationFeedItem(
@@ -101,7 +162,7 @@ object NotificationFeedComposer {
                         eventKey = "game:${label.hashCode()}",
                         kind = NotificationEventKind.GameThisWeek,
                         priority = NotificationPriority.Medium,
-                        deepLink = DashboardDeepLink.PlayWeekGame,
+                        deepLink = NotificationFeedPlayWeekDeepLinkPolicy.gameThisWeekDeepLink,
                         title = "Game this week",
                         body = label,
                         createdAtMs = input.asOfMs,
@@ -174,6 +235,20 @@ object NotificationFeedComposer {
                         deepLink = DashboardDeepLink.Strategy,
                         title = "Rankings update",
                         body = line,
+                        createdAtMs = input.asOfMs,
+                    ),
+                )
+            }
+            input.fundraisingCompleteBodies.forEach { body ->
+                add(
+                    NotificationFeedItem(
+                        id = id(),
+                        eventKey = "fundraising:${body.hashCode()}",
+                        kind = NotificationEventKind.FundraisingComplete,
+                        priority = NotificationPriority.Low,
+                        deepLink = NotificationFeedFundraisingRowPolicy.deepLink,
+                        title = NotificationFeedFundraisingRowPolicy.TITLE,
+                        body = body,
                         createdAtMs = input.asOfMs,
                     ),
                 )

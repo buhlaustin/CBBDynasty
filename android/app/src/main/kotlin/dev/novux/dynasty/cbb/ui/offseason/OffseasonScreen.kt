@@ -87,6 +87,7 @@ import dev.novux.dynasty.cbb.ui.dashboard.DashboardNotificationFeedPanel
 import dev.novux.dynasty.cbb.ui.dashboard.CareerBlockNotificationDialog
 import dev.novux.dynasty.cbb.core.notification.NotificationFeedItem
 import dev.novux.dynasty.cbb.data.notification.DashboardNotificationSnapshotLoader
+import dev.novux.dynasty.cbb.data.notification.DashboardNotificationSnapshotSidecarLoader
 import dev.novux.dynasty.cbb.core.player.DynastyPlayer
 import dev.novux.dynasty.cbb.ui.dynasty.DynastyShellChrome
 import dev.novux.dynasty.cbb.ui.dynasty.DynastyShellTab
@@ -204,6 +205,24 @@ fun OffseasonScreen(
         showNotificationFeed,
     ) {
         if (showNotificationFeed) {
+            val userSchool = app.schoolHubRepository.loadUserSchoolOverview(
+                loaded.dynastyId,
+                loaded.metadata.seasonIndex,
+            )
+            val standings = app.leagueWeekBatchRepository.loadStandings(
+                loaded.dynastyId,
+                loaded.metadata.seasonIndex,
+            )
+            val sidecar = DashboardNotificationSnapshotSidecarLoader.load(
+                loaded = loaded,
+                rosterRepository = rosterRepository,
+                disciplineRepository = app.disciplineRepository,
+                coachingCarouselRepository = app.coachingCarouselRepository,
+                weekNineRepository = weekNineRepository,
+                userTeamId = userSchool?.teamId,
+                selectionSundayPublished = standings?.selectionSunday != null,
+                loadStandingsSelection = { standings?.selectionSunday },
+            )
             val snapshot = DashboardNotificationSnapshotLoader.snapshotFor(
                 loaded = loaded,
                 rosterRepository = rosterRepository,
@@ -211,6 +230,7 @@ fun OffseasonScreen(
                 coachSkillPointRepository = coachSkillPointRepository,
                 scheduleRepository = scheduleRepository,
                 signingDayRepository = signingDayRepository,
+                sidecar = sidecar,
             )
             notificationFeed = notificationFeedRepository.refreshFromSnapshot(loaded.dynastyId, snapshot)
             careerModal = notificationFeedRepository.pendingCareerModal(loaded.dynastyId)
@@ -406,6 +426,8 @@ fun OffseasonScreen(
                 onStrategyOpen = hubMenuCallbacks.onOpenStrategy,
                 onCoachCardOpen = hubMenuCallbacks.onOpenSchool,
                 onSigningDayOpen = { onOpenSigningDay(DashboardDeepLink.SigningDayRankings) },
+                onMarchMayhemOpen = hubMenuCallbacks.onOpenMarchMayhem,
+                onFundraisingOpen = { fundraisingSheetOpen = true },
             )
         }
         val offseasonRequiredContext = OffseasonRequiredDashboardTasks.WeekContext(
