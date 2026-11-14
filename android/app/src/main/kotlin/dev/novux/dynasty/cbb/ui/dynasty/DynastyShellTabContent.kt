@@ -26,7 +26,8 @@ import dev.novux.dynasty.cbb.R
 import dev.novux.dynasty.cbb.core.news.NewsHeadline
 import dev.novux.dynasty.cbb.core.news.NewsStoryDrillInPolicy
 import dev.novux.dynasty.cbb.ui.news.NewsHeadlineStoryDetailSheet
-import dev.novux.dynasty.cbb.core.news.NewsHeadlineKind
+import dev.novux.dynasty.cbb.core.news.NewsHeadlineKindChipPolicy
+import dev.novux.dynasty.cbb.ui.news.newsHeadlineKindLabel
 import dev.novux.dynasty.cbb.core.news.DynastyShellNewsHeadlinesPolicy
 import dev.novux.dynasty.cbb.core.news.ShallowNewsFeedSnapshot
 import dev.novux.dynasty.cbb.core.player.DynastyPlayer
@@ -177,11 +178,13 @@ fun DynastyShellNewsTab(
                         },
                 ) {
                     Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(
-                            text = newsKindLabel(headline.kind),
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.primary,
-                        )
+                        if (NewsHeadlineKindChipPolicy.showKindChipOnDashboard()) {
+                            Text(
+                                text = newsHeadlineKindLabel(headline.kind),
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.primary,
+                            )
+                        }
                         Text(text = headline.title, style = MaterialTheme.typography.bodyLarge)
                     }
                 }
@@ -203,17 +206,6 @@ fun DynastyShellNewsTab(
             }
         }
     }
-}
-
-@Composable
-private fun newsKindLabel(kind: NewsHeadlineKind): String = when (kind) {
-    NewsHeadlineKind.UserInjury -> stringResource(R.string.shell_news_kind_user_injury)
-    NewsHeadlineKind.LeagueInjury -> stringResource(R.string.shell_news_kind_league_injury)
-    NewsHeadlineKind.LeagueResult -> stringResource(R.string.shell_news_kind_league_result)
-    NewsHeadlineKind.RecruitingSpotlight -> stringResource(R.string.shell_news_kind_recruiting)
-    NewsHeadlineKind.General -> stringResource(R.string.shell_news_kind_general)
-    NewsHeadlineKind.Awards -> stringResource(R.string.shell_news_kind_awards)
-    NewsHeadlineKind.Bracketology -> stringResource(R.string.shell_news_kind_bracketology)
 }
 
 @Composable

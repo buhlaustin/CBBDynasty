@@ -68,6 +68,19 @@ object NewsHeadlineArticleBuilder {
                 "Analysts re-ranked at-large hopefuls using the latest NET sheet and recent resume games.",
                 "Bracket projections update weekly through conference tournament week.",
             )
+            NewsHeadlineKind.PollNetMovement -> listOf(
+                title,
+                "Synthetic media and coaches polls track the NET sheet as resumes update each week.",
+                weekNote,
+            )
+            NewsHeadlineKind.PortalEntry,
+            NewsHeadlineKind.PortalCommit,
+            NewsHeadlineKind.PortalDecommit,
+            NewsHeadlineKind.PortalFlip,
+            -> listOf(
+                title,
+                "Transfer portal activity is tracked in News hub Portal during the offseason window.",
+            )
             NewsHeadlineKind.General -> listOf(
                 title,
                 weekNote,

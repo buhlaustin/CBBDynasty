@@ -109,4 +109,32 @@ object NewsHeadlinePublisher {
 
     fun bracketology(headline: NewsHeadline): NewsHeadline =
         headline.copy(kind = NewsHeadlineKind.Bracketology)
+
+    fun portalEntry(
+        seasonIndex: Int,
+        playerName: String,
+        priorSchool: String,
+        createdAtMs: Long = System.currentTimeMillis(),
+    ): NewsHeadline = NewsHeadline(
+        id = UUID.randomUUID().toString(),
+        seasonIndex = seasonIndex,
+        kind = NewsHeadlineKind.PortalEntry,
+        title = "$playerName enters transfer portal ($priorSchool)",
+        priority = 55,
+        createdAtMs = createdAtMs,
+    )
+
+    fun portalCommit(
+        seasonIndex: Int,
+        playerName: String,
+        schoolName: String,
+        createdAtMs: Long = System.currentTimeMillis(),
+    ): NewsHeadline = NewsHeadline(
+        id = UUID.randomUUID().toString(),
+        seasonIndex = seasonIndex,
+        kind = NewsHeadlineKind.PortalCommit,
+        title = "$playerName commits to $schoolName",
+        priority = 60,
+        createdAtMs = createdAtMs,
+    )
 }

@@ -445,6 +445,7 @@ class DynastyApplication : Application() {
             dashboardLastGameRepository,
             recruitingManualWeekSpendRepository,
             packDynastyIdentityRepository,
+            notificationFeedRepository,
         )
         preseasonSeasonStartRepository = PreseasonSeasonStartRepository(
             saveSlotRepository,

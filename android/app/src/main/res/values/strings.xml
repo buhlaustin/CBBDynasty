@@ -1139,6 +1139,12 @@
     <string name="shell_news_kind_general">League</string>
     <string name="shell_news_kind_awards">Awards</string>
     <string name="shell_news_kind_bracketology">Bracketology</string>
+    <string name="shell_news_kind_poll_net">NET &amp; polls</string>
+    <string name="shell_news_kind_portal_entry">Portal entry</string>
+    <string name="shell_news_kind_portal_commit">Portal commit</string>
+    <string name="shell_news_kind_portal_decommit">Portal decommit</string>
+    <string name="shell_news_kind_portal_flip">Portal flip</string>
+    <string name="news_hub_story_week">Week %1$d</string>
     <string name="shell_menu_exit_home">Exit to home</string>
     <string name="shell_menu_news_hub">News hub</string>
     <string name="news_hub_title">News hub</string>

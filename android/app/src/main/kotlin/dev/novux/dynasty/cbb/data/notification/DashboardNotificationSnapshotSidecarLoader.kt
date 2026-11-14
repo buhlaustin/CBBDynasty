@@ -6,6 +6,7 @@ import dev.novux.dynasty.cbb.core.carousel.CarouselStatus
 import dev.novux.dynasty.cbb.core.dashboard.DashboardPostseasonSeedResolver
 import dev.novux.dynasty.cbb.core.injuries.MedicalRedshirtPolicy
 import dev.novux.dynasty.cbb.core.notification.NotificationSnapshotSidecar
+import dev.novux.dynasty.cbb.core.notification.NotificationTaskFeedDedupPolicy
 import dev.novux.dynasty.cbb.core.offseason.weeknine.OffseasonWeekNineConstants
 import dev.novux.dynasty.cbb.core.roster.RosterPlayer
 import dev.novux.dynasty.cbb.core.save.LoadedDynasty
@@ -31,8 +32,12 @@ object DashboardNotificationSnapshotSidecarLoader {
         val disciplineHeadline = discipline?.let { "${it.headline} — ${it.playerDisplayName}" }
 
         val carousel = coachingCarouselRepository.loadOrCreate(loaded.dynastyId, loaded.metadata.seasonIndex)
+        val hasCarouselTask = carousel.status == CarouselStatus.AwaitingUserApprovals &&
+            carousel.pendingApprovals.isNotEmpty()
         val carouselBodies =
-            if (carousel.status == CarouselStatus.AwaitingUserApprovals) {
+            if (NotificationTaskFeedDedupPolicy.includeCarouselFeedRows(hasCarouselTask) &&
+                carousel.status == CarouselStatus.AwaitingUserApprovals
+            ) {
                 carousel.pendingApprovals.map { "${it.headline} — ${it.detail}" }
             } else {
                 emptyList()

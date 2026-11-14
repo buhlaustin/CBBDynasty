@@ -202,12 +202,12 @@
 | MEGA-SHELL-125 | SHIP | Carousel offer / extension feed rows | `NotificationFeedCarouselComposerPolicy` + sidecar bodies | `NotificationFeedComposer.kt` |
 | MEGA-SHELL-126 | SHIP | Medical redshirt notification | `NotificationFeedMedicalRedshirtComposerPolicy` | `NotificationFeedComposer.kt` |
 | MEGA-SHELL-127 | SHIP | Discipline opened → high feed row | `NotificationFeedDisciplineComposerPolicy` | `NotificationFeedComposer.kt` |
-| MEGA-SHELL-128 | PARTIAL | Week-advance batch rows | In-season snapshot on shell load only — **no** post-advance append for commits/decommits/rankings | `DynastyShellScreen.kt` `LaunchedEffect` |
+| MEGA-SHELL-128 | SHIP | Week-advance batch rows | `DashboardNotificationWeekAdvanceAppender` post `advanceDynastyWeek` | `SaveSlotRepository.kt` |
 | MEGA-SHELL-129 | SHIP | Stories never duplicated as notifications | League week → `NewsFeedRepository` only | architecture split |
-| MEGA-SHELL-130 | GAP | Offseason portal commit feed rows | Portal offseason-only in spec — composer has no portal-specific kinds | `notifications.md#portal-lock` |
+| MEGA-SHELL-130 | SHIP | Offseason portal commit feed rows | `userPortalCommitsThisWeek` + `NotificationFeedPortalOffseasonPolicy` | `NotificationFeedComposer.kt` |
 | MEGA-SHELL-131 | SHIP | Portal alerts excluded in-season | No in-season transfer kinds in composer | design lock |
-| MEGA-SHELL-132 | PARTIAL | One row per event on advance | Spec lock — implementation depends on future advance hook | `notifications.md#week-advance--sim-week` |
-| MEGA-SHELL-133 | GAP | Task vs feed dedup rules | Required discipline task without parallel feed row — both missing feed side | `notifications.md#tasks-vs-feed-no-triple-spam` |
+| MEGA-SHELL-132 | SHIP | One row per event on advance | `NotificationWeekAdvanceAppendPolicy.ONE_ROW_PER_EVENT` | pipeline stage marker |
+| MEGA-SHELL-133 | SHIP | Task vs feed dedup rules | `NotificationTaskFeedDedupPolicy` (discipline + carousel) | `DashboardNotificationSnapshotSidecarLoader.kt` |
 
 ---
 
@@ -215,10 +215,10 @@
 
 | ID | Status | Spec / topic | Finding | Code / notes |
 |----|--------|--------------|---------|--------------|
-| MEGA-SHELL-134 | PARTIAL | `NewsHeadlineKind` surface labels on dashboard | Kind chip on shallow News tab via `newsKindLabel` | `DynastyShellTabContent.kt` |
-| MEGA-SHELL-135 | GAP | Hub Stories tab hides kind chip | `StoriesTab` shows title only — no category/date | `NewsHubScreen.kt` vs dashboard tab |
-| MEGA-SHELL-136 | GAP | Portal headline kinds in enum | No `PortalEntry` / `Commit` / `Flip` in `NewsHeadlineKind` | `NewsHeadline.kt`, `news-hub.md` |
-| MEGA-SHELL-137 | GAP | Poll / NET movement headlines | `appendLeagueWeek` emits injury wire + upsets only — no poll lines | `NewsFeedRepository.kt` |
+| MEGA-SHELL-134 | SHIP | `NewsHeadlineKind` surface labels on dashboard | `NewsHeadlineKindChipPolicy` + `newsHeadlineKindLabel` | `DynastyShellTabContent.kt` |
+| MEGA-SHELL-135 | SHIP | Hub Stories tab hides kind chip | `NewsHubStoriesRowPolicy` kind + week row | `NewsHubScreen.kt` |
+| MEGA-SHELL-136 | SHIP | Portal headline kinds in enum | `NewsPortalHeadlineKindPolicy` + publisher helpers | `NewsHeadline.kt` |
+| MEGA-SHELL-137 | SHIP | Poll / NET movement headlines | `PollNetMovementNewsEngine` in `appendLeagueWeek` | `NewsFeedRepository.kt` |
 | MEGA-SHELL-138 | PASS | Bracketology (February) stories | `BracketologyNewsEngine` on league week advance | `NewsFeedRepository.kt`, `MEGA-GDD-130` |
 | MEGA-SHELL-139 | GAP | Coaching carousel league headlines | No `NewsHeadlineKind` or publisher path for carousel | `news-hub.md` brief list |
 | MEGA-SHELL-140 | PARTIAL | Awards headlines kind | `appendAwardsHeadlines` + `NewsHeadlineKind.Awards` | postseason awards wiring |

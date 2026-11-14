@@ -23,5 +23,6 @@ object DynastyWeekAdvancePipelineStages {
         "coachSkillPointRepository.ensureSundayGrant",
         "loadSlot",
         "recruitingEconomyRepository.onCalendarWeekAdvanced",
+        "dashboardNotificationWeekAdvanceAppender.appendAfterWeekAdvance",
     )
 }

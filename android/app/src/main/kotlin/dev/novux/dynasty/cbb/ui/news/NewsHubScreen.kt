@@ -37,6 +37,7 @@ import dev.novux.dynasty.cbb.core.calendar.CalendarPhase
 import dev.novux.dynasty.cbb.core.calendar.CalendarPosition
 import dev.novux.dynasty.cbb.core.news.NewsHeadline
 import dev.novux.dynasty.cbb.core.news.NewsHubPolicy
+import dev.novux.dynasty.cbb.core.news.NewsHubStoriesRowPolicy
 import dev.novux.dynasty.cbb.core.news.NewsHubPortalFiltersPolicy
 import dev.novux.dynasty.cbb.core.news.NewsHubPortalHumanRowPolicy
 import dev.novux.dynasty.cbb.core.news.NewsHubPortalRecentSectionsPolicy
@@ -190,8 +191,25 @@ private fun StoriesTab(
                 .fillMaxWidth()
                 .clickable { onStoryClick(story) },
         ) {
-            Column(modifier = Modifier.padding(12.dp)) {
+            Column(
+                modifier = Modifier.padding(12.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                if (NewsHubStoriesRowPolicy.showKindChip()) {
+                    Text(
+                        text = newsHeadlineKindLabel(story.kind),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                }
                 Text(story.title, style = MaterialTheme.typography.bodyLarge)
+                if (NewsHubStoriesRowPolicy.showWeekIndex(story)) {
+                    Text(
+                        text = stringResource(R.string.news_hub_story_week, story.rsWeekIndex!!),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
             }
         }
     }

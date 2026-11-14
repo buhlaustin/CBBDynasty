@@ -52,6 +52,8 @@ import dev.novux.dynasty.cbb.core.advance.OffseasonAdvanceConfirmPolicy
 import dev.novux.dynasty.cbb.core.advance.RegularSeasonWeekBatchPolicy
 import dev.novux.dynasty.cbb.core.portal.PortalCyclePolicy
 import dev.novux.dynasty.cbb.data.news.NewsFeedRepository
+import dev.novux.dynasty.cbb.data.notification.DashboardNotificationWeekAdvanceAppender
+import dev.novux.dynasty.cbb.data.notification.NotificationFeedRepository
 import dev.novux.dynasty.cbb.data.preseason.IncomingClassSeedRepository
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingCyclePolicy
 import dev.novux.dynasty.cbb.core.recruiting.SeasonOneRecruitingBootstrap
@@ -131,7 +133,10 @@ class SaveSlotRepository(
     private val dashboardLastGameRepository: DashboardLastGameRepository,
     private val recruitingManualWeekSpendRepository: RecruitingManualWeekSpendRepository,
     private val packDynastyIdentityRepository: dev.novux.dynasty.cbb.data.pack.PackDynastyIdentityRepository,
+    private val notificationFeedRepository: NotificationFeedRepository,
 ) {
+    private val dashboardNotificationWeekAdvanceAppender =
+        DashboardNotificationWeekAdvanceAppender(notificationFeedRepository)
     private val slotDao = database.saveSlotDao()
     private val metadataDao = database.dynastyMetadataDao()
     private val coachDao = database.dynastyCoachDao()
@@ -682,6 +687,12 @@ class SaveSlotRepository(
         val aiWeek = aiRecruitingRepository.runLeagueWeekIfActive(loaded, ledger, manualSpent)
         val recruitingSpentClosingWeek = aiWeek?.userPointsSpent ?: 0
         val rosterSizeBeforeWeek = dynastyRosterRepository.listPlayers(loaded.dynastyId).size
+        val userTeamId = coachDao.getByDynastyId(loaded.dynastyId)?.userTeamId
+        val standingsBeforeAdvance = leagueWeekBatchRepository.loadStandings(
+            loaded.dynastyId,
+            loaded.metadata.seasonIndex,
+        )
+        val userNetRankBefore = userTeamId?.let { standingsBeforeAdvance?.netRankByTeam?.get(it) }
         val advanceResult = weekCheckpointRepository.advanceWeek(loaded.dynastyId, checkpoint)
         leagueWeekBatchRepository.afterWeekAdvance(
             dynastyId = loaded.dynastyId,
@@ -776,6 +787,29 @@ class SaveSlotRepository(
             else -> return@withSlotAdvanceLock again
         }
         recruitingEconomyRepository.onCalendarWeekAdvanced(afterAdvance, recruitingSpentClosingWeek)
+        val standingsAfterAdvance = leagueWeekBatchRepository.loadStandings(
+            afterAdvance.dynastyId,
+            afterAdvance.metadata.seasonIndex,
+        )
+        val userNetRankAfter = userTeamId?.let { standingsAfterAdvance?.netRankByTeam?.get(it) }
+        val disciplinePending = disciplineRepository.loadState(
+            afterAdvance.dynastyId,
+            afterAdvance.metadata.seasonIndex,
+        ).pending
+        val disciplineHeadline = disciplinePending?.let { "${it.headline} — ${it.playerDisplayName}" }
+        val carouselState = coachingCarouselRepository.loadOrCreate(
+            afterAdvance.dynastyId,
+            afterAdvance.metadata.seasonIndex,
+        )
+        val hasCarouselApprovalTask = carouselState.status == dev.novux.dynasty.cbb.core.carousel.CarouselStatus.AwaitingUserApprovals &&
+            carouselState.pendingApprovals.isNotEmpty()
+        dashboardNotificationWeekAdvanceAppender.appendAfterWeekAdvance(
+            loaded = afterAdvance,
+            userNetRankBefore = userNetRankBefore,
+            userNetRankAfter = userNetRankAfter,
+            disciplineHeadline = disciplineHeadline,
+            hasRequiredCarouselApprovalTask = hasCarouselApprovalTask,
+        )
         val pos = afterAdvance.weekCheckpoint.activePosition
         if (SigningDayPreseasonRecruitingTransition.enteringPreseason(pos)) {
             val nextPoolSeason = SigningDayPreseasonRecruitingTransition.nextEnrollingClassSeasonIndex(
