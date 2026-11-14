@@ -196,7 +196,7 @@ object PossessionSimEngine {
         return PossessionResolveResult(
             box,
             PossessionChange.DefenseTakesBall,
-            turnoverTerminal = TurnoverTerminal.ShotClockViolation,
+            turnoverTerminal = PossessionShotClockViolationPolicy.turnoverTerminal,
         )
     }
 

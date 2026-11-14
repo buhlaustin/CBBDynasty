@@ -23,6 +23,8 @@ import dev.novux.dynasty.cbb.core.roster.PlayerClassYear
 import dev.novux.dynasty.cbb.core.player.DynastyPlayer
 import dev.novux.dynasty.cbb.core.player.nil.PlayerNilSeasonDealEngine
 import dev.novux.dynasty.cbb.core.roster.RosterPlayer
+import dev.novux.dynasty.cbb.core.signingday.IncomingSignee
+import dev.novux.dynasty.cbb.core.signingday.SigningDayRosterEnrollPolicy
 import dev.novux.dynasty.cbb.data.injuries.PostgameInjuryQueue
 import dev.novux.dynasty.cbb.database.DynastyDatabase
 import dev.novux.dynasty.cbb.database.roster.toDomain
@@ -215,5 +217,24 @@ class DynastyRosterRepository(
         val players = listPlayers(dynastyId)
         RosterStarterWireResolver.applyToRoster(players, starters).forEach { dao.upsert(it.toEntity()) }
         return listPlayers(dynastyId)
+    }
+
+    suspend fun enrollIncomingSignees(dynastyId: String, signees: List<IncomingSignee>) {
+        val existing = listPlayers(dynastyId)
+        val existingIds = existing.map { it.playerId }.toSet()
+        var scholarshipCount = existing.count { !it.inTransferPortal }
+        var depthOrder = (existing.maxOfOrNull { it.depthOrder } ?: 0) + 1
+        signees.forEach { signee ->
+            if (signee.prospectId in existingIds) return@forEach
+            val player = SigningDayRosterEnrollPolicy.enrollSignee(
+                dynastyId = dynastyId,
+                signee = signee,
+                depthOrder = depthOrder,
+                existingScholarshipCount = scholarshipCount,
+            ) ?: return@forEach
+            dao.upsert(player.toEntity())
+            scholarshipCount++
+            depthOrder++
+        }
     }
 }

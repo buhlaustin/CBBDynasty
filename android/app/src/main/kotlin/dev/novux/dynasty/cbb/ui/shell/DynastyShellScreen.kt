@@ -196,7 +196,7 @@ fun DynastyShellScreen(
     onOpenGamePreview: () -> Unit = {},
     onOpenGameWatch: () -> Unit = {},
     onOpenSigningDay: (dev.novux.dynasty.cbb.core.dashboard.DashboardDeepLink) -> Unit = {},
-    onOpenRecruitingTab: (RecruitingHubTab) -> Unit = {},
+    onOpenRecruitingTab: (RecruitingHubTab, String?) -> Unit = { _, _ -> },
     onOpenAutomation: () -> Unit = {},
     onOpenJobCenter: () -> Unit = {},
     postgameInjuryRefreshKey: Int = 0,

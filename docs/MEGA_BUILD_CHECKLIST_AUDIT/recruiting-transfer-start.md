@@ -173,14 +173,14 @@
 | MEGA-RECR-082 | P0 | PASS | Live **interest** meter 0–100 | `RecruitInterestMeterRow` shows `liveInterest` 0–100 gauge + spend gain vs baseline; influence line is rank/closeness only. | `RecruitInterestMeterRow.kt`, hub row |
 | MEGA-RECR-083 | P1 | PASS | Two surfaces (`baseline` vs `interest`) | `RecruitInterestTwoSurfaces` — badge from zero-spend baseline; meter shows live interest; competition line labeled baseline. | `SignLikelihoodEngine`, hub row |
 | MEGA-RECR-084 | P2 | GAP | Dedicated recruit sheet route | Actions live inline on Recommended list; no full-screen sheet with meter, factor chips, ranked rivals. | `RecruitingHubScreen.kt` |
-| MEGA-RECR-085 | P2 | GAP | Visual meter control | No `LinearProgressIndicator` / gauge for interest or closeness — text labels only. | Hub compose |
+| MEGA-RECR-085 | P2 | SHIP | Visual meter control | `RecruitInterestMeterUiPolicy` + `RecruitInterestMeterRow` | Hub compose |
 | MEGA-RECR-086 | P1 | PASS | Spend → meter feedback | Hub reloads spend map on `gateRefresh` after each action. | `RecruitingHubScreen.kt` |
 | MEGA-RECR-087 | P2 | GAP | Factor score debug | `factorScores` / `effectiveWeights` not exposed in UI or dev overlay. | `RecruitInterestSnapshot` |
 | MEGA-RECR-088 | P2 | FAIL | Influence closeness league sim | `InfluenceBoardEngine` ranks user school; **closeness** not advanced on league week advance / AI spend. | core recruiting influence |
-| MEGA-RECR-089 | P2 | GAP | Official visit → campus bump | Visit spend wired with `prospectId` — PASS reservation; no `campusLife` delta surfaced on meter. | `spendRefundableAction` |
+| MEGA-RECR-089 | P2 | SHIP | Official visit → campus bump | `RecruitOfficialVisitCampusBumpPolicy` visit row copy | `RecruitingHubScreen.kt` |
 | MEGA-RECR-090 | P1 | SHIP | Promise picker → `promiseDelta` | `RecruitScholarshipPromiseDeltaPolicy` feeds live interest when scholarship promise on file. | `RecommendedRecruitList`, hub picker |
-| MEGA-RECR-091 | P2 | GAP | Post-spend haptics / snackbar | Points pool header refreshes; no per-recruit confirmation that relationship moved. | `gateRefresh` pattern |
-| MEGA-RECR-092 | P2 | GAP | Dashboard deep link scroll-to-target | `DashboardDeepLink.RecruitingRecommended` opens hub; no `prospectId` scroll/highlight. | `DynastyApp.kt` |
+| MEGA-RECR-091 | P2 | SHIP | Post-spend haptics / snackbar | `RecruitSpendFeedbackPolicy` + interest delta toast | `RecruitingHubScreen.kt` |
+| MEGA-RECR-092 | P2 | SHIP | Dashboard deep link scroll-to-target | Feed commit name → hub scroll/highlight | `RecruitHubNotificationDeepLinkPolicy` |
 
 ---
 
@@ -191,7 +191,7 @@
 | MEGA-RECR-093 | P1 | SHIP | Assign NIL partial offers | `RecruitNilPartialOfferControls` slider + `RecruitNilPartialOfferPolicy` between $0 and 3× cap. | `RecruitingHubScreen` NIL row |
 | MEGA-RECR-094 | P1 | PASS | NIL drill-down sheet | Bottom sheet: committed + reserved lines from ledger and open scholarship NIL offers. | `NilBudgetDrillDownEngine` |
 | MEGA-RECR-095 | P2 | GAP | Reserved vs committed copy | `NilBudgetLedger` tracks buckets in core; hub shows aggregate remaining only. | `NilBudgetRepository` |
-| MEGA-RECR-096 | P2 | GAP | 3× cap affordance | `NilOfferEngine.validateAssign` enforces cap; UI does not show max assignable for this recruit. | core nil tests |
+| MEGA-RECR-096 | P2 | SHIP | 3× cap affordance | `RecruitNilAssignableDisplayPolicy` + assignable line | `RecruitNilAssignCapLine.kt` |
 | MEGA-RECR-097 | P1 | SHIP | Interest NIL tops at ask | Badge tracks live interest when NIL assigned; rows rebuild on `gateRefresh` + offer map. | `RecruitNilInterestBadgeRefreshPolicy` |
 | MEGA-RECR-098 | P1 | SHIP | NIL at hard sign snapshot | `SigningDayNilSnapshotPolicy` hydrates `nilSignedUsd` from ledger on class load. | `SigningDayRepository.loadIncomingClass` |
 | MEGA-RECR-099 | P2 | PASS | Annual pool + week-9 boost | Hub loads `nilPoolBoostUsd` from facilities week — PASS wiring. | `RecruitingHubScreen` LaunchedEffect |
@@ -211,7 +211,7 @@
 | MEGA-RECR-106 | P1 | GAP | Unsigned targets sim elsewhere | Hard sign finalizes offer-based class only; no league AI “sign elsewhere” for open elite targets. | `SigningDayHardSignEngine` |
 | MEGA-RECR-107 | P2 | GAP | Position editor depth | Positions tab **cycles enum** per signee — not bulk roster editor / flex validation from spec. | `SigningDayScreen` `onCyclePosition` |
 | MEGA-RECR-108 | P2 | GAP | Rankings task deep link | Dashboard opens Signing Day rankings tab — does not mirror **News → Recruits** full Top 60 context copy. | `DashboardOptionalTasksPanel` |
-| MEGA-RECR-109 | P1 | GAP | Roster scholarship attach | Hard sign engine finalizes class object; roster / 15-cap attach path not traced to `DynastyRosterRepository`. | `SigningDayRepository.hardSign` |
+| MEGA-RECR-109 | P1 | SHIP | Roster scholarship attach | `SigningDayRosterEnrollPolicy` on hard sign | `SigningDayRepository.hardSign` |
 | MEGA-RECR-110 | P1 | PASS | Soft vs hard commit semantics | Soft commits use `RecruitSoftCommitPolicy`; hard sign unchanged via `SigningDayHardSignEngine`. | `RecruitSoftCommitPolicy` |
 | MEGA-RECR-111 | P2 | PASS | Rankings tab uses seed when present | `SigningDayScreen` `loadPool` → `top60FromPool` — PASS when preseason task done. | `SigningDayScreen.kt` |
 | MEGA-RECR-112 | P2 | GAP | Prep before Signing Day | No **recruiting prep brief** / R1–R4 copy surface tying crunch multiplier to dashboard (offseason optional flavor only). | `OffseasonOptionalDashboardTasks` |

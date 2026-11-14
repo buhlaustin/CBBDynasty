@@ -26,6 +26,7 @@ import dev.novux.dynasty.cbb.core.player.loyalty.RecruitCommitPromiseLockEngine
 import dev.novux.dynasty.cbb.data.recruiting.RecruitLockedPromiseRepository
 import dev.novux.dynasty.cbb.data.recruiting.RecruitOfferPromiseRepository
 import dev.novux.dynasty.cbb.data.recruiting.RecruitingReservationRepository
+import dev.novux.dynasty.cbb.data.roster.DynastyRosterRepository
 import kotlinx.coroutines.flow.first
 
 private val Context.signingDayStore: DataStore<Preferences> by preferencesDataStore(name = "signing_day")
@@ -38,6 +39,7 @@ class SigningDayRepository(
     private val recruitOfferPromiseRepository: RecruitOfferPromiseRepository,
     private val recruitLockedPromiseRepository: RecruitLockedPromiseRepository,
     private val recruitingEconomyRepository: RecruitingEconomyRepository,
+    private val dynastyRosterRepository: DynastyRosterRepository,
     private val nilAnnualPoolRepository: NilAnnualPoolRepository,
 ) {
     suspend fun softCommitInputsFor(dynasty: LoadedDynasty): SigningDaySoftCommitInputs = softCommitInputs(dynasty)
@@ -144,6 +146,7 @@ class SigningDayRepository(
         }
         saveProgress(dynastyId, result.progress)
         saveSignedClass(dynastyId, signedWithNil)
+        dynastyRosterRepository.enrollIncomingSignees(dynastyId, signedWithNil)
         return result.copy(signed = signedWithNil)
     }
 

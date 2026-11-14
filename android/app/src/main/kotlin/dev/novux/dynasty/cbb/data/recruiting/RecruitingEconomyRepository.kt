@@ -196,6 +196,7 @@ class RecruitingEconomyRepository(
             persist(dynasty.dynastyId, ledger.withPointsAvailable(result.pointsRemaining))
             val delta = RecruitInterestSpendDelta.forPointAction(action, actions, bonusAmount)
             recordProspectSpend(dynasty, prospectId, result.pointsCharged, delta)
+            return result.copy(interestDeltaApplied = delta)
         }
         return result
     }
@@ -265,6 +266,7 @@ class RecruitingEconomyRepository(
                 else -> 0
             }
             recordProspectSpend(dynasty, prospectId, result.pointsCharged, delta)
+            return result.copy(interestDeltaApplied = delta)
         }
         return result
     }

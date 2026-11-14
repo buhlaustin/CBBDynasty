@@ -16,7 +16,9 @@ import androidx.compose.ui.unit.dp
 import dev.novux.dynasty.cbb.R
 import dev.novux.dynasty.cbb.core.dashboard.DashboardDeepLink
 import dev.novux.dynasty.cbb.core.notification.NotificationFeedItem
+import dev.novux.dynasty.cbb.core.notification.NotificationFeedCommitRowPolicy
 import dev.novux.dynasty.cbb.core.notification.NotificationFeedGameWeekRowPolicy
+import dev.novux.dynasty.cbb.core.notification.NotificationEventKind
 import dev.novux.dynasty.cbb.core.notification.NotificationFeedPlayWeekDeepLinkPolicy
 import dev.novux.dynasty.cbb.core.notification.NotificationFeedSigningDayFeedPolicy
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingHubTab
@@ -24,7 +26,7 @@ import dev.novux.dynasty.cbb.core.recruiting.RecruitingHubTab
 @Composable
 fun DashboardNotificationFeedPanel(
     feed: List<NotificationFeedItem>,
-    onDeepLink: (RecruitingHubTab) -> Unit,
+    onDeepLink: (RecruitingHubTab, String?) -> Unit,
     onStrategyOpen: () -> Unit,
     onCoachCardOpen: () -> Unit,
     onSigningDayOpen: (DashboardDeepLink) -> Unit = {},
@@ -74,7 +76,15 @@ fun DashboardNotificationFeedPanel(
                                 }
                                 onSigningDayOpen(row.deepLink)
                             }
-                            else -> onDeepLink(row.deepLink.toHubTab())
+                            else -> {
+                                val focusName = when (row.kind) {
+                                    NotificationEventKind.UserCommit,
+                                    NotificationEventKind.UserDecommit,
+                                    -> NotificationFeedCommitRowPolicy.prospectNameFromFeedBody(row.body)
+                                    else -> null
+                                }
+                                onDeepLink(row.deepLink.toHubTab(), focusName)
+                            }
                         }
                     },
             ) {

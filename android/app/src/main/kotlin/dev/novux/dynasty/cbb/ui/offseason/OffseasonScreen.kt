@@ -134,7 +134,7 @@ fun OffseasonScreen(
     weekNineRepository: OffseasonWeekNineRepository,
     weekTenRepository: OffseasonWeekTenRepository,
     hubMenuCallbacks: DynastyHubMenuCallbacks,
-    onOpenRecruiting: (RecruitingHubTab) -> Unit = {},
+    onOpenRecruiting: (RecruitingHubTab, String?) -> Unit = { _, _ -> },
     onOpenSigningDay: (DashboardDeepLink) -> Unit = {},
     userCalendarRepository: UserCalendarRepository,
     showNotificationFeed: Boolean = true,

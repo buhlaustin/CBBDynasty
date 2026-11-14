@@ -164,6 +164,7 @@ fun DynastyApp(
                 mutableStateOf(RecruitingHubDefaults.defaultTab)
             }
             var recruitingFocusProspectId by remember { mutableStateOf<String?>(null) }
+            var recruitingFocusProspectName by remember { mutableStateOf<String?>(null) }
             var newsHubLaunchTab by remember {
                 mutableStateOf(dev.novux.dynasty.cbb.ui.news.NewsHubTab.Stories)
             }
@@ -216,6 +217,7 @@ fun DynastyApp(
                 onOpenSchool = { navController.navigate(AppRoute.SchoolHub.route) },
                 onOpenRecruiting = {
                     recruitingFocusProspectId = null
+                    recruitingFocusProspectName = null
                     recruitingLaunchTab = RecruitingHubTab.Recommended
                     navController.navigateToRecruitingHub()
                 },
@@ -302,8 +304,10 @@ fun DynastyApp(
                     disciplineDashboardRefreshKey = disciplineDashboardRefreshKey,
                     showNotificationFeed = appSettings.showDashboardNotificationFeed,
                     mutedNotificationCategories = appSettings.mutedNotificationFeedCategories,
-                    onOpenRecruitingTab = { tab ->
+                    onOpenRecruitingTab = { tab, focusProspectName ->
                         recruitingLaunchTab = tab
+                        recruitingFocusProspectName = focusProspectName
+                        recruitingFocusProspectId = null
                         navController.navigateToRecruitingHub()
                     },
                     onOpenSigningDayFromOffseason = { link ->
@@ -812,6 +816,7 @@ fun DynastyApp(
                             portalCycleRepository = portalCycleRepository,
                             initialTab = recruitingLaunchTab,
                             initialFocusProspectId = recruitingFocusProspectId,
+                            initialFocusProspectName = recruitingFocusProspectName,
                             onBack = { navController.popBackToInShellDashboard() },
                         )
                     } else {

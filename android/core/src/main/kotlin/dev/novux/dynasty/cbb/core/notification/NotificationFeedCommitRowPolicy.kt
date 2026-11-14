@@ -13,4 +13,13 @@ object NotificationFeedCommitRowPolicy {
     val hsDecommitDeepLink: DashboardDeepLink = DashboardDeepLink.RecruitingRecommended
 
     val portalDecommitDeepLink: DashboardDeepLink = DashboardDeepLink.RecruitingPortal
+
+    fun prospectNameFromFeedBody(body: String): String? = when {
+        body.contains(" signed with") -> body.substringBefore(" signed with").trim()
+        body.contains(" joined your roster") -> body.substringBefore(" joined your roster").trim()
+        body.contains(" reopened recruitment") -> body.substringBefore(" reopened recruitment").trim()
+        body.contains(" entered the transfer portal") ->
+            body.substringBefore(" entered the transfer portal").trim()
+        else -> null
+    }
 }

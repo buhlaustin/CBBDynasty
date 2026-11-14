@@ -608,6 +608,9 @@
     <string name="recruiting_influence_row">Competition rank #%1$d · baseline closeness %2$d</string>
     <string name="recruiting_interest_meter">Live interest %1$d / 100</string>
     <string name="recruiting_interest_meter_with_gain">Live interest %1$d / 100 (baseline %2$d)</string>
+    <string name="recruiting_spend_interest_gain">Interest +%1$d from that action</string>
+    <string name="recruiting_visit_campus_bump">Official visit: +%1$d campus-life interest</string>
+    <string name="recruiting_nil_assignable_line">You can assign up to %1$s with your NIL budget</string>
     <string name="recruiting_sign_likelihood_baseline_hint">Sign likelihood uses baseline interest only (no spend).</string>
     <string name="recruiting_badge_likely">Likely</string>
     <string name="recruiting_badge_possible">Possible</string>

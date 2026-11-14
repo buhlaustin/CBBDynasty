@@ -104,7 +104,7 @@ fun PreseasonScreen(
     userCalendarRepository: UserCalendarRepository,
     showNotificationFeed: Boolean = true,
     mutedNotificationCategories: Set<dev.novux.dynasty.cbb.core.notification.NotificationFeedCategory> = emptySet(),
-    onOpenRecruitingTab: (RecruitingHubTab) -> Unit = {},
+    onOpenRecruitingTab: (RecruitingHubTab, String?) -> Unit = { _, _ -> },
     onOpenSigningDay: (dev.novux.dynasty.cbb.core.dashboard.DashboardDeepLink) -> Unit = {},
 ) {
     var loaded by remember(initial) { mutableStateOf(initial) }

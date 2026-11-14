@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
@@ -55,7 +57,11 @@ import dev.novux.dynasty.cbb.core.recruiting.HsJucoRecruitBoard
 import dev.novux.dynasty.cbb.core.recruiting.RecruitProspect
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingCycleLedger
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingCyclePolicy
+import dev.novux.dynasty.cbb.core.recruiting.RecruitHubNotificationDeepLinkPolicy
+import dev.novux.dynasty.cbb.core.recruiting.RecruitOfficialVisitCampusBumpPolicy
+import dev.novux.dynasty.cbb.core.recruiting.RecruitSpendFeedbackPolicy
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingHubFocusPolicy
+import dev.novux.dynasty.cbb.core.recruiting.RecruitingRefundableAction
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingHubDefaults
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingHubTab
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingHubTabPolicy
@@ -100,6 +106,7 @@ fun RecruitingHubScreen(
     portalCycleRepository: PortalCycleRepository,
     initialTab: RecruitingHubTab = RecruitingHubDefaults.defaultTab,
     initialFocusProspectId: String? = null,
+    initialFocusProspectName: String? = null,
     onBack: () -> Unit,
 ) {
     BackHandler(onBack = onBack)
@@ -244,12 +251,24 @@ fun RecruitingHubScreen(
 
     val fullPool = recruitingPool.orEmpty()
 
-    LaunchedEffect(initialFocusProspectId) {
-        if (RecruitingHubFocusPolicy.isValidFocusProspectId(initialFocusProspectId)) {
-            tabIndex = RecruitingHubDefaults.tabs.indexOf(RecruitingHubFocusPolicy.portalDeepLinkTab)
-            focusedProspectId = initialFocusProspectId
+    LaunchedEffect(initialFocusProspectId, initialFocusProspectName, hsPoolReady, fullPool, portalEntrants) {
+        val resolvedId = when {
+            RecruitingHubFocusPolicy.isValidFocusProspectId(initialFocusProspectId) -> initialFocusProspectId
+            !initialFocusProspectName.isNullOrBlank() && hsPoolReady ->
+                RecruitHubNotificationDeepLinkPolicy.matchProspectIdByCommitName(initialFocusProspectName, fullPool)
+            else -> null
+        }
+        if (RecruitingHubFocusPolicy.isValidFocusProspectId(resolvedId)) {
+            val tab = RecruitHubNotificationDeepLinkPolicy.resolveFocusTab(
+                resolvedId,
+                hsProspectIds = fullPool.map { it.prospectId }.toSet(),
+                portalEntrantIds = portalEntrants.map { it.entrantId }.toSet(),
+            )
+            tabIndex = RecruitingHubDefaults.tabs.indexOf(tab)
+            focusedProspectId = resolvedId
         }
     }
+
     val toggleBoard: (String) -> Unit = { prospectId ->
         scope.launch {
             val season = loaded.metadata.seasonIndex
@@ -484,11 +503,16 @@ fun RecruitingHubScreen(
                 )
             }
         }
+        val recommendedListState = rememberLazyListState()
         Column(modifier = Modifier.weight(1f)) {
             when (RecruitingHubDefaults.tabs[tabIndex]) {
                 RecruitingHubTab.Recommended -> RecommendedTabBody(
                     loaded = loaded,
                     rows = recommendedRows,
+                    focusProspectId = focusedProspectId,
+                    listState = recommendedListState,
+                    nilLedger = nilLedger,
+                    activeReservations = offerReservations,
                     schoolContext = resolvedSchoolContext,
                     recruitingEconomyRepository = recruitingEconomyRepository,
                     nilRules = nilRules,
@@ -502,7 +526,7 @@ fun RecruitingHubScreen(
                     },
                     onSpend = {
                         scope.launch {
-                            recruitingEconomyRepository.spendRefundableAction(
+                            val result = recruitingEconomyRepository.spendRefundableAction(
                                 loaded,
                                 prospectId = it.prospectId,
                                 offer = false,
@@ -513,6 +537,20 @@ fun RecruitingHubScreen(
                                     resolvedSchoolContext,
                                 ),
                             )
+                            if (result.success &&
+                                RecruitSpendFeedbackPolicy.shouldShowInterestGainConfirmation(
+                                    result.interestDeltaApplied,
+                                )
+                            ) {
+                                Toast.makeText(
+                                    context,
+                                    context.getString(
+                                        R.string.recruiting_spend_interest_gain,
+                                        result.interestDeltaApplied,
+                                    ),
+                                    Toast.LENGTH_SHORT,
+                                ).show()
+                            }
                             ledger = recruitingEconomyRepository.loadOrOpenCycle(loaded)
                             gateRefresh++
                         }
@@ -554,6 +592,19 @@ fun RecruitingHubScreen(
                             )
                             if (!result.success && result.failure == RecruitingSpendFailure.InsufficientPoints) {
                                 Toast.makeText(context, insufficientPointsMessage, Toast.LENGTH_SHORT).show()
+                            } else if (result.success &&
+                                RecruitSpendFeedbackPolicy.shouldShowInterestGainConfirmation(
+                                    result.interestDeltaApplied,
+                                )
+                            ) {
+                                Toast.makeText(
+                                    context,
+                                    context.getString(
+                                        R.string.recruiting_spend_interest_gain,
+                                        result.interestDeltaApplied,
+                                    ),
+                                    Toast.LENGTH_SHORT,
+                                ).show()
                             }
                             ledger = recruitingEconomyRepository.loadOrOpenCycle(loaded)
                             gateRefresh++
@@ -834,6 +885,10 @@ private fun RecommendedTabBody(
     scholarshipOfferPointCost: Int,
     gateRefresh: Int,
     offerPromises: Map<String, RecruitOfferPromise>,
+    focusProspectId: String? = null,
+    listState: androidx.compose.foundation.lazy.LazyListState = rememberLazyListState(),
+    nilLedger: NilBudgetLedger? = null,
+    activeReservations: List<RecruitingWeekReservation> = emptyList(),
     poolLoaded: Boolean = true,
     onBrowseHsJuco: () -> Unit = {},
     modifier: Modifier = Modifier,
@@ -877,7 +932,15 @@ private fun RecommendedTabBody(
         }
         else -> {
     val likelyCount = rows.count { it.badge == SignLikelihoodBadge.Likely || it.badge == SignLikelihoodBadge.Possible }
+    LaunchedEffect(focusProspectId, rows) {
+        val id = focusProspectId ?: return@LaunchedEffect
+        val index = rows.indexOfFirst { it.prospect.prospectId == id }
+        if (index >= 0) {
+            listState.scrollToItem(index + 1)
+        }
+    }
     LazyColumn(
+        state = listState,
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
@@ -927,12 +990,32 @@ private fun RecommendedTabBody(
                     schoolContext,
                 )
             }
+            val highlighted = focusProspectId == row.prospect.prospectId
+            val visitReserved = activeReservations.any {
+                it.prospectId == row.prospect.prospectId && it.action == RecruitingRefundableAction.OfficialVisit
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .then(
+                        if (highlighted) {
+                            Modifier.background(
+                                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.35f),
+                            )
+                        } else {
+                            Modifier
+                        },
+                    )
+                    .padding(if (highlighted) 4.dp else 0.dp),
+            ) {
             RecommendedProspectRow(
                 row = row,
                 gates = gates,
                 currency = currency,
                 nilRules = nilRules,
+                nilLedger = nilLedger,
                 nilOfferUsd = nilOffers[row.prospect.prospectId] ?: 0L,
+                officialVisitReserved = visitReserved,
                 scholarshipOfferPointCost = scholarshipOfferPointCost,
                 scholarshipOfferPromiseLabel = offerPromises[row.prospect.prospectId]?.displayLabel(),
                 onScout = {
@@ -991,6 +1074,7 @@ private fun RecommendedTabBody(
                 },
                 onRevokeOffer = { onRevokeOffer(row.prospect.prospectId) },
             )
+            }
         }
     }
         }
@@ -1004,7 +1088,9 @@ private fun RecommendedProspectRow(
     gates: RecruitingProspectActionGates?,
     currency: NumberFormat,
     nilRules: dev.novux.dynasty.cbb.core.balance.BalanceNilRules,
+    nilLedger: NilBudgetLedger? = null,
     nilOfferUsd: Long,
+    officialVisitReserved: Boolean = false,
     scholarshipOfferPointCost: Int,
     scholarshipOfferPromiseLabel: String? = null,
     onScout: () -> Unit,
@@ -1070,6 +1156,16 @@ private fun RecommendedProspectRow(
                 baselineInterest = row.baselineInterest,
                 liveInterest = row.liveInterest,
             )
+            if (officialVisitReserved) {
+                val gain = (row.liveInterest - row.baselineInterest).coerceAtLeast(0)
+                if (RecruitOfficialVisitCampusBumpPolicy.showCampusBumpLine(true, gain)) {
+                    Text(
+                        text = stringResource(R.string.recruiting_visit_campus_bump, gain),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.secondary,
+                    )
+                }
+            }
         }
         SignLikelihoodChip(row.badge)
             Text(
@@ -1084,7 +1180,12 @@ private fun RecommendedProspectRow(
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        RecruitNilAssignCapLine(nilAskUsd = row.prospect.nilAskUsd, nilRules = nilRules)
+        RecruitNilAssignCapLine(
+            nilAskUsd = row.prospect.nilAskUsd,
+            nilRules = nilRules,
+            nilLedger = nilLedger,
+            priorReservationUsd = nilOfferUsd,
+        )
         RecruitNilPartialOfferControls(
             nilAskUsd = row.prospect.nilAskUsd,
             nilRules = nilRules,

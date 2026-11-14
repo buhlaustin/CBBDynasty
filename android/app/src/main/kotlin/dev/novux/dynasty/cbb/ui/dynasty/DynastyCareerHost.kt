@@ -74,7 +74,7 @@ fun DynastyCareerHost(
     disciplineDashboardRefreshKey: Int,
     showNotificationFeed: Boolean,
     mutedNotificationCategories: Set<NotificationFeedCategory> = emptySet(),
-    onOpenRecruitingTab: (RecruitingHubTab) -> Unit,
+    onOpenRecruitingTab: (RecruitingHubTab, String?) -> Unit,
     onOpenSigningDayFromOffseason: (DashboardDeepLink) -> Unit,
     onOpenSigningDayFromShell: () -> Unit,
     onOpenAutomation: () -> Unit,
