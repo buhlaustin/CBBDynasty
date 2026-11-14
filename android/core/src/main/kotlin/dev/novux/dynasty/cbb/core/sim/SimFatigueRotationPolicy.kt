@@ -8,6 +8,7 @@ import dev.novux.dynasty.cbb.core.fatigue.FatigueEngine
  */
 object SimFatigueRotationPolicy {
     const val QA_ID: String = "MEGA-SIM-104"
+    const val SHELL_MEGA_ID: String = "MEGA-SHELL-082"
 
     fun shouldPull(participant: GameSimParticipant, ledger: SimStaminaLedger, tuning: BalanceFatigue): Boolean =
         FatigueEngine.shouldPullInRotation(ledger.stamina(participant.playerId), tuning)

@@ -147,10 +147,21 @@ class DynastyRosterRepository(
         phaseCommitted: CalendarPhase,
         teamPlayedGame: Boolean,
         tuning: BalanceFatigue,
+        userGamesThisWeek: Int = 1,
+        offensiveScheme: dev.novux.dynasty.cbb.core.strategy.OffensiveSchemePreset =
+            dev.novux.dynasty.cbb.core.strategy.OffensiveSchemePreset.Balanced,
+        defensiveScheme: dev.novux.dynasty.cbb.core.strategy.DefensiveSchemePreset =
+            dev.novux.dynasty.cbb.core.strategy.DefensiveSchemePreset.ManToMan,
     ): List<RosterPlayer> {
         var players = listPlayers(dynastyId)
         if (teamPlayedGame) {
-            players = FatigueEngine.applyEstimatedGameDrain(players, tuning)
+            players = FatigueEngine.applyEstimatedGameDrain(
+                players,
+                tuning,
+                offensiveScheme = offensiveScheme,
+                defensiveScheme = defensiveScheme,
+                userGamesThisWeek = userGamesThisWeek,
+            )
         }
         players = FatigueEngine.applyWeeklyRecovery(players, phaseCommitted, teamPlayedGame, tuning)
         players.forEach { dao.upsert(it.toEntity()) }

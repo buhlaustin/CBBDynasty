@@ -3,6 +3,8 @@ package dev.novux.dynasty.cbb.core.fatigue
 import dev.novux.dynasty.cbb.core.balance.BalanceFatigue
 import dev.novux.dynasty.cbb.core.calendar.CalendarPhase
 import dev.novux.dynasty.cbb.core.roster.RosterPlayer
+import dev.novux.dynasty.cbb.core.strategy.DefensiveSchemePreset
+import dev.novux.dynasty.cbb.core.strategy.OffensiveSchemePreset
 import kotlin.math.pow
 
 object FatigueEngine {
@@ -44,10 +46,20 @@ object FatigueEngine {
     fun applyEstimatedGameDrain(
         players: List<RosterPlayer>,
         tuning: BalanceFatigue,
+        offensiveScheme: OffensiveSchemePreset = OffensiveSchemePreset.Balanced,
+        defensiveScheme: DefensiveSchemePreset = DefensiveSchemePreset.ManToMan,
+        userGamesThisWeek: Int = 1,
     ): List<RosterPlayer> =
         players.map { player ->
             val minutes = if (player.isStarter) 28.0 else 10.0
-            val drain = (tuning.baseDrainPerMinute * minutes).toInt()
+            val baseDrain = (tuning.baseDrainPerMinute * minutes).toInt()
+            val drain = FatiguePressBackToBackPolicy.adjustedEstimatedDrain(
+                baseDrain = baseDrain,
+                offensiveScheme = offensiveScheme,
+                defensiveScheme = defensiveScheme,
+                userGamesThisWeek = userGamesThisWeek,
+                estimatedMinutes = minutes,
+            )
             player.copy(stamina = (player.stamina - drain).coerceAtLeast(0))
         }
 }

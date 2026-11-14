@@ -1,5 +1,6 @@
 package dev.novux.dynasty.cbb.core.sim
 
+import dev.novux.dynasty.cbb.core.balance.BalanceChemistry
 import dev.novux.dynasty.cbb.core.balance.BalanceFatigue
 import dev.novux.dynasty.cbb.core.sim.tuning.SimTuning
 import dev.novux.dynasty.cbb.core.strategy.DefensiveSchemePreset
@@ -38,6 +39,9 @@ data class GameSimInput(
     val fatigueTuning: BalanceFatigue = BalanceFatigue.DEFAULT,
     /** Venue for the scheduled home team — applies `tuning.homeNeutralModifiers`. */
     val homeVenue: SimHomeVenueType = SimHomeVenueType.Home,
+    val homeTeamChemistry: Int? = null,
+    val awayTeamChemistry: Int? = null,
+    val chemistryTuning: BalanceChemistry? = null,
 ) {
     fun activeHomeGameplan(clockSeconds: Int): GameplanInput? =
         if (clockSeconds <= GameSimClock.HALF_SECONDS) {

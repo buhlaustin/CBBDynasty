@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -27,6 +28,7 @@ import dev.novux.dynasty.cbb.core.awards.YearlyAwardsSeasonArchive
 import dev.novux.dynasty.cbb.core.balance.injuryTuning
 import dev.novux.dynasty.cbb.core.calendar.CalendarPhase
 import dev.novux.dynasty.cbb.core.settings.AppSettings
+import dev.novux.dynasty.cbb.core.shell.LaunchResumeSkipStudioPolicy
 import dev.novux.dynasty.cbb.core.advance.UserLeagueGameIds
 import dev.novux.dynasty.cbb.core.dashboard.InSeasonWeekGames
 import dev.novux.dynasty.cbb.core.strategy.StrategyEditLockPolicy
@@ -115,7 +117,15 @@ fun DynastyApp(
                     .background(MaterialTheme.colorScheme.background),
             )
         } else {
-            val startRoute = if (launchSettings!!.skipStudioIntro) {
+            var studioBeatConsumed by rememberSaveable {
+                mutableStateOf(launchSettings!!.skipStudioIntro)
+            }
+            val startRoute = if (
+                LaunchResumeSkipStudioPolicy.shouldBypassStudioBeat(
+                    skipStudioIntroSetting = launchSettings!!.skipStudioIntro,
+                    studioBeatConsumed = studioBeatConsumed,
+                )
+            ) {
                 AppRoute.Splash.route
             } else {
                 AppRoute.Studio.route
@@ -330,7 +340,10 @@ fun DynastyApp(
             ) {
                 composable(AppRoute.Studio.route) {
                     StudioScreen(
-                        onFinished = { navController.navigate(AppRoute.Splash.route) },
+                        onFinished = {
+                            studioBeatConsumed = true
+                            navController.navigate(AppRoute.Splash.route)
+                        },
                     )
                 }
                 composable(AppRoute.Splash.route) {

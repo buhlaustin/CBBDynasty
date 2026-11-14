@@ -20,6 +20,7 @@ import dev.novux.dynasty.cbb.core.strategy.GameplanUsageNormalizer
 import dev.novux.dynasty.cbb.data.balance.BalanceRulesetRepository
 import dev.novux.dynasty.cbb.data.pack.PackRepository
 import dev.novux.dynasty.cbb.data.preseason.PreseasonScheduleRepository
+import dev.novux.dynasty.cbb.data.chemistry.ChemistryRepository
 import dev.novux.dynasty.cbb.data.roster.DynastyRosterRepository
 import dev.novux.dynasty.cbb.data.strategy.DynastyStrategyPrepRepository
 import dev.novux.dynasty.cbb.data.sim.SimTuningRepository
@@ -34,6 +35,7 @@ class UserLeagueGameSimFactory(
     private val preseasonScheduleRepository: PreseasonScheduleRepository,
     private val dynastyRosterRepository: DynastyRosterRepository,
     private val strategyPrepRepository: DynastyStrategyPrepRepository,
+    private val chemistryRepository: ChemistryRepository,
 ) {
     suspend fun buildFastSimBundle(
         loaded: LoadedDynasty,
@@ -64,6 +66,8 @@ class UserLeagueGameSimFactory(
         val rotation = RotationMinutesBalancer.baseline(players, starters)
         val gameplan = defaultGameplan(starters)
         val (offensive, defensive) = strategyPrepRepository.resolveForLeagueSim(loaded.dynastyId)
+        val teamChem = chemistryRepository.loadState(loaded.dynastyId, loaded.metadata.seasonIndex).teamChemistry
+        val chemistryTuning = ruleset.chemistry
         val homeRoster = if (players.isNotEmpty()) {
             GameLineupPrep.build(userTeamId, players, starters, rotation)
         } else {
@@ -110,10 +114,19 @@ class UserLeagueGameSimFactory(
                     homeRosterPlayers = if (userTeamIsHome) players else emptyList(),
                     awayRosterPlayers = if (userTeamIsHome) emptyList() else players,
                 ),
+                userTeamChemistry = teamChem,
+                chemistryTuning = chemistryTuning,
             )
         }
         return UserLeagueFastSimBundle(contexts)
     }
+
+    suspend fun resolveSchemesForFatigueTick(
+        dynastyId: String,
+    ): Pair<
+        dev.novux.dynasty.cbb.core.strategy.OffensiveSchemePreset,
+        dev.novux.dynasty.cbb.core.strategy.DefensiveSchemePreset,
+        > = strategyPrepRepository.resolveForLeagueSim(dynastyId)
 
     private fun defaultGameplan(
         starters: Map<dev.novux.dynasty.cbb.core.roster.PlayerPosition, String>,

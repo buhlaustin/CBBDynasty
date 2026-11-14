@@ -419,7 +419,15 @@
     "MEGA-SHELL-051",
     "MEGA-SHELL-052",
     "MEGA-SHELL-053",
-    "MEGA-SHELL-055"
+    "MEGA-SHELL-055",
+    "MEGA-SHELL-056",
+    "MEGA-SHELL-071",
+    "MEGA-SHELL-072",
+    "MEGA-SHELL-077",
+    "MEGA-SHELL-078",
+    "MEGA-SHELL-082",
+    "MEGA-SHELL-083",
+    "MEGA-SHELL-085"
   ],
   "subscriptionName": "mega-build-queue",
   "integrationBranch": "cursor/mega-build-executor-cb09",

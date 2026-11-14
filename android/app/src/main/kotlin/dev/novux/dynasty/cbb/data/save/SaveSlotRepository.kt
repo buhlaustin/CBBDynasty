@@ -681,6 +681,7 @@ class SaveSlotRepository(
         val checkpoint = preAdvance.checkpointAfterPreAdvance
         val aiWeek = aiRecruitingRepository.runLeagueWeekIfActive(loaded, ledger, manualSpent)
         val recruitingSpentClosingWeek = aiWeek?.userPointsSpent ?: 0
+        val rosterSizeBeforeWeek = dynastyRosterRepository.listPlayers(loaded.dynastyId).size
         val advanceResult = weekCheckpointRepository.advanceWeek(loaded.dynastyId, checkpoint)
         leagueWeekBatchRepository.afterWeekAdvance(
             dynastyId = loaded.dynastyId,
@@ -704,11 +705,16 @@ class SaveSlotRepository(
             rollSeed = loaded.dynastyId.hashCode().toLong() + advanceResult.committedWeek.weekIndex,
         )
         val balance = balanceRulesetRepository.activeRuleset()
+        val userGamesThisWeek = advanceResult.gamesCommitted.size.coerceAtLeast(1)
+        val (offScheme, defScheme) = userLeagueGameSimFactory.resolveSchemesForFatigueTick(loaded.dynastyId)
         dynastyRosterRepository.tickFatigueForWeekAdvance(
             loaded.dynastyId,
             advanceResult.committedWeek.phase,
             teamPlayedGame,
             balance.fatigue,
+            userGamesThisWeek = if (teamPlayedGame) userGamesThisWeek else 1,
+            offensiveScheme = offScheme,
+            defensiveScheme = defScheme,
         )
         if (teamPlayedGame && advanceResult.gamesCommitted.isNotEmpty()) {
             ingestPlayerGameLogsFromCommittedMarks(
@@ -734,13 +740,20 @@ class SaveSlotRepository(
         } else {
             null
         }
+        val playersForChemistry = dynastyRosterRepository.listPlayers(loaded.dynastyId)
+        val chemistryTickInput = dev.novux.dynasty.cbb.core.chemistry.ChemistryWeeklyTickInputPolicy.build(
+            players = playersForChemistry,
+            headCoachArchetype = coachArchetype(loaded.dynastyId),
+            rosterSizeBeforeWeek = rosterSizeBeforeWeek,
+            teamPlayedGame = teamPlayedGame,
+            userWonGame = userWonGame,
+        )
         chemistryRepository.afterWeekAdvance(
             loaded.dynastyId,
             loaded.metadata.seasonIndex,
             advanceResult.committedWeek.phase,
-            dynastyRosterRepository.listPlayers(loaded.dynastyId),
-            teamPlayedGame,
-            userWonGame,
+            playersForChemistry,
+            chemistryTickInput,
         )
         PlayerPromiseStatusRepository(dynastyRosterRepository, playerStatsRepository)
             .refreshInSeasonAfterWeek(loaded.dynastyId, loaded.metadata.seasonIndex)

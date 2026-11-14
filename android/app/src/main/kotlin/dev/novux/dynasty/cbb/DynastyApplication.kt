@@ -411,6 +411,7 @@ class DynastyApplication : Application() {
             preseasonScheduleRepository,
             dynastyRosterRepository,
             dynastyStrategyPrepRepository,
+            chemistryRepository,
         )
         seasonReviewProgressRepository =
             dev.novux.dynasty.cbb.data.seasonreview.SeasonReviewProgressRepository(applicationContext)

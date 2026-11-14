@@ -236,17 +236,36 @@ class PossessionSimSession(
             defenseRoster = if (offenseHome) input.awayRoster else input.homeRoster,
         )
         val denyTurnoverBoost = DenyPrimaryScorerPolicy.extraTurnoverChance(denyPrimaryCtx, eventWeights.denyPrimary)
-        val resolveEffectsForPossession = if (denyTurnoverBoost > 0.0) {
+        var resolveEffectsForPossession = if (denyTurnoverBoost > 0.0) {
             resolveEffects.copy(
                 turnoverChance = (resolveEffects.turnoverChance + denyTurnoverBoost).coerceIn(0.10, 0.40),
             )
         } else {
             resolveEffects
         }
+        val clutchActiveForChemistry = ClutchUsagePolicy.isClutch(
+            gameClock,
+            offenseScore,
+            defenseScore,
+            eventWeights.clutchUsage,
+        )
+        val offenseChemistry = if (offenseHome) input.homeTeamChemistry else input.awayTeamChemistry
+        val chemistryTuning = input.chemistryTuning
+        if (clutchActiveForChemistry && offenseChemistry != null && chemistryTuning != null) {
+            val chemTurnover = SimChemistryClutchPolicy.extraTurnoverChance(offenseChemistry, true)
+            if (chemTurnover > 0.0) {
+                resolveEffectsForPossession = resolveEffectsForPossession.copy(
+                    turnoverChance = (resolveEffectsForPossession.turnoverChance + chemTurnover).coerceIn(0.10, 0.45),
+                )
+            }
+        }
         val venueMods = input.tuning.homeNeutralModifiers
         val venueHome = input.homeVenue
         var offRating = teamOffensiveRating(offenseIsHome = offenseHome) + effects.offensiveRatingDelta
         var defRating = teamDefensiveRating(defenseIsHome = !offenseHome) + effects.defensiveRatingDelta
+        if (clutchActiveForChemistry && offenseChemistry != null && chemistryTuning != null) {
+            offRating += SimChemistryClutchPolicy.offensiveRatingDelta(offenseChemistry, chemistryTuning, true)
+        }
         offRating = SimVenueRatingPolicy.offensiveRating(offRating, offenseHome, venueHome, venueMods) +
             SimVenueRatingPolicy.lateGameHomeCrowdOffenseBoost(offenseHome, gameClock, venueHome)
         defRating = SimVenueRatingPolicy.defensiveRating(defRating, !offenseHome, venueHome, venueMods)

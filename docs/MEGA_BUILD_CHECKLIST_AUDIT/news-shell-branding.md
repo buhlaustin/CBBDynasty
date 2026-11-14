@@ -88,7 +88,7 @@
 | MEGA-SHELL-053 | SHIP | Fundraising / facility complete (low) | `FundraisingComplete` rows from week-nine economy | `notifications.md` |
 | MEGA-SHELL-054 | SHIP | Stories not duplicated in notification feed | League churn goes to News archive, not notification kinds for league-only events | architecture split |
 | MEGA-SHELL-055 | SHIP | Feed deep links | `PlayWeekGame` → `ShellWeekGamePreviewLauncher`; discipline / carousel / fundraising routes wired | `DashboardNotificationFeedPanel.kt` |
-| MEGA-SHELL-056 | GAP | Notification feed on offseason dashboard | Feed load gated to in-season shell path only | compare `OffseasonScreen` |
+| MEGA-SHELL-056 | SHIP | Notification feed on offseason dashboard | `OffseasonScreen` loads feed + sidecar like shell | `NotificationFeedOffseasonPhasePolicy` |
 
 ---
 
@@ -110,8 +110,8 @@
 | MEGA-SHELL-068 | SHIP | Weekly academic support GPA tick | `tickAcademicSupport` on week advance | `DisciplineResolver`, repository |
 | MEGA-SHELL-069 | GAP | Cover-up audit end of season | `academicCoverUp` flag set; **no** `auditBaseChance` roll in save flow | `balance-2026.json`, `SaveSlotRepository` |
 | MEGA-SHELL-070 | GAP | AD trust / job security / News on discipline outcomes | Fields in spec table — not wired from resolver to coach card + News | `in-season-systems.md#ad-trust` |
-| MEGA-SHELL-071 | PARTIAL | Conduct flavor from balance templates | Engine uses templates; headlines in core English | `DisciplineOccurrenceEngine.rollConduct` |
-| MEGA-SHELL-072 | PARTIAL | Academic window RS weeks 18–22 | `academicWindowWeeks` in balance JSON | confirm tuning matches spec default |
+| MEGA-SHELL-071 | SHIP | Conduct flavor from balance templates | `DisciplineConductFlavorPolicy` uses template id + label | `DisciplineOccurrenceEngine.rollConduct` |
+| MEGA-SHELL-072 | SHIP | Academic window RS weeks 18–22 | `DisciplineAcademicWindowPolicy` matches balance default weeks | `balance-2026.json` |
 
 ---
 
@@ -123,13 +123,13 @@
 | MEGA-SHELL-074 | SHIP | Bootstrap ~70 new save | `ChemistryWeekEngine.bootstrap` | core tests |
 | MEGA-SHELL-075 | SHIP | Weekly tick after advance (in-season phases) | `afterWeekAdvance` in repository + `SaveSlotRepository` | win/loss streak inputs |
 | MEGA-SHELL-076 | SHIP | Display on School hub Overview + Strategy strip | `school_hub_chemistry`, `strategy_chemistry` | `SchoolHubScreen`, `StrategyScreen` |
-| MEGA-SHELL-077 | GAP | Chemistry clutch modifier in live sim | `ChemistryRepository.clutchModifier` defined — **not referenced** in sim package | grep `sim/` |
-| MEGA-SHELL-078 | PARTIAL | Promise broken / roster churn / charisma inputs | Engine supports; shell tick passes `userWonGame` only — other inputs default false | `ChemistryWeeklyTickInput` wiring |
+| MEGA-SHELL-077 | SHIP | Chemistry clutch modifier in live sim | `SimChemistryClutchPolicy` in `PossessionSimSession` clutch possessions | `GameSimInput` chemistry fields |
+| MEGA-SHELL-078 | SHIP | Promise broken / roster churn / charisma inputs | `ChemistryWeeklyTickInputPolicy.build` on week advance | `SaveSlotRepository` |
 | MEGA-SHELL-079 | SHIP | Per-player `stamina` on roster model | DB columns + `FatigueEngine` | `RosterPlayer`, migrations |
 | MEGA-SHELL-080 | SHIP | Fatigue tick on week advance | `DynastyRosterRepository.tickFatigueForWeekAdvance` | `SaveSlotRepository` |
 | MEGA-SHELL-081 | SHIP | Strategy stamina readout + starter block &lt;20 | `strategy_stamina`, `starterBlockThreshold` | `StrategyScreen.kt` |
-| MEGA-SHELL-082 | PARTIAL | Fatigue rotation pull in sim | `shouldPullInRotation` in core — sim integration not audited here | `FatigueEngine.kt` |
-| MEGA-SHELL-083 | PARTIAL | Press scheme / back-to-back drain extras | Base drain in `FatigueEngine` — press/B2B penalties thin vs spec formula | `in-season-systems.md#fatigue` |
+| MEGA-SHELL-082 | SHIP | Fatigue rotation pull in sim | `SimFatigueRotationPolicy` in rotation band + path test | `RotationBandFloorPolicy` |
+| MEGA-SHELL-083 | SHIP | Press scheme / back-to-back drain extras | `FatiguePressBackToBackPolicy` on estimated game drain | `FatigueEngine.applyEstimatedGameDrain` |
 | MEGA-SHELL-084 | SHIP | Chemistry does not block lineup edits | Display-only chemistry on Strategy | `StrategyScreen` |
 
 ---
@@ -138,7 +138,7 @@
 
 | ID | Status | Spec / topic | Finding | Code / notes |
 |----|--------|--------------|---------|--------------|
-| MEGA-SHELL-085 | PARTIAL | Resume from background skip studio | No lifecycle handler documented in app — cold start only path audited | `app-shell.md#launch-flow` |
+| MEGA-SHELL-085 | SHIP | Resume from background skip studio | `LaunchResumeSkipStudioPolicy` + `rememberSaveable` studio beat consumed | `DynastyApp.kt` |
 | MEGA-SHELL-086 | SHIP | Official product title constant | `Dynasty: College Basketball` single constant | `GameConstants.GAME_TITLE` |
 | MEGA-SHELL-087 | GAP | `lint_player_strings.py` CI on notification composer | Hard-coded user-facing strings in core composer may fail lint if extended to core | `branding.md#ui-copy` |
 
