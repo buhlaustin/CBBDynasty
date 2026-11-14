@@ -7,15 +7,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,11 +24,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.novux.dynasty.cbb.R
 import dev.novux.dynasty.cbb.core.news.NewsHeadline
-import dev.novux.dynasty.cbb.core.news.NewsHeadlineArticleBuilder
+import dev.novux.dynasty.cbb.core.news.NewsStoryDrillInPolicy
+import dev.novux.dynasty.cbb.ui.news.NewsHeadlineStoryDetailSheet
 import dev.novux.dynasty.cbb.core.news.NewsHeadlineKind
 import dev.novux.dynasty.cbb.core.news.DynastyShellNewsHeadlinesPolicy
 import dev.novux.dynasty.cbb.core.news.ShallowNewsFeedSnapshot
-import dev.novux.dynasty.cbb.ui.reports.ReportArticleView
 import dev.novux.dynasty.cbb.core.player.DynastyPlayer
 import dev.novux.dynasty.cbb.core.roster.ShellRosterSection
 import dev.novux.dynasty.cbb.core.roster.ShellRosterSectionPartition
@@ -123,45 +120,22 @@ fun DynastyShellCalendarTabPlaceholder(contentPadding: PaddingValues) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DynastyShellNewsTab(
     feed: ShallowNewsFeedSnapshot,
     contentPadding: PaddingValues,
     onOpenNewsHub: (() -> Unit)? = null,
+    onOpenNewsHubPortal: (() -> Unit)? = null,
     emptyHint: String? = null,
 ) {
     val headlines = feed.headlines
     var selectedHeadline by remember { mutableStateOf<NewsHeadline?>(null) }
-    val storySheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    selectedHeadline?.let { headline ->
-        val article = remember(headline.id) { NewsHeadlineArticleBuilder.miniArticle(headline) }
-        val showHubCta = NewsHeadlineArticleBuilder.prefersNewsHubTab(headline) && onOpenNewsHub != null
-        ModalBottomSheet(
-            onDismissRequest = { selectedHeadline = null },
-            sheetState = storySheetState,
-        ) {
-            Column(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-                    .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-                ReportArticleView(article = article)
-                if (showHubCta) {
-                    OutlinedButton(
-                        onClick = {
-                            selectedHeadline = null
-                            onOpenNewsHub?.invoke()
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Text(stringResource(R.string.shell_news_detail_open_hub))
-                    }
-                }
-            }
-        }
-    }
+    NewsHeadlineStoryDetailSheet(
+        headline = selectedHeadline,
+        onDismiss = { selectedHeadline = null },
+        onOpenNewsHub = onOpenNewsHub,
+        onOpenNewsHubPortal = onOpenNewsHubPortal,
+    )
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -196,7 +170,11 @@ fun DynastyShellNewsTab(
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { selectedHeadline = headline },
+                        .clickable {
+                            if (NewsStoryDrillInPolicy.opensMiniArticleDetail()) {
+                                selectedHeadline = headline
+                            }
+                        },
                 ) {
                     Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         Text(

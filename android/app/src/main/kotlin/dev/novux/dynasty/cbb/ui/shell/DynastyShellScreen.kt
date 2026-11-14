@@ -1006,6 +1006,7 @@ fun DynastyShellScreen(
                 feed = newsFeed,
                 contentPadding = padding,
                 onOpenNewsHub = hubMenuCallbacks.onOpenNewsHub,
+                onOpenNewsHubPortal = hubMenuCallbacks.onOpenNewsHubPortal,
             )
             DynastyShellTab.Dashboard -> Column(
                 modifier = Modifier
@@ -1071,6 +1072,8 @@ fun DynastyShellScreen(
                             disciplinePending?.let { disciplineSheetTarget = it }
                         },
                         onMarchMayhemOpen = hubMenuCallbacks.onOpenMarchMayhem,
+                        onRankingsOpen = hubMenuCallbacks.onOpenRankings,
+                        onHistoryOpen = hubMenuCallbacks.onOpenHistory,
                     )
                 }
                 DashboardRequiredTasksPanel(

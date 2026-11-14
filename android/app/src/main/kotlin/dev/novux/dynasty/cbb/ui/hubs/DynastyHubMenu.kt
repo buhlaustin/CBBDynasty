@@ -14,6 +14,7 @@ data class DynastyHubMenuCallbacks(
     val onOpenStatistics: () -> Unit,
     val onOpenRankings: () -> Unit,
     val onOpenNewsHub: () -> Unit,
+    val onOpenNewsHubPortal: () -> Unit,
     val onOpenHistory: () -> Unit,
     val onOpenAwards: () -> Unit,
     val onOpenMarchMayhem: () -> Unit,

@@ -403,6 +403,7 @@ fun OffseasonScreen(
                 feed = newsFeed,
                 contentPadding = padding,
                 onOpenNewsHub = hubMenuCallbacks.onOpenNewsHub,
+                onOpenNewsHubPortal = hubMenuCallbacks.onOpenNewsHubPortal,
             )
             DynastyShellTab.Dashboard -> Column(
                 modifier = Modifier
@@ -428,6 +429,8 @@ fun OffseasonScreen(
                 onSigningDayOpen = { onOpenSigningDay(DashboardDeepLink.SigningDayRankings) },
                 onMarchMayhemOpen = hubMenuCallbacks.onOpenMarchMayhem,
                 onFundraisingOpen = { fundraisingSheetOpen = true },
+                onRankingsOpen = hubMenuCallbacks.onOpenRankings,
+                onHistoryOpen = hubMenuCallbacks.onOpenHistory,
             )
         }
         val offseasonRequiredContext = OffseasonRequiredDashboardTasks.WeekContext(

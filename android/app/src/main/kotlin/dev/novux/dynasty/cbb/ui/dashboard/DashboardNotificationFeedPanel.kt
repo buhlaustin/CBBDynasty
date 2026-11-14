@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import dev.novux.dynasty.cbb.R
 import dev.novux.dynasty.cbb.core.dashboard.DashboardDeepLink
 import dev.novux.dynasty.cbb.core.notification.NotificationFeedItem
+import dev.novux.dynasty.cbb.core.notification.NotificationFeedGameWeekRowPolicy
 import dev.novux.dynasty.cbb.core.notification.NotificationFeedPlayWeekDeepLinkPolicy
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingHubTab
 
@@ -30,6 +31,8 @@ fun DashboardNotificationFeedPanel(
     onDisciplineOpen: () -> Unit = {},
     onMarchMayhemOpen: () -> Unit = {},
     onFundraisingOpen: () -> Unit = {},
+    onRankingsOpen: () -> Unit = onStrategyOpen,
+    onHistoryOpen: () -> Unit = onStrategyOpen,
     modifier: Modifier = Modifier,
 ) {
     if (feed.isEmpty()) return
@@ -50,12 +53,14 @@ fun DashboardNotificationFeedPanel(
                         when (row.deepLink) {
                             DashboardDeepLink.Strategy -> onStrategyOpen()
                             DashboardDeepLink.PlayWeekGame -> {
-                                if (NotificationFeedPlayWeekDeepLinkPolicy.routesToGamePreview(row.deepLink)) {
+                                if (NotificationFeedGameWeekRowPolicy.routesToGamePreview(row.deepLink)) {
                                     onGamePreviewOpen()
                                 } else {
                                     onStrategyOpen()
                                 }
                             }
+                            DashboardDeepLink.RankingsHub -> onRankingsOpen()
+                            DashboardDeepLink.HistoryHub -> onHistoryOpen()
                             DashboardDeepLink.CoachCard -> onCoachCardOpen()
                             DashboardDeepLink.DisciplineSheet -> onDisciplineOpen()
                             DashboardDeepLink.MarchMayhemHub -> onMarchMayhemOpen()

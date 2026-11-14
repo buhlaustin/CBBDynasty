@@ -13,10 +13,9 @@ class ShellNewsHeadlineTapPathTest {
         val tab = root.resolve(
             "android/app/src/main/kotlin/dev/novux/dynasty/cbb/ui/dynasty/DynastyShellTabContent.kt",
         ).readText()
-        assertTrue(tab.contains("NewsHeadlineArticleBuilder"))
-        assertTrue(tab.contains("clickable { selectedHeadline = headline }"))
-        assertTrue(tab.contains("ModalBottomSheet"))
-        assertTrue(tab.contains("ReportArticleView"))
+        assertTrue(tab.contains("NewsStoryDrillInPolicy"))
+        assertTrue(tab.contains("NewsHeadlineStoryDetailSheet"))
+        assertTrue(tab.contains("selectedHeadline = headline"))
         assertTrue(
             root.resolve(
                 "android/core/src/main/kotlin/dev/novux/dynasty/cbb/core/news/NewsHeadlineArticleBuilder.kt",

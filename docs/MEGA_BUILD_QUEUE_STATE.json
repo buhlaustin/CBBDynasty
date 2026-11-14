@@ -434,7 +434,15 @@
     "MEGA-SHELL-099",
     "MEGA-SHELL-100",
     "MEGA-SHELL-102",
-    "MEGA-SHELL-104"
+    "MEGA-SHELL-104",
+    "MEGA-SHELL-106",
+    "MEGA-SHELL-107",
+    "MEGA-SHELL-108",
+    "MEGA-SHELL-109",
+    "MEGA-SHELL-110",
+    "MEGA-SHELL-111",
+    "MEGA-SHELL-112",
+    "MEGA-SHELL-113"
   ],
   "subscriptionName": "mega-build-queue",
   "integrationBranch": "cursor/mega-build-executor-cb09",

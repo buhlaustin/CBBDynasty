@@ -70,8 +70,10 @@ fun NewsHubScreen(
     onOpenRecruitingPortal: () -> Unit,
     onOpenPriorProgram: (String) -> Unit,
     onOpenPortalEntrantFocus: (String) -> Unit,
+    initialTab: NewsHubTab = NewsHubTab.Stories,
 ) {
-    var selectedTab by remember { mutableIntStateOf(0) }
+    var selectedTab by remember(initialTab) { mutableIntStateOf(0) }
+    var selectedStory by remember { mutableStateOf<NewsHeadline?>(null) }
     var stories by remember { mutableStateOf<List<NewsHeadline>>(emptyList()) }
     var recruits by remember { mutableStateOf<List<NationalRankRow>>(emptyList()) }
     var portalState by remember { mutableStateOf<PortalCycleState?>(null) }
@@ -92,11 +94,27 @@ fun NewsHubScreen(
         }
     }
 
-    LaunchedEffect(visibleTabs.size) {
+    LaunchedEffect(visibleTabs.size, initialTab) {
         if (selectedTab >= visibleTabs.size) {
             selectedTab = 0
         }
+        val launchIndex = visibleTabs.indexOf(initialTab)
+        if (launchIndex >= 0) {
+            selectedTab = launchIndex
+        }
     }
+
+    NewsHeadlineStoryDetailSheet(
+        headline = selectedStory,
+        onDismiss = { selectedStory = null },
+        onOpenNewsHubPortal = {
+            selectedStory = null
+            val portalIndex = visibleTabs.indexOf(NewsHubTab.Portal)
+            if (portalIndex >= 0) {
+                selectedTab = portalIndex
+            }
+        },
+    )
 
     LaunchedEffect(dynastyId, seasonIndex, position) {
         packIndex = packRepository.activeSession().index
@@ -130,7 +148,10 @@ fun NewsHubScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             when (visibleTabs.getOrNull(selectedTab)) {
-                NewsHubTab.Stories -> StoriesTab(stories)
+                NewsHubTab.Stories -> StoriesTab(
+                    stories = stories,
+                    onStoryClick = { selectedStory = it },
+                )
                 NewsHubTab.Portal -> PortalTab(
                     portalState = portalState,
                     packIndex = packIndex,
@@ -155,13 +176,20 @@ private fun tabLabel(tab: NewsHubTab): String = when (tab) {
 }
 
 @Composable
-private fun StoriesTab(stories: List<NewsHeadline>) {
+private fun StoriesTab(
+    stories: List<NewsHeadline>,
+    onStoryClick: (NewsHeadline) -> Unit,
+) {
     if (stories.isEmpty()) {
         Text(stringResource(R.string.news_hub_stories_empty), color = MaterialTheme.colorScheme.onSurfaceVariant)
         return
     }
     stories.forEach { story ->
-        Card(modifier = Modifier.fillMaxWidth()) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onStoryClick(story) },
+        ) {
             Column(modifier = Modifier.padding(12.dp)) {
                 Text(story.title, style = MaterialTheme.typography.bodyLarge)
             }

@@ -1120,6 +1120,7 @@
     <string name="shell_news_more_in_hub">%1$d more stories in News hub</string>
     <string name="shell_news_open_hub">Open News hub</string>
     <string name="shell_news_detail_open_hub">View full story in News hub</string>
+    <string name="news_story_footer_view_portal">View in Portal</string>
     <string name="shell_news_kind_user_injury">Your team</string>
     <string name="shell_news_kind_league_injury">League wire</string>
     <string name="shell_news_kind_league_result">Scoreboard</string>

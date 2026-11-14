@@ -155,6 +155,7 @@ fun CoachingCarouselScreen(
                 feed = newsFeed,
                 contentPadding = padding,
                 onOpenNewsHub = hubMenuCallbacks.onOpenNewsHub,
+                onOpenNewsHubPortal = hubMenuCallbacks.onOpenNewsHubPortal,
             )
             DynastyShellTab.Dashboard -> Column(
                 modifier = Modifier

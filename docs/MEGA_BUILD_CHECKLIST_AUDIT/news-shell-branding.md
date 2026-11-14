@@ -173,14 +173,14 @@
 
 | ID | Status | Spec / topic | Finding | Code / notes |
 |----|--------|--------------|---------|--------------|
-| MEGA-SHELL-106 | GAP | `DashboardDeepLink` no Rankings / March Mayhem / Player | Enum stops at `CoachCard` — feed cannot route NET row correctly | `DashboardTask.kt`, `notifications.md#deep-links` |
-| MEGA-SHELL-107 | GAP | Rankings move row taps Strategy | `NotificationEventKind.RankingsMove` → `DashboardDeepLink.Strategy` not Rankings hub | `NotificationFeedComposer.kt` |
-| MEGA-SHELL-108 | GAP | Game this week → preview not Strategy | `PlayWeekGame` handled same as `Strategy` in panel | `DashboardNotificationFeedPanel.kt` |
-| MEGA-SHELL-109 | GAP | Selection Sunday feed row + tap | Not in composer; no `MarchMayhem` deep link kind | `notifications.md` high tier |
-| MEGA-SHELL-110 | GAP | Discipline sheet feed deep link | `DashboardDeepLink.DisciplineSheet` exists for tasks — **not** used in notification composer | `NotificationFeedComposer.kt`, `notifications.md` |
-| MEGA-SHELL-111 | GAP | Medical redshirt eligible feed row | `NotificationEventKind` has no medical kind; composer omits | `NotificationFeedItem.kt` |
-| MEGA-SHELL-112 | GAP | Story tap → detail or Recruiting CTA | Dashboard News cards + hub Stories are plain `Text` — no navigation | `DynastyShellNewsTab.kt`, `NewsHubScreen.kt` |
-| MEGA-SHELL-113 | GAP | Portal story footer “View in Portal” | Mini-article pattern not implemented — no footer CTAs | `news-hub.md#story-detail--articles` |
+| MEGA-SHELL-106 | SHIP | Feed deep-link catalog | `DashboardNotificationDeepLinkCatalogPolicy` + `HistoryHub` enum; panel routes rankings/history | `DashboardNotificationDeepLinkCatalogPolicy.kt`, `DashboardNotificationFeedPanel.kt` |
+| MEGA-SHELL-107 | SHIP | Rankings move row | `NotificationFeedRankingsMoveRowPolicy` → `RankingsHub` | `NotificationFeedRankingsMoveRowPolicy.kt`, `NotificationFeedComposer.kt` |
+| MEGA-SHELL-108 | SHIP | Game-this-week → preview | `NotificationFeedGameWeekRowPolicy` + panel `onGamePreviewOpen` | `NotificationFeedGameWeekRowPolicy.kt`, `DashboardNotificationFeedPanel.kt` |
+| MEGA-SHELL-109 | SHIP | Selection Sunday feed | Composer + `NotificationFeedSelectionSundayFeedPolicy` + March Mayhem tap | `NotificationFeedSelectionSundayFeedPolicy.kt`, `NotificationFeedComposer.kt` |
+| MEGA-SHELL-110 | SHIP | Discipline feed deep link | `NotificationFeedDisciplineFeedPolicy` + `DisciplineSheet` in composer/panel | `NotificationFeedDisciplineFeedPolicy.kt` |
+| MEGA-SHELL-111 | SHIP | Medical redshirt feed row | `NotificationFeedMedicalRedshirtFeedPolicy` + `MedicalRedshirtEligible` composer rows | `NotificationFeedMedicalRedshirtFeedPolicy.kt` |
+| MEGA-SHELL-112 | SHIP | Story drill-in | `NewsStoryDrillInPolicy` + `NewsHeadlineStoryDetailSheet` (shell + hub) | `NewsStoryDrillInPolicy.kt`, `NewsHeadlineStoryDetailSheet.kt` |
+| MEGA-SHELL-113 | SHIP | Portal story footer | `NewsPortalStoryFooterPolicy` + View in Portal CTA | `NewsPortalStoryFooterPolicy.kt`, `NewsHeadlineStoryDetailSheet.kt` |
 | MEGA-SHELL-114 | PARTIAL | Commit feed → Recruiting Recommended | Works for HS commits; portal sub-tab not distinguished | `NotificationFeedComposer`, `DashboardNotificationFeedPanel.toHubTab` |
 | MEGA-SHELL-115 | GAP | Major national record → History / player card | Composer uses `DashboardDeepLink.Strategy` | `NotificationFeedComposer.kt`, `history-hub.md` |
 | MEGA-SHELL-116 | SHIP | Fired / eliminated modal + Coach deep link | `requiresBlockingModal` + `CoachCard` link | `CareerBlockNotificationDialog`, shell |

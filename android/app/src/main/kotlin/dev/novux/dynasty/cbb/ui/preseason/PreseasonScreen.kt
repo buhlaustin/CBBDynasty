@@ -318,6 +318,7 @@ fun PreseasonScreen(
                 feed = newsFeed,
                 contentPadding = padding,
                 onOpenNewsHub = hubMenuCallbacks.onOpenNewsHub,
+                onOpenNewsHubPortal = hubMenuCallbacks.onOpenNewsHubPortal,
                 emptyHint = if (!incomingClassSeedComplete) {
                     stringResource(R.string.shell_news_preseason_awaiting_seed)
                 } else {
@@ -376,6 +377,8 @@ fun PreseasonScreen(
                 onCoachCardOpen = hubMenuCallbacks.onOpenSchool,
                 onSigningDayOpen = hubMenuCallbacks.onOpenRecruiting,
                 onMarchMayhemOpen = hubMenuCallbacks.onOpenMarchMayhem,
+                onRankingsOpen = hubMenuCallbacks.onOpenRankings,
+                onHistoryOpen = hubMenuCallbacks.onOpenHistory,
             )
         }
         PreseasonRequiredTaskChips(

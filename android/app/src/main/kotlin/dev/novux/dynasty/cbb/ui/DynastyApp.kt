@@ -164,6 +164,9 @@ fun DynastyApp(
                 mutableStateOf(RecruitingHubDefaults.defaultTab)
             }
             var recruitingFocusProspectId by remember { mutableStateOf<String?>(null) }
+            var newsHubLaunchTab by remember {
+                mutableStateOf(dev.novux.dynasty.cbb.ui.news.NewsHubTab.Stories)
+            }
             var signingDayInitialTab by remember { mutableStateOf(SigningDayInitialTab.Rankings) }
             var disciplineIncident by remember {
                 mutableStateOf<dev.novux.dynasty.cbb.core.discipline.PendingDisciplineIncident?>(null)
@@ -219,7 +222,14 @@ fun DynastyApp(
                 onOpenStrategy = { navController.navigate(AppRoute.Strategy.route) },
                 onOpenStatistics = { navController.navigate(AppRoute.StatisticsHub.route) },
                 onOpenRankings = { navController.navigate(AppRoute.RankingsHub.route) },
-                onOpenNewsHub = { navController.navigate(AppRoute.NewsHub.route) },
+                onOpenNewsHub = {
+                    newsHubLaunchTab = dev.novux.dynasty.cbb.ui.news.NewsHubTab.Stories
+                    navController.navigate(AppRoute.NewsHub.route)
+                },
+                onOpenNewsHubPortal = {
+                    newsHubLaunchTab = dev.novux.dynasty.cbb.ui.news.NewsHubTab.Portal
+                    navController.navigate(AppRoute.NewsHub.route)
+                },
                 onOpenHistory = { navController.navigate(AppRoute.HistoryHub.route) },
                 onOpenAwards = { navController.navigate(AppRoute.AwardsHub.route) },
                 onOpenMarchMayhem = { navController.navigate(AppRoute.MarchMayhem.route) },
@@ -897,6 +907,7 @@ fun DynastyApp(
                                 recruitingLaunchTab = dev.novux.dynasty.cbb.core.recruiting.RecruitingHubFocusPolicy.portalDeepLinkTab
                                 navController.navigateToRecruitingHub()
                             },
+                            initialTab = newsHubLaunchTab,
                         )
                     } else {
                         LaunchedEffect(Unit) {
