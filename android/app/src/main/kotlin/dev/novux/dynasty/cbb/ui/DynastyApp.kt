@@ -60,6 +60,7 @@ import dev.novux.dynasty.cbb.ui.discipline.DisciplineDecisionScreen
 import dev.novux.dynasty.cbb.ui.newgame.NewGameWizardScreen
 import dev.novux.dynasty.cbb.ui.offseason.CoachingCarouselScreen
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingHubDefaults
+import dev.novux.dynasty.cbb.core.news.NewsHubPortalAddToBoardPolicy
 import dev.novux.dynasty.cbb.core.recruiting.RecruitingHubTab
 import dev.novux.dynasty.cbb.ui.hubs.DynastyHubMenuCallbacks
 import dev.novux.dynasty.cbb.ui.hubs.HubScaffoldScreen
@@ -860,7 +861,16 @@ fun DynastyApp(
                             incomingClassSeedRepository = incomingClassSeedRepository,
                             portalCycleRepository = portalCycleRepository,
                             offseasonWeekTwoRepository = offseasonWeekTwoRepository,
+                            packRepository = app.packRepository,
                             onBack = { navController.popBackStack() },
+                            onOpenRecruitingPortal = {
+                                recruitingLaunchTab = NewsHubPortalAddToBoardPolicy.recruitingHubTab
+                                navController.navigateToRecruitingHub()
+                            },
+                            onOpenPriorProgram = {
+                                recruitingLaunchTab = NewsHubPortalAddToBoardPolicy.recruitingHubTab
+                                navController.navigateToRecruitingHub()
+                            },
                         )
                     } else {
                         LaunchedEffect(Unit) {

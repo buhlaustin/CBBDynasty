@@ -53,14 +53,14 @@
 | MEGA-SHELL-025 | GAP | Story date chip on feed lines | Spec: headline + date chip | `news-hub.md#stories-feed` — titles only |
 | MEGA-SHELL-026 | SHIP | Hamburger → full News hub route | `AppRoute.NewsHub`, menu item | `DynastyHubMenu.kt`, `NewsHubScreen.kt` |
 | MEGA-SHELL-027 | SHIP | Hub tabs: Stories / Portal / Recruits / Draft | Four tabs implemented | `NewsHubScreen.kt` |
-| MEGA-SHELL-028 | PARTIAL | Portal tab hidden outside OS weeks 1–5 | Tab **row always shows Portal**; body shows “hidden” copy | `NewsHubPolicy`, `PortalTab` |
+| MEGA-SHELL-028 | SHIP | Portal tab hidden outside OS weeks 1–5 | `NewsHubPortalTabVisibilityPolicy` omits Portal from hub tab row. | `NewsHubScreen.kt` |
 | MEGA-SHELL-029 | SHIP | Portal tab visible OS weeks 1–5 | Policy matches `PortalConstants.PORTAL_RECRUITING_WEEKS` | `NewsHubPolicyTest.kt` |
 | MEGA-SHELL-030 | SHIP | Week 1 Top 40 placeholder until lock | `news_hub_portal_pre_lock` when `!top40Locked` | `NewsHubScreen.kt` |
-| MEGA-SHELL-031 | GAP | Portal Top 40 full #1–#40 human labels | Rows use `entrantId` / `priorProgramId` not display names | `news_hub_portal_row` |
-| MEGA-SHELL-032 | GAP | Portal recent commits / entrants sections | Only Top 40 block — no rolling commit/entrant lists | `news-hub.md#portal-tab` |
-| MEGA-SHELL-033 | GAP | Portal filters row | Conference, stars, position, pipeline — absent | `news-hub.md#portal-tab` |
-| MEGA-SHELL-034 | GAP | Portal row tap → profile / school hub | Plain `Text` rows — no navigation | `NewsHubScreen.kt` |
-| MEGA-SHELL-035 | GAP | Add to board deep link | Spec CTA to Recruiting Portal Recommended | `news-hub.md#row-interactions` |
+| MEGA-SHELL-031 | SHIP | Portal Top 40 full #1–#40 human labels | `NewsHubPortalHumanRowPolicy` + pack display names on portal rows. | `news_hub_portal_row` |
+| MEGA-SHELL-032 | SHIP | Portal recent commits / entrants sections | Top 40 + **Recent portal entrants** via `NewsHubPortalRecentSectionsPolicy`. | `NewsHubScreen.kt` |
+| MEGA-SHELL-033 | SHIP | Portal filters row | Star filter chips + cadence hint (`NewsHubPortalFiltersPolicy`). | `NewsHubScreen.kt` |
+| MEGA-SHELL-034 | SHIP | Portal row tap → profile / school hub | Row tap opens Transfer Portal recruiting (`NewsHubPortalRowNavigationPolicy`). | `DynastyApp.kt` |
+| MEGA-SHELL-035 | SHIP | Add to board deep link | **Add to board** CTA → `NewsHubPortalAddToBoardPolicy.recruitingHubTab`. | `RecruitingHub` route |
 | MEGA-SHELL-036 | SHIP | Recruits tab national Top 60 #1–#60 | Seed or `NationalRecruitingRankings.top60` | `NewsHubScreen.kt` |
 | MEGA-SHELL-037 | PARTIAL | Draft tab dynamic pro pool | Offseason week 2 published lines only — not in-season dynamic board | `offseasonWeekTwoRepository` |
 | MEGA-SHELL-038 | GAP | Story detail mini-article | `ReportArticleView` used elsewhere — **no** story detail screen for headlines | `news-hub.md#story-detail--articles` |

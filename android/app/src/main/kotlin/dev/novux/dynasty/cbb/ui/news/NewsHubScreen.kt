@@ -1,12 +1,17 @@
 package dev.novux.dynasty.cbb.ui.news
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -31,14 +36,19 @@ import dev.novux.dynasty.cbb.core.calendar.CalendarPhase
 import dev.novux.dynasty.cbb.core.calendar.CalendarPosition
 import dev.novux.dynasty.cbb.core.news.NewsHeadline
 import dev.novux.dynasty.cbb.core.news.NewsHubPolicy
+import dev.novux.dynasty.cbb.core.news.NewsHubPortalFiltersPolicy
+import dev.novux.dynasty.cbb.core.news.NewsHubPortalHumanRowPolicy
+import dev.novux.dynasty.cbb.core.news.NewsHubPortalRecentSectionsPolicy
+import dev.novux.dynasty.cbb.core.news.NewsHubPortalRowNavigationPolicy
+import dev.novux.dynasty.cbb.core.news.NewsHubPortalTabVisibilityPolicy
 import dev.novux.dynasty.cbb.core.offseason.weektwo.NbaDraftOutcome
 import dev.novux.dynasty.cbb.core.offseason.weektwo.NbaDraftResultLine
+import dev.novux.dynasty.cbb.core.pack.IdentityPackIndex
 import dev.novux.dynasty.cbb.core.portal.PortalCycleState
-import dev.novux.dynasty.cbb.core.portal.PortalTop40
 import dev.novux.dynasty.cbb.core.signingday.NationalRankRow
-import dev.novux.dynasty.cbb.core.signingday.NationalRecruitingRankings
 import dev.novux.dynasty.cbb.data.news.NewsFeedRepository
 import dev.novux.dynasty.cbb.data.offseason.OffseasonWeekTwoRepository
+import dev.novux.dynasty.cbb.data.pack.PackRepository
 import dev.novux.dynasty.cbb.data.portal.PortalCycleRepository
 import dev.novux.dynasty.cbb.data.preseason.IncomingClassSeedRepository
 
@@ -54,19 +64,40 @@ fun NewsHubScreen(
     incomingClassSeedRepository: IncomingClassSeedRepository,
     portalCycleRepository: PortalCycleRepository,
     offseasonWeekTwoRepository: OffseasonWeekTwoRepository,
+    packRepository: PackRepository,
     onBack: () -> Unit,
+    onOpenRecruitingPortal: () -> Unit,
+    onOpenPriorProgram: (String) -> Unit,
 ) {
-    var selectedTab by remember { mutableIntStateOf(NewsHubTab.Stories.ordinal) }
+    var selectedTab by remember { mutableIntStateOf(0) }
     var stories by remember { mutableStateOf<List<NewsHeadline>>(emptyList()) }
     var recruits by remember { mutableStateOf<List<NationalRankRow>>(emptyList()) }
     var portalState by remember { mutableStateOf<PortalCycleState?>(null) }
     var draftLines by remember { mutableStateOf<List<NbaDraftResultLine>>(emptyList()) }
+    var packIndex by remember { mutableStateOf<IdentityPackIndex?>(null) }
     val portalVisible = NewsHubPolicy.portalTabVisible(
         position.phase,
         position.weekIndex.takeIf { position.phase == CalendarPhase.Offseason },
     )
+    val visibleTabs = remember(portalVisible) {
+        buildList {
+            add(NewsHubTab.Stories)
+            if (NewsHubPortalTabVisibilityPolicy.showPortalTab(portalVisible)) {
+                add(NewsHubTab.Portal)
+            }
+            add(NewsHubTab.Recruits)
+            add(NewsHubTab.Draft)
+        }
+    }
+
+    LaunchedEffect(visibleTabs.size) {
+        if (selectedTab >= visibleTabs.size) {
+            selectedTab = 0
+        }
+    }
 
     LaunchedEffect(dynastyId, seasonIndex, position) {
+        packIndex = packRepository.activeSession().index
         stories = newsFeedRepository.storiesFeed(dynastyId, seasonIndex)
         recruits = incomingClassSeedRepository.loadHeadline(dynastyId, seasonIndex)?.top60.orEmpty()
         if (portalVisible) {
@@ -81,7 +112,7 @@ fun NewsHubScreen(
             Text(stringResource(R.string.dynasty_shell_back))
         }
         ScrollableTabRow(selectedTabIndex = selectedTab) {
-            NewsHubTab.entries.forEachIndexed { index, tab ->
+            visibleTabs.forEachIndexed { index, tab ->
                 Tab(
                     selected = selectedTab == index,
                     onClick = { selectedTab = index },
@@ -96,11 +127,17 @@ fun NewsHubScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            when (NewsHubTab.entries[selectedTab]) {
+            when (visibleTabs.getOrNull(selectedTab)) {
                 NewsHubTab.Stories -> StoriesTab(stories)
-                NewsHubTab.Portal -> PortalTab(portalVisible, portalState)
+                NewsHubTab.Portal -> PortalTab(
+                    portalState = portalState,
+                    packIndex = packIndex,
+                    onOpenRecruitingPortal = onOpenRecruitingPortal,
+                    onOpenPriorProgram = onOpenPriorProgram,
+                )
                 NewsHubTab.Recruits -> RecruitsTab(recruits)
                 NewsHubTab.Draft -> DraftTab(draftLines)
+                null -> Unit
             }
         }
     }
@@ -129,34 +166,106 @@ private fun StoriesTab(stories: List<NewsHeadline>) {
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun PortalTab(visible: Boolean, state: PortalCycleState?) {
-    if (!visible) {
-        Text(stringResource(R.string.news_hub_portal_hidden), color = MaterialTheme.colorScheme.onSurfaceVariant)
-        return
-    }
-    val portal = state ?: return
+private fun PortalTab(
+    portalState: PortalCycleState?,
+    packIndex: IdentityPackIndex?,
+    onOpenRecruitingPortal: () -> Unit,
+    onOpenPriorProgram: (String) -> Unit,
+) {
+    val index = packIndex ?: return
+    val portal = portalState ?: return
     if (!portal.top40Locked) {
         Text(stringResource(R.string.news_hub_portal_pre_lock), color = MaterialTheme.colorScheme.onSurfaceVariant)
         return
+    }
+    var starFilter by remember { mutableStateOf(NewsHubPortalFiltersPolicy.StarFilter.All) }
+    val top40 = NewsHubPortalRecentSectionsPolicy.top40(portal.entrants)
+    val recent = NewsHubPortalRecentSectionsPolicy.recentEntrants(portal.entrants)
+    val filteredTop40 = top40.filter { NewsHubPortalFiltersPolicy.matchesStars(it, starFilter) }
+
+    Text(
+        stringResource(R.string.news_hub_portal_filters_hint),
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
+    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        listOf(
+            NewsHubPortalFiltersPolicy.StarFilter.All to R.string.news_hub_portal_filter_all,
+            NewsHubPortalFiltersPolicy.StarFilter.FourPlus to R.string.news_hub_portal_filter_four_plus,
+            NewsHubPortalFiltersPolicy.StarFilter.FiveOnly to R.string.news_hub_portal_filter_five,
+        ).forEach { (filter, labelRes) ->
+            AssistChip(
+                onClick = { starFilter = filter },
+                label = { Text(stringResource(labelRes)) },
+            )
+        }
     }
     Text(
         stringResource(R.string.news_hub_portal_top40_heading),
         style = MaterialTheme.typography.titleMedium,
         fontWeight = FontWeight.SemiBold,
     )
-    PortalTop40.rankedList(portal.entrants).forEach { entrant ->
-        Text(
-            stringResource(
-                R.string.news_hub_portal_row,
-                entrant.nationalTop40Rank ?: 0,
-                entrant.entrantId,
-                entrant.priorProgramId,
-                entrant.stars ?: 0,
-            ),
-            style = MaterialTheme.typography.bodyMedium,
+    filteredTop40.forEach { entrant ->
+        PortalEntrantRow(
+            entrant = entrant,
+            packIndex = index,
+            onOpenPriorProgram = onOpenPriorProgram,
         )
     }
+    if (recent.isNotEmpty()) {
+        Text(
+            stringResource(R.string.news_hub_portal_recent_heading),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(top = 12.dp),
+        )
+        recent.forEach { entrant ->
+            PortalEntrantRow(
+                entrant = entrant,
+                packIndex = index,
+                onOpenPriorProgram = onOpenPriorProgram,
+            )
+        }
+    }
+    Button(
+        onClick = onOpenRecruitingPortal,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 12.dp),
+    ) {
+        Text(stringResource(R.string.news_hub_portal_add_to_board))
+    }
+}
+
+@Composable
+private fun PortalEntrantRow(
+    entrant: dev.novux.dynasty.cbb.core.portal.PortalEntrant,
+    packIndex: IdentityPackIndex,
+    onOpenPriorProgram: (String) -> Unit,
+) {
+    val labels = NewsHubPortalHumanRowPolicy.rowLabels(entrant, packIndex)
+    val rank = entrant.nationalTop40Rank ?: 0
+    Text(
+        text = stringResource(
+            R.string.news_hub_portal_row,
+            rank,
+            labels.playerDisplayName,
+            labels.priorSchoolDisplayName,
+            labels.stars,
+            labels.positionLabel,
+        ),
+        style = MaterialTheme.typography.bodyMedium,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                onOpenPriorProgram(
+                    NewsHubPortalRowNavigationPolicy.priorProgramIdForNavigation(entrant),
+                )
+            }
+            .padding(vertical = 4.dp),
+    )
 }
 
 @Composable
